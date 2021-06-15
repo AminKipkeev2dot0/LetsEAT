@@ -532,7 +532,7 @@ def new_qr(request):
     path_qr = str(BASE_DIR / f'media/user_{request.user.pk}/establishment_' \
                              f'{establishment.pk}/qr_codes/')
     # URL that redirects to a link to this table's client page
-    url = f'https://438511-cr02292.tmweb.ru/client_page/{establishment.pk}/{number_table}'
+    url = f'https://letseat.su/client_page/{establishment.pk}/{number_table}'
 
     # generate img of this table and get its path
     path_img = qr.build_qr(url, path_qr, str(number_table),

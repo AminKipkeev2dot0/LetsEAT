@@ -19,7 +19,7 @@ async function confirm_delete_table(id_table) {
 }
 
 async function open_qr(id_table) {
-  const url = 'https://438511-cr02292.tmweb.ru/qr/open_qr';
+  const url = 'https://letseat.su/qr/open_qr';
   const data = {
     'id_table': id_table,
     'id_establishment': (window.location.pathname).split('/')[2],
