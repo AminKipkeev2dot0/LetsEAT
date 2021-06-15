@@ -1,0 +1,14 @@
+[Unit]
+Description=Telegram Bot
+After=network.target
+
+[Service]
+User=www
+Group=www-data
+Type=simple
+WorkingDirectory=/home/www/Projects/LetsEAT/bot
+ExecStart=/home/www/Projects/LetsEAT/env/bin/python /home/www/Projects/LetsEAT/bot/bot.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
