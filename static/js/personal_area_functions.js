@@ -185,7 +185,6 @@ async function download_qr_as_pdf() {
       }
     })
     const json = await response.json();
-    console.log('Успех:', JSON.stringify(json));
     if (json['status'] === 'ok') {
       window.location = json['path_pdf'];
     }
@@ -214,7 +213,6 @@ async function download_qr_as_zip(a) {
       }
     })
     const json = await response.json();
-    console.log('Успех:', JSON.stringify(json));
     if (json['status'] === 'ok') {
      window.location = json['path_zip'];
     }
@@ -636,8 +634,6 @@ document.querySelector('.modal-dish button').addEventListener('click', async (e)
 
   let result_json = await ajaxSend(formData)
 
-  console.log(result_json);
-
   if (result_json['status'] === 'ok') {
     let name_dish = document.querySelector('.modal-dish input[name="new_dish_name"]').value
     let price_dish = document.querySelector('.modal-dish input[name="new_dish_price"]').value
@@ -682,7 +678,6 @@ document.querySelector('.modal-dish button').addEventListener('click', async (e)
 
 // Кнопки
 function activate_edit_button(id_button) {
-  console.log('hi')
   let button = document.querySelector(`#button-${id_button}`);
   let button_input = button.querySelector('input[type="text"]');
   let checkbox_span = button.querySelector('.checkbox span');
@@ -728,7 +723,6 @@ async function complete_rename_button_post(id_button, new_name) {
       }
     });
     const json = await response.json();
-    console.log('Успех:', JSON.stringify(json));
 
     return json
 
@@ -829,7 +823,6 @@ async function new_button() {
   }
 
   if (new_button_input.value.length < 1) {
-    console.log('yes.')
     new_button_input.style.animation = '';
     setTimeout(() => {
       new_button_input.style.animation = 'input_highlight_blue 1.1s';
@@ -873,7 +866,6 @@ async function new_button_post(name_button, text_button) {
       }
     });
     const json = await response.json();
-    console.log('Успех:', JSON.stringify(json));
 
     return json;
 
@@ -893,7 +885,6 @@ async function base_post(url, data) {
       }
     });
     const json = await response.json();
-    console.log('Успех:', JSON.stringify(json));
 
     return json
 
@@ -1026,7 +1017,6 @@ async function confirm_delete_button(id_button) {
       }
     });
     const json = await response.json();
-    console.log('Успех:', JSON.stringify(json));
 
     let modal_delete_description = modal_delete.querySelector('p span');
     let modal_delete_info = modal_delete.querySelector('.modal_delete__info');

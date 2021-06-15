@@ -14,12 +14,10 @@ let m_btn_contact_us = document.querySelector('.m-header__content-buttons .conta
 let btn_to_top = document.querySelector('.to_top')
 
 function go_to_how_its_work() {
-  console.log('hi')
   learn_more_block.scrollIntoView({block: "start", behavior: "smooth"});
 }
 
 function go_to_contact_form() {
-  console.log('hi')
   contact_form_block.scrollIntoView({block: "start", behavior: "smooth"});
 }
 

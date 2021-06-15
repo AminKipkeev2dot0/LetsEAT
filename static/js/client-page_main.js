@@ -13,7 +13,6 @@ async function base_post(url, data) {
       }
     });
     const json = await response.json();
-    console.log('Успех:', JSON.stringify(json));
 
     return json
 
@@ -52,9 +51,7 @@ button_waiter.addEventListener('click', async () => {
       'number_table': (window.location.pathname).split('/')[3],
     }
     let json = await base_post(url, data);
-    console.log(json)
     if (json['status'] === 'ok') {
-      console.log('send!')
       accessed_call_waiter = false;
       let timer = setInterval(() => {
         seconds.innerText = Number(seconds.innerText) - 1;
@@ -74,7 +71,7 @@ button_waiter.addEventListener('click', async () => {
         color: '#1074F3',
         opacity: 1.7,
         callback: function () {
-          console.log('')
+
         },
       });
 

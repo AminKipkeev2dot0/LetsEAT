@@ -74,14 +74,12 @@ function minus_dish(id) {
 
 button_buy.addEventListener('click', () => {
   if (JSON.stringify(menu_of_client) !== JSON.stringify(empty_menu_of_client) ) {
-    console.log('wtf?')
     modal_serve_dishes.style.display = 'flex';
     modal_serve_dishes.style.zIndex = '10';
     modal_serve_dishes.style.opacity = '1';
     modal_serve_dishes.style.animation = 'opacity_dark 0.3s';
     modal_serve_dishes_content.style.animation = 'from_center 0.4s';
   } else {
-    console.log('wtf?2')
   }
 
 })

@@ -171,7 +171,6 @@ async function base_post(url, data) {
       }
     });
     const json = await response.json();
-    console.log('Успех:', JSON.stringify(json));
 
     return json
 

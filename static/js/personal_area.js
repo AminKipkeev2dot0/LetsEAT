@@ -54,7 +54,6 @@ button_add_tg.addEventListener('click', async () => {
       error_block.style.display = 'block';
     }
 
-    console.log(json)
   }
 })
 
@@ -91,11 +90,6 @@ button_load_logo.addEventListener('change', async (e) => {
   let form = document.querySelector('.settings .edit-block__new-logo form');
   const formData = new FormData(form);
 
-  // let result_json = await ajaxSend(formData)
-  //
-  // console.log(result_json);
-
-    console.log(formData)
   const fetchResp = await fetch(url, {
     method: 'POST',
     body: formData,
@@ -432,12 +426,11 @@ add_company_complete.addEventListener('click', async (e) => {
       console.error('Ошибка создания нового заведения.')
     }
   } else {
-    console.log('Пустой инпут')
+
   }
 });
 m_add_company_complete.addEventListener('click', async (e) => {
   e.stopPropagation();
-  console.log('click on add a company')
   let name_establishment = document.querySelector('.m-settings .other_companies .plus_block .input-block input');
   if (name_establishment.value.length > 0) {
     let url = 'https://letseat.su/establishment/add';
@@ -455,13 +448,10 @@ m_add_company_complete.addEventListener('click', async (e) => {
       console.error('Ошибка создания нового заведения.')
     }
   } else {
-    console.log('Пустой инпут')
   }
 });
 
 add_company.addEventListener('click', () => {
-  console.log('гыы')
-
   add_company.classList.add('disable_hover');
   add_company.style.animation = 'circle_to_rectangle .5s forwards';
 
@@ -474,8 +464,6 @@ add_company.addEventListener('click', () => {
   add_company_input_block.style.animation = 'show_scale .5s forwards'
 });
 m_add_company.addEventListener('click', () => {
-  console.log('гыы')
-
   m_add_company.classList.add('disable_hover');
   m_add_company.style.animation = 'circle_to_rectangle .5s forwards';
 
@@ -524,7 +512,6 @@ m_open_other_companies.addEventListener('click', () => {
     m_close_edit.style.display = 'none';
   }
   if (! open_other_companies_flag) {
-    console.log('open');
     open_other_companies_flag = true;
 
     m_other_companies_block.style.display = 'block';
@@ -532,7 +519,6 @@ m_open_other_companies.addEventListener('click', () => {
 
     m_open_other_companies.style.animation = 'rotate_180 .3s forwards';
   } else {
-    console.log('close')
     open_other_companies_flag = false;
 
     m_open_other_companies.style.animation = 'rotate_0 .3s forwards';
@@ -548,7 +534,6 @@ m_open_other_companies.addEventListener('click', () => {
 // let new_dish_textarea = document.querySelector('.modal-dish textarea');
 
 function crop_text(element, max_length) {
-  console.log(element)
   let html_element = document.querySelector(element);
   if (html_element.value >= Number(max_length)) {
     html_element.value = html_element.value.slice(0, Number(max_length) + 1)
@@ -591,8 +576,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let stars = review.querySelector('.review__stars');
   let stars_number = Number(stars.innerText);
   stars.innerText = '';
-
-  // console.log(stars.innerText)
 
   for (let i = 1; i <= 5; i++) {
     if (i <= stars_number) {
