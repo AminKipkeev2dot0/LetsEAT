@@ -803,7 +803,7 @@ def new_button(request):
     all_buttons = ButtonModel.objects.filter(establishment=establishment)
     print(len(all_buttons))
     print(all_buttons)
-    if len(all_buttons <= 3):
+    if len(all_buttons) <= 3:
         if len(name) > 0 and len(text) > 0:
             button = ButtonModel.objects.create(
                 establishment=establishment,
