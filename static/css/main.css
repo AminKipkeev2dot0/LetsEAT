@@ -391,6 +391,7 @@ a.header__phone {
 
 .how-its-work__block {
   max-width: 365px;
+  min-width: 245px;
   background: white;
   box-shadow: -15px 15px 50px rgba(0, 0, 0, 0.07);
   border-radius: 20px;
@@ -413,11 +414,13 @@ a.header__phone {
 
 .how-its-work__block h3 {
   margin-top: -10px;
+  margin-bottom: 0;
 }
 
 .how-its-work__block p {
   font-family: 'Gilroy-Regular', sans-serif;
   color: #2F2F2F;
+  font-size: 15px;
 }
 
 .how-its-work__phone-block {
