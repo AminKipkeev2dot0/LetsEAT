@@ -98,7 +98,7 @@ button_complete_buy.addEventListener('click', async () => {
 
     menu_of_client['id_establishment'] = (window.location.pathname).split('/')[2]
     menu_of_client['number_table'] = (window.location.pathname).split('/')[3]
-    let url = 'http://127.0.0.1:8000/client_page/order'
+    let url = 'https://letseat.su/client_page/order'
 
     let json = await base_post(url, menu_of_client)
 

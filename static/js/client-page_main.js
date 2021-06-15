@@ -46,7 +46,7 @@ button_waiter.addEventListener('click', async () => {
 
 
   if (accessed_call_waiter) {
-    let url = 'http://127.0.0.1:8000/client_page/telegram/waiter'
+    let url = 'https://letseat.su/client_page/telegram/waiter'
     let data = {
       'id_establishment': (window.location.pathname).split('/')[2],
       'number_table': (window.location.pathname).split('/')[3],
@@ -120,7 +120,7 @@ button_menu.addEventListener('click', async () => {
   }, 500)
 
   if (document.querySelector('.menu_mb') === null) {
-    let url = 'http://127.0.0.1:8000/client_page/get_menu'
+    let url = 'https://letseat.su/client_page/get_menu'
     let data = {
       'id_establishment': (window.location.pathname).split('/')[2]
     }
@@ -317,7 +317,7 @@ let modal_feedback_content = document.querySelector('#send_feedback_content');
 $('form').submit(async function (e) {
     e.preventDefault();
     let form = this;
-    let url = 'http://127.0.0.1:8000/client_page/feedback'
+    let url = 'https://letseat.su/client_page/feedback'
     modal_feedback.style.zIndex = '10';
     modal_feedback.style.opacity = '1';
     modal_feedback.style.animation = 'opacity_dark 0.3s';
@@ -376,7 +376,7 @@ async function custom_button(id_button) {
 
   let description_button = document.querySelector(`#custom-${id_button} .description_button`).innerText;
 
-  let url = 'http://127.0.0.1:8000/client_page/telegram/button';
+  let url = 'https://letseat.su/client_page/telegram/button';
   let data = {
     'id_establishment': (window.location.pathname).split('/')[2],
     'number_table': (window.location.pathname).split('/')[3],

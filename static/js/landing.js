@@ -56,7 +56,7 @@ btn_mail.addEventListener('click', async (e) => {
   if ((fake_name.value.length === 0 && fake_email.value.length === 0) &&
       (name_i.value.length > 0) && (email_i.value.length > 0) &&
       (phone_i.value.length > 0) && (message.value.length > 0)) {
-    let url = 'http://127.0.0.1:8000/send_message';
+    let url = 'https://letseat.su/send_message';
     const fetchResp = await fetch(url, {
       method: 'POST',
       body: formData,

@@ -38,7 +38,7 @@ button_add_tg.addEventListener('click', async () => {
   if (input_tg.value.length > 8) {
     let error_block = document.querySelector('.error_tg')
 
-    let url = 'http://127.0.0.1:8000/establishment/add_tg';
+    let url = 'https://letseat.su/establishment/add_tg';
     let data = {
       'id_establishment': (window.location.pathname).split('/')[2],
       'id_chat': input_tg.value
@@ -87,7 +87,7 @@ button_load_logo.addEventListener('change', async (e) => {
    }, 1000)
 
 
-  let url = 'http://127.0.0.1:8000/establishment/edit_logo';
+  let url = 'https://letseat.su/establishment/edit_logo';
   let form = document.querySelector('.settings .edit-block__new-logo form');
   const formData = new FormData(form);
 
@@ -149,7 +149,7 @@ m_button_load_logo.addEventListener('change', async (e) => {
    }, 1000)
 
 
-  let url = 'http://127.0.0.1:8000/establishment/edit_logo';
+  let url = 'https://letseat.su/establishment/edit_logo';
   let form = document.querySelector('.m-settings .edit-block__new-logo form');
   const formData = new FormData(form);
   const fetchResp = await fetch(url, {
@@ -362,7 +362,7 @@ m_button_edit_name.addEventListener('click', () => {
 });
 
 button_complete_rename.addEventListener('click', async () => {
-  let url = 'http://127.0.0.1:8000/establishment/rename';
+  let url = 'https://letseat.su/establishment/rename';
   let data = {
     'id_establishment': (window.location.pathname).split('/')[2],
     'new_name': input_edit_name.value,
@@ -380,7 +380,7 @@ button_complete_rename.addEventListener('click', async () => {
   }
 })
 m_button_complete_rename.addEventListener('click', async () => {
-  let url = 'http://127.0.0.1:8000/establishment/rename';
+  let url = 'https://letseat.su/establishment/rename';
   let data = {
     'id_establishment': (window.location.pathname).split('/')[2],
     'new_name': m_input_edit_name.value,
@@ -417,7 +417,7 @@ add_company_complete.addEventListener('click', async (e) => {
   e.stopPropagation();
   let name_establishment = document.querySelector('.other_companies .plus_block .input-block input');
   if (name_establishment.value.length > 0) {
-    let url = 'http://127.0.0.1:8000/establishment/add';
+    let url = 'https://letseat.su/establishment/add';
     let data = {
       'name': name_establishment.value
     }
@@ -440,7 +440,7 @@ m_add_company_complete.addEventListener('click', async (e) => {
   console.log('click on add a company')
   let name_establishment = document.querySelector('.m-settings .other_companies .plus_block .input-block input');
   if (name_establishment.value.length > 0) {
-    let url = 'http://127.0.0.1:8000/establishment/add';
+    let url = 'https://letseat.su/establishment/add';
     let data = {
       'name': name_establishment.value
     }

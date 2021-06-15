@@ -1,31 +1,32 @@
 @font-face {
 	font-family: 'Gilroy-Bold';
-	src: url('../fonts/Gilroy/Bold/gilroy-bold.eot'); /* IE 9 Compatibility Mode */
-	src: url('../fonts/Gilroy/Bold/gilroy-bold.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
-		url('../fonts/Gilroy/Bold/gilroy-bold.woff2') format('woff2'), /* Super Modern Browsers */
-		url('../fonts/Gilroy/Bold/gilroy-bold.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
-		url('../fonts/Gilroy/Bold/gilroy-bold.ttf') format('truetype'), /* Safari, Android, iOS */
-		url('../fonts/Gilroy/Bold/gilroy-bold.svg#gilroy-bold') format('svg'); /* Chrome < 4, Legacy iOS */
+	src: url('https://letseat.su/static/fonts/Gilroy/Bold/gilroy-bold.eot'); /* IE 9 Compatibility Mode */
+	src: url('https://letseat.su/static/fonts/Gilroy/Bold/gilroy-bold.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+		url('https://letseat.su/static/fonts/Gilroy/Bold/gilroy-bold.woff2') format('woff2'), /* Super Modern Browsers */
+		url('https://letseat.su/static/fonts/Gilroy/Bold/gilroy-bold.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+		url('https://letseat.su/static/fonts/Gilroy/Bold/gilroy-bold.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('https://letseat.su/static/fonts/Gilroy/Bold/gilroy-bold.svg#gilroy-bold') format('svg'); /* Chrome < 4, Legacy iOS */
 }
 
 @font-face {
 	font-family: 'Gilroy-Regular';
-	src: url('../fonts/Gilroy/Regular/gilroy-regular.eot'); /* IE 9 Compatibility Mode */
-	src: url('../fonts/Gilroy/Regular/gilroy-regular.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
-		url('../fonts/Gilroy/Regular/gilroy-regular.woff2') format('woff2'), /* Super Modern Browsers */
-		url('../fonts/Gilroy/Regular/gilroy-regular.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
-		url('../fonts/Gilroy/Regular/gilroy-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-		url('../fonts/Gilroy/Regular/gilroy-regular.svg#gilroy-regular') format('svg'); /* Chrome < 4, Legacy iOS */
+
+    src: url('https://letseat.su/static/fonts/Gilroy/Regular/gilroy-regular.eot'); /* IE 9 Compatibility Mode */
+	src: url('https://letseat.su/static/fonts/Gilroy/Regular/gilroy-regular.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+		url('https://letseat.su/static/fonts/Gilroy/Regular/gilroy-regular.woff2') format('woff2'), /* Super Modern Browsers */
+		url('https://letseat.su/static/fonts/Gilroy/Regular/gilroy-regular.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+		url('https://letseat.su/static/fonts/Gilroy/Regular/gilroy-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('https://letseat.su/static/fonts/Gilroy/Bold/Black/Regular/gilroy-regular.svg#gilroy-regular') format('svg'); /* Chrome < 4, Legacy iOS */
 }
 
 @font-face {
 	font-family: 'Gilroy-Black';
-	src: url('../fonts/Gilroy/Black/gilroy-black.eot'); /* IE 9 Compatibility Mode */
-	src: url('../fonts/Gilroy/Black/gilroy-black.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
-		url('../fonts/Gilroy/Black/gilroy-black.woff2') format('woff2'), /* Super Modern Browsers */
-		url('../fonts/Gilroy/Black/gilroy-black.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
-		url('../fonts/Gilroy/Black/gilroy-black.ttf') format('truetype'), /* Safari, Android, iOS */
-		url('../fonts/Gilroy/Black/gilroy-black.svg#gilroy-black') format('svg'); /* Chrome < 4, Legacy iOS */
+    src: url('https://letseat.su/static/fonts/Gilroy/Black/gilroy-black.eot'); /* IE 9 Compatibility Mode */
+	src: url('https://letseat.su/static/fonts/Gilroy/Black/gilroy-black.eot?#iefix') format('embedded-opentype'), /* IE < 9 */
+		url('https://letseat.su/static/fonts/Gilroy/Black/gilroy-black.woff2') format('woff2'), /* Super Modern Browsers */
+		url('https://letseat.su/static/fonts/Gilroy/Black/gilroy-black.woff') format('woff'), /* Firefox >= 3.6, any other modern browser */
+		url('https://letseat.su/static/fonts/Gilroy/Black/gilroy-black.ttf') format('truetype'), /* Safari, Android, iOS */
+		url('https://letseat.su/static/fonts/Gilroy/Bold/Black/gilroy-black.svg#gilroy-black') format('svg'); /* Chrome < 4, Legacy iOS */
 }
 
 html {
@@ -56,42 +57,6 @@ header {
 
 header img {
 	height: 50px;
-}
-
-
-.c-gradient {
-	position: absolute;
-	top: 40%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	border-radius: 50%;
-	background: #FFFFFF;
-	opacity: 0.05;
-	filter: blur(4px);
-}
-
-.c-gradient-1 {
-	height: 220px;
-	width: 220px;
-	z-index: 4;
-}
-
-.c-gradient-2 {
-	height: 330px;
-	width: 330px;
-	z-index: 3;
-}
-
-.c-gradient-3 {
-	height: 440px;
-	width: 440px;
-	z-index: 2;
-}
-
-.c-gradient-4 {
-	height: 550px;
-	width: 550px;
-	z-index: 1;
 }
 
 .content {
@@ -164,8 +129,8 @@ footer {
 	color: #1074F3;
 }
 
-.contact:not(.contact:last-child) {
-	margin-right: 25px;	
+.mr25 {
+	margin-right: 25px;
 }
 
 
