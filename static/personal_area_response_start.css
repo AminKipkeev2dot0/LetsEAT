@@ -1,0 +1,597 @@
+@media screen and (max-width:1700px) {
+  .wrapper_pa {
+    width: 1300px
+  }
+  .statistics {
+    flex: 4
+  }
+  .subscription__content p {
+    font-size: 40px
+  }
+  .buttons__item {
+    width: 350px
+  }
+  .button__name input {
+    width: 170px
+  }
+}
+
+@media screen and (max-width:1500px) {
+  .wrapper_pa {
+    width: 1100px
+  }
+  .user-info {
+    padding-left: 20px
+  }
+  .subscription__content p {
+    font-size: 35px;
+    margin-right: 15px
+  }
+  .subscription__pay-button {
+    width: 250px;
+    min-width: 250px
+  }
+  .subscription__pay-settings {
+    font-size: 23px;
+    max-width: 165px
+  }
+  .instruction__video iframe {
+    height: 300px
+  }
+  .pa-block h2 {
+    margin-right: 25px
+  }
+  .top-block {
+    margin-bottom: 20px
+  }
+  .buttons__item {
+    width: 420px
+  }
+  .button__name input {
+    width: 200px
+  }
+  footer {
+    padding: 0 120px
+  }
+}
+
+@media screen and (max-width:1300px) {
+  footer {
+    padding: 0 100px
+  }
+  .contacts__content {
+    padding: 40px 100px
+  }
+  .navigation__menu a {
+    margin-right: 15px
+  }
+}
+
+@media screen and (max-width:1200px) {
+  .wrapper_pa {
+    width: 900px
+  }
+  .heading h1 {
+    font-size: 40px
+  }
+  .statistics {
+    flex: 3
+  }
+  .subscription__content {
+    flex-wrap: wrap
+  }
+  .subscription__pay {
+    margin-top: 20px;
+    flex-direction: column;
+    width: 100%
+  }
+  .subscription__pay-button {
+    order: 2;
+    height: 65px;
+    width: 100%
+  }
+  .subscription__pay-settings {
+    order: 1;
+    width: auto;
+    max-width: fit-content;
+    margin-bottom: 15px
+  }
+  .instruction__video iframe {
+    height: 280px
+  }
+  .buttons__item {
+    width: 48%;
+    margin: 0 2% 20px 0
+  }
+  footer .navigation__logo {
+    margin-right: 40px
+  }
+  .navigation__menu a {
+    font-size: 16px
+  }
+}
+
+@media screen and (max-width:1000px) {
+  .modal-info__content {
+    box-sizing: border-box;
+    width: 300px;
+    height: auto;
+    padding: 30px 0
+  }
+  .modal-info__content .icon-block {
+    height: 150px;
+    width: 150px;
+    font-size: 90px
+  }
+  .wrapper_pa {
+    width: 700px
+  }
+  .heading h1 {
+    font-size: 32px
+  }
+  .statistics-user-info {
+    flex-direction: column
+  }
+  .user-info {
+    margin-left: 0
+  }
+  .user-info__content {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%
+  }
+  .user-info__content>div {
+    width: 49%;
+    margin-right: 1%
+  }
+  .pa-block h2 {
+    margin-right: 10px
+  }
+  .pa-header_button {
+    margin-right: 10px
+  }
+  .pa-content {
+    margin-left: 0;
+    margin-right: 0;
+    justify-content: space-between;
+    margin-top: 20px
+  }
+  .instruction__video iframe {
+    height: 200px
+  }
+  .buttons__content {
+    justify-content: flex-start
+  }
+  .buttons__item {
+    height: 70px
+  }
+  .button__name input {
+    width: 145px;
+    font-size: 18px
+  }
+  .button-settings>* {
+    margin-left: 7px
+  }
+  footer {
+    padding: 0 50px
+  }
+  .navigation__menu a {
+    font-size: 17px;
+    margin-right: 15px
+  }
+  footer .navigation__logo {
+    margin-right: 35px
+  }
+}
+
+@media screen and (max-width:900px) {
+  footer {
+    padding: 0 50px
+  }
+  .navigation__menu a {
+    font-size: 15px;
+    margin-right: 10px
+  }
+  footer .navigation__logo {
+    margin-right: 25px
+  }
+}
+
+@media screen and (max-width:800px) {
+  .create_establishment__content h2 {
+    font-size: 34px;
+    margin-bottom: 5px
+  }
+  .wrapper_pa {
+    width: 600px
+  }
+  .top-block {
+    align-items: flex-start
+  }
+  .left-block {
+    margin-right: 10px
+  }
+  .right-block {
+    width: 100%;
+    display: flex;
+    justify-content: space-between
+  }
+  .wrapper-m-settings {
+    display: block
+  }
+  .start_settings {
+    display: none
+  }
+  .right-block-start {
+    justify-content: flex-end
+  }
+  .m-settings .button-edit {
+    color: #1074f3;
+    font-size: 22px;
+    cursor: pointer
+  }
+  .heading {
+    margin-top: 0;
+    margin-bottom: 25px
+  }
+  .m-settings img {
+    width: 26px;
+    max-height: 26px
+  }
+  .edit-block__edit_name {
+    max-width: 225px;
+    margin: 0 auto 15px auto;
+    font-size: 14px
+  }
+  .m-my-profile {
+    height: 50px;
+    width: 50px;
+    min-width: 50px;
+    color: #1074f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    background: #fff;
+    box-shadow: -5px 5px 15px rgba(0, 0, 0, .08);
+    border-radius: 15px;
+    cursor: pointer
+  }
+  .m-my-profile:hover {
+    box-shadow: -5px 5px 15px rgba(0, 0, 0, .08);
+    transition: all .2s
+  }
+  .m-my-profile .more_profile_user {
+    display: none;
+    width: 250px;
+    height: 120px;
+    top: 0;
+    z-index: 2
+  }
+  .more_profile_user .user_name {
+    font-size: 16px
+  }
+  .more_profile_user .user_email {
+    font-size: 14px
+  }
+  .more_profile_user a {
+    font-size: 14px
+  }
+  .left-block {
+    justify-content: center
+  }
+  .left-block .heading {
+    display: none
+  }
+  .settings {
+    display: none
+  }
+  .m-my-profile {
+    display: flex
+  }
+  .wrapper_pa>.heading {
+    display: block
+  }
+  .dish__plus,
+  .menu-block__dish {
+    width: 31%;
+    margin-right: 2%
+  }
+  .instruction__video iframe {
+    height: 280px
+  }
+  .instruction {
+    width: 100%
+  }
+  .buttons__item {
+    width: 48%;
+    padding: 0 15px;
+    height: 60px;
+    margin: 0 2% 20px 0
+  }
+  .button-main {
+    width: 100%
+  }
+  .button__name {
+    width: 100%
+  }
+  .button__name input {
+    font-size: 16px;
+    width: 100%
+  }
+  .button-settings>* {
+    font-size: 18px
+  }
+  footer {
+    padding: 0 50px;
+    height: 100px
+  }
+  .to_top {
+    display: block;
+    cursor: pointer
+  }
+  .navigation__menu {
+    display: none
+  }
+  .orig-logo {
+    display: none
+  }
+  .white-logo {
+    display: block
+  }
+  footer .navigation__logo {
+    background: 0 0;
+    padding: 0
+  }
+}
+
+@media screen and (max-width:650px) {
+  .create_establishment__content form {
+    margin-bottom: 30px
+  }
+  .wrapper_pa {
+    width: 100%
+  }
+  .pa-block {
+    border-radius: 0;
+    padding: 20px
+  }
+  .subscription__content>div {
+    width: 100%;
+    margin-top: 10px
+  }
+  .top-block {
+    margin: 15px 15px
+  }
+  .heading {
+    margin: 0 15px 20px 15px
+  }
+  .buttons__item {
+    width: 48%;
+    padding: 0 12px;
+    height: 50px
+  }
+  .button__name {
+    display: flex;
+    align-items: center
+  }
+  .button__name input {
+    font-size: 14px
+  }
+  .button-settings>* {
+    font-size: 16px
+  }
+}
+
+@media screen and (max-width:550px) {
+  footer {
+    padding: 0 15px
+  }
+  .create_establishment__content .load_img,
+  .create_establishment__content button,
+  .create_establishment__content input[type=text] {
+    height: 55px
+  }
+}
+
+@media screen and (max-width:520px) {
+  .dish__plus,
+  .menu-block__dish {
+    width: 48%;
+    margin-right: 2%
+  }
+}
+
+@media screen and (max-width:480px) {
+  .pa-block h2 {
+    font-size: 22px;
+    margin-top: 0
+  }
+  .create_establishment__content h2 {
+    font-size: 28px;
+    margin-bottom: 5px
+  }
+  .top-block .logo img {
+    width: 71px
+  }
+  .pa-block {
+    padding: 15px
+  }
+  .instruction__video iframe {
+    height: 240px
+  }
+  .pa-header_span_blue {
+    display: block;
+    margin: 0
+  }
+  .pa-header_button {
+    padding: 15px;
+    float: right
+  }
+  .pa-header_button>span:not(.button-text) {
+    display: none
+  }
+  .modal_no_access__content p {
+    max-width: 250px;
+    font-size: 20px
+  }
+  .modal_no_access__content a {
+    height: 45px;
+    font-size: 16px
+  }
+  .buttons__item {
+    width: 100%;
+    height: 70px
+  }
+  .buttons__item input {
+    font-size: 18px
+  }
+  .button-settings>* {
+    font-size: 20px
+  }
+}
+
+@media screen and (max-width:380px) {
+  .pa-block h2 {
+    font-size: 20px
+  }
+  .create_establishment__content form {
+    margin-bottom: 20px
+  }
+  .create_establishment__content h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+    line-height: 30px
+  }
+  .create_establishment__content .description {
+    font-size: 14px
+  }
+  .m-my-profile {
+    font-size: 25px;
+    width: 40px
+  }
+  .user-info__content>div {
+    width: 100%;
+    margin-right: 0
+  }
+  .dish__plus,
+  .menu-block__dish {
+    width: 100%;
+    height: 100%;
+    margin-right: 0
+  }
+  .instruction__video iframe {
+    height: 200px
+  }
+  .buttons__item {
+    height: 70px
+  }
+  .heading h1 {
+    font-size: 26px;
+    line-height: 27px;
+    margin-top: 30px
+  }
+  .nav-bar a {
+    font-size: 14px
+  }
+  .button-text {
+    display: none
+  }
+  .modal_delete__content {
+    padding: 20px
+  }
+  .modal_delete__content .modal_delete_button {
+    width: 100%
+  }
+}
+
+@media screen and (max-width:350px) {
+  .m-settings .button-edit {
+    font-size: 19px
+  }
+}
+
+@media screen and (max-width:340px) {
+  .instruction__video iframe {
+    height: 180px
+  }
+  footer {
+    height: 190px
+  }
+  .navigation {
+    flex-direction: column;
+    justify-content: space-between
+  }
+  .navigation>div:not(.to_top) {
+    margin-bottom: 20px
+  }
+  .contacts__content>div a {
+    font-size: 20px
+  }
+  footer {
+    height: 85px
+  }
+  .navigation {
+    flex-direction: row
+  }
+  .navigation__nav {
+    margin-bottom: 0!important
+  }
+}
+
+@media screen and (max-width:330px) {
+  .m-settings {
+    height: 40px;
+    text-align: center;
+    padding: 5px 10px
+  }
+  .m-my-profile {
+    height: 40px;
+    min-width: 40px;
+    font-size: 22px
+  }
+}
+
+@media screen and (max-height:680px) {
+  .modal-dish {
+    justify-content: start;
+    overflow-y: scroll
+  }
+}
+
+@media screen and (max-height:550px) {
+  .modal-qr__content .link-block a {
+    height: 70px;
+    width: 70px;
+    min-height: 70px;
+    min-width: 70px;
+    font-size: 20px
+  }
+}
+
+@media screen and (max-height:430px) {
+  .modal-qr__content .link-block a {
+    height: 55px;
+    width: 55px;
+    min-height: 55px;
+    min-width: 55px;
+    font-size: 20px
+  }
+}
+
+@media screen and (max-height:350px) {
+  .modal-button {
+    overflow: scroll;
+    justify-content: flex-start
+  }
+}
+
+@media screen and (max-height:320px) {
+  .modal-qr__content .link-block a {
+    height: 45px;
+    width: 45px;
+    min-height: 45px;
+    min-width: 45px;
+    font-size: 16px
+  }
+}

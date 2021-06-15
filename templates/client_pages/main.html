@@ -1,0 +1,205 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <title>{{ establishment.name }} - Let`s EAT!</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+<!--  <link rel="manifest" href="site.webmanifest">-->
+{#  <link rel="apple-touch-icon" href="{% static 'img/favicon.png' %}">#}
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/modal_windows.css' %}">
+  <link rel="stylesheet" href="{% static 'css/client_page.css' %}">
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+
+
+  <link rel="stylesheet" href="{% static 'css/response.css' %}">
+  <link rel="stylesheet" href="{% static 'css/fontello/fontello.css' %}">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+<body>
+
+    <div class="home-block">
+        <div class="header">
+    <div class="header__bg"></div>
+    <div class="logo-lets-eat">
+      <img src="{% static 'img/big-white-log.png' %}" alt="Логотип Let's EAT">
+    </div>
+    {% if establishment.picture %}
+        <div class="logo-company-block">
+          <div class="img_company">
+            <img src="{{ establishment.picture.url }}" alt="Логотип {{ establishment.name }}">
+          </div>
+        </div>
+    {% endif %}
+    <div class="name_company">{{ establishment.name }}</div>
+  </div>
+
+  <div class="menu">
+    <div class="menu-item" id="waiter">
+      <div class="menu-item__header">
+        <div class="menu__img"><img src="{% static 'img/client_page/waiter.png' %}" alt="Иконка официанта"></div>
+        <p class="menu__title">Вызвать официанта</p>
+      </div>
+      <div class="menu-item__content">
+        <p class="menu-item__description">официант сейчас подойдёт</p>
+        <div class="timer-block">
+          <span class="close"><i class="icon-cancel"></i></span>
+          <div id="timer">
+          </div>
+          <div class="seconds"><span class="number-seconds">60</span><span class="word-second"></span>секунд</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="menu-item" id="menu">
+        <div class="menu-item__header">
+          <div class="menu__img"><img src="{% static 'img/client_page/menu.png' %}" alt="Иконка меню"></div>
+          <p class="menu__title">Открыть меню</p>
+        </div>
+    </div>
+    <div class="menu-item" id="feedback">
+      <div class="menu-item__header">
+        <div class="menu__img"><img src="{% static 'img/client_page/feedback.png' %}" alt="Иконка для отзывов"></div>
+        <p class="menu__title">Оставить отзыв</p>
+      </div>
+      <div class="menu-item__content">
+        <p class="menu-item__description">Вам понравилось здешнее обслуживание?</p>
+        <form action="" method="post">
+          <textarea name="feedback" id="feedback-message" maxlength="200" placeholder="Напишите отзыв"></textarea>
+
+          <div class="stars-block">
+            <div class="stars">
+              <label class="custom-radio"><input name="rate" value="1" type="radio" required/>
+                <div class="star" id="star-1"></div>
+              </label>
+              <label class="custom-radio"><input name="rate" value="2" type="radio" required/>
+                <div class="star" id="star-2"></div>
+              </label>
+              <label class="custom-radio"><input name="rate" value="3" type="radio" required/>
+                <div class="star" id="star-3"></div>
+              </label>
+              <label class="custom-radio"><input name="rate" value="4" type="radio" required/>
+                <div class="star" id="star-4"></div>
+              </label>
+              <label class="custom-radio"><input name="rate" value="5" type="radio" required/>
+                <div class="star" id="star-5"></div>
+              </label>
+            </div>
+
+          </div>
+          <input type="hidden" name="id_establishment" value="{{ establishment.pk }}">
+          <input type="hidden" name="number_table" value="{{ number_table }}">
+            {% csrf_token %}
+          <button disabled>Отправить</button>
+        </form>
+      </div>
+    </div>
+    {% for button in buttons %}
+    <div class="menu-item" id="custom-{{ button.pk }}" onclick="custom_button({{ button.pk }})">
+      <div class="menu-item__header">
+        <div class="menu__img"><img src="{% static 'img/client_page/custom_button.png' %}" alt="Иконка кнопки"></div>
+        <p class="menu__title">{{ button.name }}</p>
+        <div class="description_button">{{ button.text_button }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+    </div>
+
+
+  <div class="menu-block">
+      <div class="header_menu_block">
+        <div class="to_back">
+            <img src="{% static 'img/arrow_up.png' %}" alt="Вернуться" title="Вернуться">
+        </div>
+        <h1>Меню</h1>
+          {% if establishment.picture %}
+              <div class="logo-company-block_mb">
+              <div class="img-company_mb">
+                <img src="{{ establishment.picture.url }}" alt="">
+              </div>
+        </div>
+          {% endif %}
+      </div>
+      <div class="load-menu">
+        <img src="{% static 'img/load.gif' %}" alt="">
+      </div>
+
+  </div>
+
+  <div class="buy" style="width: 100%">
+    <p class="buy__button disabled_buy">Заказать<span></span></p>
+  </div>
+
+
+  <div class="modal" id="send_feedback">
+    <div class="modal__content" id="send_feedback_content">
+      <p class="img-block">
+        <i class="icon-check"></i>
+      </p>
+      <p>Большое спасибо за ваш отзыв</p>
+    </div>
+  </div>
+  <div class="modal" id="custom_button">
+    <div class="modal__content" id="custom_button__content">
+      <span class="close-modal" onclick="close_modal_button()">&times;</span>
+      <p class="img-block">
+        <i class="icon-check"></i>
+      </p>
+      <p class="modal-button-description">Кнопка успешно активирована</p>
+    </div>
+  </div>
+
+  <div class="modal" id="make_an_order">
+    <div class="modal__content" id="make_an_order_content">
+      <p class="img-block">
+        <i class="icon-check"></i>
+      </p>
+      <p>Ваш заказ скоро будет готов</p>
+    </div>
+  </div>
+
+  <div class="modal" id="serve_dishes">
+    <div class="modal__content" id="serve_dishes__content">
+      <h3>Как вам подавать выбранные блюда?</h3>
+        <label>
+            <input type="radio" name="serve_dishes" id="radio-sd-1" checked value="one">
+            <span class="radio-button"><span></span></span>
+            По мере готовности
+        </label>
+        <label>
+            <input type="radio" name="serve_dishes" id="radio-sd-2" value="all">
+            <span class="radio-button"><span></span></span>
+            Когда все будут готовы
+        </label>
+      <p class="complete_buy">Заказать</p>
+    </div>
+  </div>
+
+    <div class="error">Произошла ошибка.</div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js" integrity="sha512-Gk+uNk8NWN235mIkS6B7/424TsDuPDaoAsUekJCKTWLKP6wlaPv+PBGfO7dbvZeibVPGW+mYidz0vL0XaWwz4w==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+  <script src="{% static 'js/vendor/jquery.polartimer.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/client-page_main.js' %}"></script>
+  <script src="{% static 'js/client-page_menu.js' %}"></script>
+</body>
+</html>
+
+

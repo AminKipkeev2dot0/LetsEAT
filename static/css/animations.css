@@ -1,0 +1,334 @@
+@keyframes from_center {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+  } to {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes from_center_without_translate {
+  from {
+    transform: scale(0);
+  } to {
+    transform: scale(1);
+  }
+}
+
+@keyframes to_center_without_translate {
+  from {
+    transform: scale(1);
+  } to {
+    transform: scale(0);
+  }
+}
+
+@keyframes opacity_dark {
+  from {
+    background: rgba(0,0,0,0.0);
+  } to {
+    background: rgba(0,0,0,0.7);
+  }
+}
+
+@keyframes hide_opacity_dark {
+  from {
+    background: rgba(0,0,0,0.7);
+  } to {
+    background: rgba(0,0,0,0.0);
+  }
+}
+
+@keyframes open_from_left {
+  from {
+    transform: translateY(-50%) translateX(-100%);
+  } to {
+    transform: translateY(-50%) translateX(-0%);
+  }
+}
+
+@keyframes close_to_left {
+  from {
+    transform: translateY(-50%) translateX(-0%);
+  } to {
+    transform: translateY(-50%) translateX(-100%);
+  }
+}
+
+@keyframes open_from_right {
+  from {
+    transform: translateX(100%);
+  } to {
+    transform: translateX(-0%);
+  }
+}
+
+@keyframes close_to_right {
+  from {
+    transform: translateX(0%);
+  } to {
+    transform: translateX(115%);
+  }
+}
+
+@keyframes close_to_right100 {
+  from {
+    transform: translateX(0%);
+  } to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes open_from_right200 {
+  from {
+    transform: translateX(200%);
+  } to {
+    transform: translateX(-0%);
+  }
+}
+
+@keyframes close_to_right200 {
+  from {
+    transform: translateX(0%);
+  } to {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes open_from_bottom {
+  from {
+    transform: translateY(100%);
+    height: 0;
+  } to {
+    transform: translateY(-0%);
+    height: auto;
+  }
+}
+
+@keyframes close_to_bottom {
+  from {
+    transform: translateY(0%);
+    height: auto;
+  }
+  to {
+    transform: translateY(115%);
+    height: 0;
+  }
+}
+
+@keyframes open_from_top_height {
+  from {
+    height: 0;
+  } to {
+    height: 150px;
+  }
+}
+
+@keyframes close_to_top_height {
+  from {
+    height: 150px;
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes opacity_disappear {
+  from {
+    opacity: 1;
+  } to {
+    opacity: 0;
+  }
+}
+
+@keyframes opacity_emergence {
+  from {
+    opacity: 0;
+  } to {
+    opacity: 1;
+  }
+}
+
+@keyframes circle_to_rectangle {
+  from {
+    border-radius: 50%;
+    height: 70px;
+    width: 70px;
+  }
+  to {
+    border-radius: 50px;
+    height: 40px;
+    width: 100%;
+  }
+}
+
+@keyframes hide_scale {
+  from {
+    transform: scale(1);
+    opacity: 1;
+    width: auto;
+  }
+  to {
+    transform: scale(0);
+    opacity: 0;
+    width: 0;
+  }
+}
+
+@keyframes show_scale {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes open_with_height {
+  from {
+    height: 0;
+  }
+  to {
+    height: 230px;
+  }
+}
+
+@keyframes close_with_height {
+  from {
+    height: 230px;
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes m_open_with_height {
+  from {
+    height: 40px !important;
+  }
+  to {
+    height: auto;
+  }
+}
+
+@keyframes m_close_with_height {
+  from {
+    height: auto;
+  }
+  to {
+    height: 40px;
+  }
+}
+
+@keyframes open_button420 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 420px;
+  }
+}
+
+@keyframes open_button350 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 350px;
+  }
+}
+
+@keyframes open_button48 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 48%;
+  }
+}
+
+@keyframes open_button100 {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes close_button {
+  from {
+
+  }
+  to {
+    padding: 0;
+    margin: 0;
+    width: 0;
+  }
+}
+
+@keyframes rotate_180 {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(-180deg);
+  }
+}
+
+@keyframes rotate_0 {
+  from {
+    transform: rotate(-180deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}
+
+@keyframes splash {
+  from {
+    transform: scale(1);
+    color: #2f2f2f;
+  }
+  50% {
+    transform: scale(1.5);
+    color: #1074f3;
+  }
+  to {
+    transform: scale(1);
+    color: #2f2f2f;
+  }
+}
+
+@keyframes input_highlight_blue {
+  from {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes open_from_top {
+  from {
+    transform: translateY(-200%) translateX(-50%);
+  }
+  to {
+    transform: translateY(0) translateX(-50%);
+  }
+}
+
+@keyframes close_to_top {
+  from {
+    transform: translateY(0%) translateX(-50%);
+  }
+  to {
+    transform: translateY(-200%) translateX(-50%);
+  }
+}
+
+

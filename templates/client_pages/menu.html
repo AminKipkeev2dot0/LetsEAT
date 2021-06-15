@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <title>Меню - Название заведения</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+<!--  <link rel="manifest" href="site.webmanifest">-->
+  <link rel="apple-touch-icon" href="img/favicon.png">
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <link rel="stylesheet" href="css/components/modal_windows.css">
+  <link rel="stylesheet" href="css/client_page-menu.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+<!--  <link rel="stylesheet" href="css/response.css">-->
+  <link rel="stylesheet" href="css/fontello/fontello.css">
+
+  <meta name="theme-color" content="#fafafa">
+</head>
+<body>
+  <div class="header">
+    <div class="logo-lets-eat">
+      <img src="img/big-white-log.png" alt="Логотип lets eat!">
+    </div>
+    <h1>Меню</h1>
+    <div class="logo-company-block">
+      <div class="img-company">
+        <img src="img/burger-king.png" alt="">
+      </div>
+    </div>
+  </div>
+
+  <div class="menu">
+    <div class="menu-category">
+      <h2>Горячее</h2>
+      <div class="menu-category__content">
+        <div class="dish" id="dish-1" onclick="choice_dish(1)">
+          <div class="dish__main-block">
+            <div class="img-block">
+            <img src="img/user_dishes/1.png" alt="Изображение блюда">
+          </div>
+            <div class="dish__content">
+            <h3>Блюдо N<span class="dish__price">(1499₽)</span></h3>
+            <div class="dish__description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Laoreet enim id.</div>
+          </div>
+          </div>
+          <div class="quantity">
+              <span class="minus" onclick="minus_dish(1)"><span>-</span></span>
+              <span class="count">1</span>
+              <span class="plus" onclick="add_dish(1)">+</span>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="buy">
+    <p class="buy__button disabled_buy">Заказать<span></span></p>
+  </div>
+
+  <div class="modal" id="make_an_order">
+    <div class="modal__content" id="make_an_order_content">
+      <p class="img-block">
+        <i class="icon-check"></i>
+      </p>
+      <p>Ваш заказ скоро будет готов</p>
+    </div>
+  </div>
+
+
+  <script src="js/main.js"></script>
+  <script src="js/client-page_menu.js"></script>
+
+<!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+<!--  <script>-->
+<!--    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;-->
+<!--    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set', 'anonymizeIp', true); ga('set', 'transport', 'beacon'); ga('send', 'pageview')-->
+<!--  </script>-->
+<!--  <script src="https://www.google-analytics.com/analytics.js" async></script>-->
+</body>
+</html>

@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Вход - Let`s EAT!
+{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/top-nav.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/modal_windows.css' %}">
+  <link rel="stylesheet" href="{% static 'css/log_reg.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer_with_main.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="wrapper-lr">
+    <div class="top-block">
+      <div class="logo">
+        <img src="{% static 'img/logo.png' %}" alt="Логотип">
+      </div>
+      <div class="to_home">
+        <a href="{% url 'home_page' %}">Главная</a>
+      </div>
+    </div>
+    <div class="lr__content">
+      <div class="img-block">
+        <div class="welcome">Мы рады вас приветствовать!</div>
+        <div class="welcome-circle"></div>
+      </div>
+      <div class="login-reg-block">
+        <div class="choice-log-or-reg">
+          <a href="{% url 'django_registration_register' %}" class="button-reg">Регистрация</a>
+          <a href="{% url 'login' %}" class="button-login lr__active-block">Вход</a>
+        </div>
+        <div class="login-block">
+          <div class="mobile-choice-log-of-reg">
+            <a href="{% url 'django_registration_register' %}" class="m-button-reg">Регистрация</a>
+            <a href="{% url 'login' %}" class="m-button-log active">Вход</a>
+          </div>
+          <h1>Вход</h1>
+          <form action="{% url 'login' %}" method="post">
+              {% if error %}
+                <p class="error-login">{{ error }}</p>
+              {% endif %}
+
+            {{ login_form.email }}
+            {{ login_form.password }}
+            {% csrf_token %}
+            <button>Войти</button>
+            <div class="remember-me-and-forget-pw">
+              <div class="forget_pw" onclick="open_modal()"><span>Напомнить пароль</span></div>
+            </div>
+          </form>
+          <div class="log-reg__social">
+            <p class="lr-or">Или</p>
+            <p class="lr__create-with-help">Войдите с помощью</p>
+            <div class="log-reg__social_icons">
+              <a href="#"><img src="{% static 'img/log_reg/google.png' %}" alt="Google"></a>
+              <a href="#"><img src="{% static 'img/log_reg/vk.png' %}" alt="VK"></a>
+              <a href="#"><img src="{% static 'img/log_reg/fb.png' %}" alt="Facebook"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include 'footer_with_main.html' %}
+{% endblock %}
+
+
+{% block modal %}
+    <div class="modal modal-rp">
+    <div class="modal__content modal-rp__content">
+      <div class="close_modal" onclick="close_modal()"><span><i class="icon-cancel"></i></span></div>
+      <div class="modal-rp__header">
+        <h2>Восстановление пароля</h2>
+        <p>Введите Email, к которому был привязан аккаунт</p>
+      </div>
+      <div class="modal-rp__form">
+        <form action="{% url 'password_reset' %}" method="post">
+          <div class="input-block">
+            <span class="profile-icon"><i class="icon-user-o"></i></span>
+              {{ reset_form.email}}
+          </div>
+            {% csrf_token %}
+          <button>Далее</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    <div class="modal modal-send">
+    <div class="modal__content modal-send__content">
+      <p class="img-block">
+        <i class="icon-at"></i>
+      </p>
+      <p class="modal-button-description">К вам на почту было отправлено письмо с инструкцией</p>
+    </div>
+    </div>
+
+    {% if confirm_reg %}
+        <div class="modal modal-confirm_reg">
+        <div class="modal__content modal-confirm_reg__content">
+            <span class="close_modal" onclick="close_modal()"><i class="icon-cancel"></i></span>
+            <p class="img-block">
+                <i class="icon-check"></i>
+            </p>
+            <p class="modal-button-description">Вы успешно зарегестрировались! Чтобы войти в свой аккаунт вам сначала нужно подтвердить регистрацию открыв соответсвующее письмо, которое мы отправили на ваш email!</p>
+        </div>
+        </div>
+    {% endif %}
+
+    {% if complete_reg %}
+        <div class="modal modal-complete-reg">
+        <div class="modal__content modal-complete-reg__content">
+            <span class="close_modal" onclick="close_modal()"><i class="icon-cancel"></i></span>
+            <p class="img-block">
+                <i class="icon-check"></i>
+            </p>
+            <p class="modal-button-description">Вы подтвердили регистрацию, теперь войдите в свой аккаунт.</p>
+        </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'js/log-reg.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% load static %}
+<footer>
+    <div class="navigation">
+        <div class="navigation__nav">
+    <div class="navigation__logo">
+      <img src="{% static 'img/logo.png' %}" alt="Логотип" class="orig-logo">
+      <img src="{% static 'img/white_logo.png' %}" alt="Логотип" class="white-logo">
+    </div>
+    <div class="navigation__menu">
+      <nav>
+        <a href="{% url 'home_page' %}">Главная</a>
+        <a href="{% url 'home_page' %}#how-its-work">Описание</a>
+        <a href="{% url 'home_page' %}#video">Как начать</a>
+        <a href="{% url 'home_page' %}#pay">Цены</a>
+        <a href="{% url 'terms_of_use' %}">Условия пользования</a>
+      </nav>
+    </div>
+  </div>
+        <div class="mobile-terms-of-use-middle">
+            <a href="{% url 'terms_of_use' %}">Условия пользования</a>
+        </div>
+        <a href="{% url 'home_page' %}">Главная</a>
+    </div>
+</footer>

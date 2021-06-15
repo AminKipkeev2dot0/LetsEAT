@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Личный кабинет
+{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'css/personal_area_start.css' %}">
+  <link rel="stylesheet" href="{% static 'css/personal_area_response.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@2.4.21/dist/css/themes/splide-skyblue.min.css">
+{% endblock %}
+
+{% block content %}
+  <div class="wrapper_pa">
+    <div class="top-block">
+      <div class="left-block">
+        <div class="logo">
+        <img src="{% static 'img/logo.png' %}" alt="Логотип">
+      </div>
+        <div class="heading">
+      <h1>Личный кабинет</h1>
+      <p class="nav-bar">
+        <a href="{% url 'home_page' %}">Главная</a>
+        <i class="icon-right-open-mini"></i>
+        <a href="{% url 'personal_area_start' %}">Личный
+            кабинет</a></p>
+    </div>
+      </div>
+
+      <div class="right-block right-block-start">
+            <div class="start_settings">
+                <div class="my-profile settings-item">
+                    <span class="profile-icon"><i class="icon-user-o"></i></span>
+                    <div class="more_profile_user more_profile_user_start">
+                        <div class="logout" title="Выйти"><a href="{% url 'logout' %}"><i class="icon-logout"></i></a></div>
+                        <div class="also-profile-icon"><i class="icon-cancel"></i></div>
+                        <div class="more_profile_user__content">
+                            <p class="user_name crop-text">{{ user.first_name }}</p>
+                            <p class="user_email crop-text">{{ user.email }}</p>
+                            <a href="{% url 'password_change' %}">Сменить пароль</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="m-my-profile">
+          <span class="profile-icon"><i class="icon-user-o"></i></span>
+          <div class="more_profile_user">
+            <div class="logout" title="Выйти"><i class="icon-logout"></i></div>
+            <div class="also-profile-icon"><i class="icon-cancel"></i></div>
+            <div class="more_profile_user__content">
+              <p class="user_name crop-text">{{ user.first_name }}</p>
+              <p class="user_email crop-text">{{ user.email }}</p>
+              <a href="{% url 'password_change' %}">Сменить пароль</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="heading">
+      <h1>Личный кабинет</h1>
+      <p class="nav-bar">
+        <a href="{% url 'home_page' %}">Главная</a>
+        <i class="icon-right-open-mini"></i>
+        <a href="{% url 'personal_area_start' %}">Личный
+            кабинет</a></p>
+    </div>
+
+    <div class="statistics-user-info">
+      <div class="create_establishment pa-block">
+
+        <div class="create_establishment__content pa-content">
+          <h2>Создание заведения</h2>
+          <p class="description">Чтобы создать страницу заведения заполните необходимое поле и загрузите логотип</p>
+            <form action="" method="post" enctype="multipart/form-data">
+                {{ form.name }}
+                <label>
+                    {{ form.picture }}
+                    <div class="load_img"><span class="crop-text">Загрузить логотип <i class="icon-download-alt"></i></span></div>
+                </label>
+                {% csrf_token %}
+                <button>Готово</button>
+            </form>
+        </div>
+      </div>
+      <div class="user-info pa-block">
+        <h2>Личная информация</h2>
+        <div class="user-info__content">
+          <div class="name">
+            <h3>ФИО</h3>
+            <p>{{ user.first_name }}</p>
+          </div>
+          <div class="email">
+            <h3>Email</h3>
+            <p>{{ user.email }}</p>
+          </div>
+          <div class="restaurants">
+            <h3>Кол-во заведений</h3>
+            <p>0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="instructions pa-block">
+      <div class="pa-header">
+        <h2>Инструкции</h2>
+      </div>
+      <div class="instructions__content pa-content">
+        {% for video in videos %}
+        <div class="instruction">
+          <div class="instruction__video">
+            {{ video.html_code|safe }}
+          </div>
+          <div class="instruction__title">{{ video.title }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+  {% include 'footer.html' %}
+{% endblock %}
+
+{% block modal %}
+  <div class="modal modal-qr">
+    <div class="modal__content modal-qr__content">
+      <div class="close_qr"><span><i class="icon-cancel"></i></span></div>
+      <img src="{% static 'img/qr_code.png' %}" alt="">
+      <div class="link-block"><a href=""><span><i class="icon-download-alt"></i></span></a></div>
+    </div>
+  </div>
+
+  <div class="modal modal_no_access">
+    <div class="modal__content modal_no_access__content">
+      <div class="close_modal"><span><i class="icon-cancel"></i></span></div>
+      <p>Чтобы пользоваться этой функцией необходимо оплатить подписку</p>
+      <a href="#">Оплатить</a>
+    </div>
+  </div>
+
+  <div class="modal modal_delete">
+    <div class="modal__content modal_delete__content">
+      <div class="close_modal" onclick="close_modal('modal_delete')"><span><i class="icon-cancel"></i></span></div>
+      <p>Вы уверены, что хотите удалить <span></span>?</p>
+      <p class="modal_delete__info"></p>
+      <div class="modal-delete__buttons">
+        <span class="modal_delete_button button-cancel-delete" onclick="close_modal('modal_delete')">Отмена</span>
+        <span class="modal_delete_button button-confirm-delete">Удалить</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal-dish">
+    <div class="modal__content modal-dish__content">
+      <span class="close_modal" onclick="close_modal('modal-dish')"><i class="icon-cancel"></i></span>
+      <form action="" enctype="multipart/form-data">
+        <div class="img-block">
+          <label>
+            <input type="file" required accept="image/*" />
+            <p class="dish-load-img">Добавить изображение <i class="icon-plus"></i></p>
+          </label>
+        </div>
+        <div class="text-block">
+          <input type="text" minlength="1" maxlength="75" placeholder="Название" required>
+          <input type="number" minlength="1" maxlength="8" placeholder="Цена" min="0" max="99999999" required>
+          <textarea name="" minlength="1" maxlength="300" placeholder="Описание" required></textarea>
+          <button><i class="icon-plus-1"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal modal-dish-edit">
+    <div class="modal__content modal-dish-edit__content">
+      <span class="close_modal" onclick="close_modal('modal-dish-edit')"><i class="icon-cancel"></i></span>
+      <form action="" enctype="multipart/form-data">
+        <div class="img-block">
+          <label>
+            <input type="file" required accept="image/*" />
+            <p class="dish-load-img">Изменить изображение <i class="icon-plus"></i></p>
+          </label>
+        </div>
+        <div class="text-block">
+          <input type="text" minlength="1" maxlength="75"
+                 placeholder="Название" required
+                 class="modal-dish-edit-title">
+          <input type="number" minlength="1" maxlength="8"
+                 placeholder="Цена" min="0" max="99999999"
+                 required class="modal-dish-edit-price">
+          <textarea name="" minlength="1" maxlength="300"
+                    placeholder="Описание" required
+                    class="modal-dish-edit-description">
+          </textarea>
+          <button>Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal modal-button">
+    <div class="modal__content modal-button__content">
+      <div class="close_modal" onclick="close_modal('modal-button')"><span><i class="icon-cancel"></i></span></div>
+      <div class="modal-button__header">
+        <span class="button__title"></span> <span>&#183; Настройка</span>
+      </div>
+      <textarea placeholder="Сообщение" minlength="1" maxlength="400"></textarea>
+      <button disabled><span><i class="icon-check"></i></span></button>
+    </div>
+  </div>
+
+{% endblock %}
+
+
+{% block js %}
+  <script src="{% static 'js/personal_area_start.js' %}"></script>
+{% endblock %}

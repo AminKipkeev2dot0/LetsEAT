@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Условия пользования - Let`s EAT!
+{% endblock %}
+
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/components/top-nav.css' %}">
+  <link rel="stylesheet" href="{% static 'css/terms_of_use.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer_with_main.css' %}">
+{% endblock %}
+
+
+{% block content %}
+  <div class="wrapper-lr">
+    <div class="top-block">
+      <div class="logo">
+        <img src="{% static 'img/logo.png' %}" alt="Логотип">
+      </div>
+      <div class="to_home">
+        <a href="{% url 'home_page' %}">Главная</a>
+      </div>
+    </div>
+    <h1>Условия пользования</h1>
+    <div class="tou__content">
+        <p>
+            <span class="number_li">1</span>
+            <a href="{% static 'docs/Публичная оферта  letseat.su.doc' %}" target="_blank">Публичная оферта</a>
+        </p>
+        <p>
+            <span class="number_li">2</span>
+            <a href="{% static 'docs/Политика_конфиденциальности_letseat.docx' %}" target="_blank">Политика конфиденциальности</a>
+        </p>
+        <p>
+            <span class="number_li">3</span>
+            <a href="{% static 'docs/Пользовательское_соглашение_«LETSEAT».doc' %}" target="_blank">Пользовательское соглашение</a>
+        </p>
+        <p>
+            <span class="number_li">4</span>
+                <a href="{% static 'docs/Согласие_на_обработку_персональных_данные_letseat.docx' %}" target="_blank">Согласие на обработку персональных данных</a></li>
+        </p>
+        <p>
+            <span class="number_li">5</span>
+            <a href="{% static 'docs/Согласие_на_распространение_персональных_данные_letseat.docx' %}" target="_blank">Согласие на рассылку электронных сообщений</a>
+        </p>
+    </div>
+  </div>
+
+  {% include 'footer_with_main.html' %}
+
+{% endblock %}

@@ -1,0 +1,446 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Let's EAT!
+{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="{% static 'css/components/modal_windows.css' %}">
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+  <link rel="stylesheet" href="{% static 'css/response.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <header>
+      <div class="navigation pt-70">
+        <div class="navigation__nav">
+          <div class="navigation__logo">
+            <img src="{% static 'img/logo.png' %}" alt="Логотип">
+          </div>
+          <div class="navigation__menu">
+            <nav>
+              <a href="{% url 'home_page' %}">Главная</a>
+            <a href="#how-its-work">Описание</a>
+            <a href="#video">Как начать</a>
+            <a href="#pay">Цены</a>
+            </nav>
+          </div>
+        </div>
+        <div class="navigation__sign-up">
+          <div class="sign-up__buttons sign-up__buttons_blue">
+          {% if user.is_superuser %}
+              <a href="{% url 'admin:index' %}">Перейти в админку</a>
+          {% elif request.user.is_authenticated %}
+              <a href="{% url 'personal_area' ua.last_establishment.pk %}">Открыть мой кабинет</a>
+          {% else %}
+              <a href="{% url 'login' %}">Войти</a>
+                <span class="vertical-hr"></span>
+                <a href="{% url 'django_registration_register' %}">Регистрация</a>
+          {% endif %}
+
+          </div>
+        </div>
+      </div>
+      <div class="header__content">
+        <div class="header__text-block">
+          <div class="note"><hr />Система онлайн-обслуживания</div>
+          <h1>Инновационное решение для быстрого и комфортного обслуживания клиентов</h1>
+          <div class="header__content-buttons">
+            <span class="contact-with-us">Связаться с нами</span>
+            <span class="learn-more">Узнать больше </span>
+          </div>
+        </div>
+        <div class="header__img-block">
+          <img src="{% static 'img/phone_header.png' %}" alt="Телефон с иконкой Let's EAT">
+          <div class="header__img_description">
+            <h3>Let's EAT!</h3>
+            <img src="{% static 'img/header_phone_line.svg' %}" alt="">
+            <p>Система онлайн-обслуживания клиентов для кафе, ресторанов, кофеен и других заведений</p>
+          </div>
+          <div class="m-header__content-buttons">
+            <span class="contact-with-us">Связаться с нами</span>
+            <span class="learn-more">Узнать больше </span>
+          </div>
+        </div>
+
+      </div>
+      <div class="header_bottom-block">
+        <div class="button_scroll">
+          <img src="{% static 'img/scroll.png' %}" alt="">
+        </div>
+        <div class="contact_with_us">
+          <a href=""><img src="{% static 'img/social/white/viber.svg' %}" alt="viber"></a>
+          <a href=""><img src="{% static 'img/social/white/facebook.svg' %}" alt="facebook"></a>
+          <a href=""><img src="{% static 'img/social/white/instagram.svg' %}" alt="instagram"></a>
+          <a href=""><img src="{% static 'img/social/white/whatsapp.svg' %}" alt="whatsapp"></a>
+          <a href="tel:+74957556983" class="header__phone">+74957556983</a>
+        </div>
+      </div>
+      <div class="header_gradient"></div>
+  </header>
+
+  <div class="wrapper">
+    <section class="how-its-work animate__animated animate__fadeInLeft wow" id="how-its-work">
+      <div class="header-block">
+        <div class="number_section">01</div>
+        <h2>Как это работает?</h2>
+      </div>
+      <div class="how-its-work__blocks">
+        <div class="how-its-work__block">
+          <div class="number">01</div>
+          <h3>Клиент сканирует QR код</h3>
+          <p>Клиент сканирует QR-код на столике в заведении и попадает на страницу сервиса.
+            Эта функция доступна на всех смартфонах без стороннего ПО.</p>
+        </div>
+        <div class="how-its-work__block">
+          <div class="number">02</div>
+          <h3>Клиент открывает сайт</h3>
+          <p>На смартфоне клиента открывается web - приложение, через которое он может вызвать официанта, сделать заказ через онлайн-меню, оставить отзыв о
+              заведении или нажать на созданную лично вами кнопку. Приложение устроено так, чтобы не создавать припятствий в осбслуживании кдиента</p>
+        </div>
+        <div class="how-its-work__block">
+          <div class="number">03</div>
+          <h3>Персонал получает заказ</h3>
+          <p>На устройства обслуживающего персонала приходит уведомление о том,
+            что клиент за определенным столиком нуждается в обслуживании.
+            Обслуживание через приложение экономит время клиента и персонала</p>
+        </div>
+        <div class="how-its-work__block">
+          <div class="number">04</div>
+          <h3>Понятная настройка</h3>
+          <p>Вам даётся полный контроль над сервисом в Вашем личном кабинете. Там можно настроить кнопки,
+            заполнить меню, создать QR-коды. Также вам доступна статистика о том, как и сколько
+            ваши клиенты пользовались вашими услугами через приложение</p>
+        </div>
+      </div>
+      <div class="how-its-work__phone-block">
+        <div class="how-its-work__left-descriptions phone-block__descriptions">
+          <div class="phone-block__description description__open-menu">
+            <h4>Кнопка “Открыть меню”</h4>
+            <div class="arrow-right">
+              <svg width="573" height="144" viewBox="0 0 573 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle opacity="0.2" r="35" transform="matrix(-1 0 0 1 538 108.005)" fill="#1074F3"/>
+                <circle opacity="0.3" r="25" transform="matrix(-1 0 0 1 538 108.005)" fill="#1074F3"/>
+                <circle opacity="0.4" r="15" transform="matrix(-1 0 0 1 538 108.005)" fill="#1074F3"/>
+                <circle r="5" transform="matrix(-1 0 0 1 538 108.005)" fill="#1074F3"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M429.05 2.12135L535.879 108.95L538 106.828L431.172 2.58717e-05L429.05 2.12135Z" fill="#1074F3"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0 2.79587L431 2.79587V0.00622559L0 0.00622559V2.79587Z" fill="#1074F3"/>
+                </svg>
+            </div>
+            <p>При нажатии на эту кнопку откроется меню. Клиент сможет заказать любые блюда без участия официанта.</p>
+          </div>
+          <div class="phone-block__description description__your-buttons">
+            <h4>Ваши кнопки</h4>
+            <div class="arrow-right">
+              <svg width="573" height="144" viewBox="0 0 573 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle opacity="0.2" r="35" transform="matrix(-1 0 0 1 538 108.005)" fill="#1074F3"/>
+                <circle opacity="0.3" r="25" transform="matrix(-1 0 0 1 538 108.005)" fill="#1074F3"/>
+                <circle opacity="0.4" r="15" transform="matrix(-1 0 0 1 538 108.005)" fill="#1074F3"/>
+                <circle r="5" transform="matrix(-1 0 0 1 538 108.005)" fill="#1074F3"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M429.05 2.12135L535.879 108.95L538 106.828L431.172 2.58717e-05L429.05 2.12135Z" fill="#1074F3"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M0 2.79587L431 2.79587V0.00622559L0 0.00622559V2.79587Z" fill="#1074F3"/>
+                </svg>
+            </div>
+            <p>У вас всегда есть возможность добавить и настроить до трёх дополнительных кнопок </p>
+          </div>
+        </div>
+
+        <div class="how-its-work__top-descriptions">
+          <div class="m-phone-block__description m-description__call-waiter">
+            <h4>Кнопка “Вызвать официанта”</h4>
+            <div class="arrow-waiter">
+              <svg width="347" height="541" viewBox="0 0 347 541" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle opacity="0.2" cx="83" cy="514" r="27" fill="#1074F3"/>
+                <circle opacity="0.3" cx="83" cy="514" r="19" fill="#1074F3"/>
+                <path opacity="0.4" d="M95 514C95 520.627 89.6274 526 83 526C76.3726 526 71 520.627 71 514C71 507.373 76.3726 502 83 502C89.6274 502 95 507.373 95 514Z" fill="#1074F3"/>
+                <circle cx="83" cy="514" r="4" fill="#1074F3"/>
+                <path d="M83.5 514.5L2 433V1.5H347" stroke="#1074F3" stroke-width="3"/>
+              </svg>
+            </div>
+            <p>При нажатии на эту кнопку персонал будет уведомлен о том, что клиенту необходимо внимание</p>
+          </div>
+          <div class="m-phone-block__description m-description__open-menu">
+            <h4>Кнопка “Открыть меню”</h4>
+            <div class="arrow-menu">
+              <svg width="322" height="403" viewBox="0 0 322 403" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M243.5 378.5L320 302V2H249H0" stroke="#1074F3" stroke-width="3"/>
+                <circle opacity="0.2" cx="246" cy="376" r="27" fill="#1074F3"/>
+                <circle opacity="0.3" cx="246" cy="376" r="19" fill="#1074F3"/>
+                <path opacity="0.4" d="M258 376C258 382.627 252.627 388 246 388C239.373 388 234 382.627 234 376C234 369.373 239.373 364 246 364C252.627 364 258 369.373 258 376Z" fill="#1074F3"/>
+                <circle cx="246" cy="376" r="4" fill="#1074F3"/>
+              </svg>
+            </div>
+            <p>При нажатии на эту кнопку откроется меню. Клиент сможет заказать любые блюда без участия официанта</p>
+          </div>
+        </div>
+        <div class="how-its-work__img-block">
+          <img src="{% static 'img/vertical_phone.png' %}" alt="Телефон с открытым сайтом let's eat">
+          <div class="circle_phone"></div>
+        </div>
+        <div class="how-its-work__bottom-descriptions">
+          <div class="m-phone-block__description m-description__give-feedback">
+            <h4>Кнопка “Оставить отзыв”</h4>
+            <div class="arrow-feedback">
+              <svg width="268" height="233" viewBox="0 0 268 233" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle opacity="0.2" cx="114" cy="27" r="27" fill="#1074F3"/>
+                <circle opacity="0.3" cx="114" cy="27" r="19" fill="#1074F3"/>
+                <path opacity="0.4" d="M126 27C126 33.6274 120.627 39 114 39C107.373 39 102 33.6274 102 27C102 20.3726 107.373 15 114 15C120.627 15 126 20.3726 126 27Z" fill="#1074F3"/>
+                <circle cx="114" cy="27" r="4" fill="#1074F3"/>
+                <path d="M114 26.5L2 138.5V231H73H267.5" stroke="#1074F3" stroke-width="3"/>
+              </svg>
+            </div>
+            <p>Нажав на эту кнопку, клиент сможет оценить качество обслуживания</p>
+          </div>
+          <div class="m-phone-block__description m-description__your-buttons">
+            <h4>Ваши кнопки</h4>
+            <div class="arrow-buttons">
+              <svg width="256" height="347" viewBox="0 0 256 347" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle opacity="0.2" cx="211" cy="27" r="27" fill="#1074F3"/>
+                <circle opacity="0.3" cx="211" cy="27" r="19" fill="#1074F3"/>
+                <path opacity="0.4" d="M223 27C223 33.6274 217.627 39 211 39C204.373 39 199 33.6274 199 27C199 20.3726 204.373 15 211 15C217.627 15 223 20.3726 223 27Z" fill="#1074F3"/>
+                <circle cx="211" cy="27" r="4" fill="#1074F3"/>
+                <path d="M211.5 27L254 69.5V345.5H0" stroke="#1074F3" stroke-width="3"/>
+              </svg>
+
+            </div>
+            <p>У вас всегда есть возможность добавить и настроить до трёх дополнительных кнопок</p>
+          </div>
+        </div>
+
+        <div class="how-its-work__right-descriptions phone-block__descriptions">
+          <div class="phone-block__description description__call-waiter">
+            <h4>Кнопка “Вызвать официанта”</h4>
+            <div class="arrow-left">
+              <svg width="573" height="144" viewBox="0 0 573 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle opacity="0.2" cx="35" cy="108.999" r="35" fill="#1074F3"/>
+              <circle opacity="0.3" cx="35" cy="108.999" r="25" fill="#1074F3"/>
+              <circle opacity="0.4" cx="35" cy="108.999" r="15" fill="#1074F3"/>
+              <circle cx="35" cy="108.999" r="5" fill="#1074F3"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M143.95 3.11512L37.1213 109.943L35 107.822L141.828 0.9938L143.95 3.11512Z" fill="#1074F3"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M573 4L142 4V1L573 1V4Z" fill="#1074F3"/>
+              </svg>
+            </div>
+            <p>При нажатии на эту кнопку персонал будет уведомлен о том, что клиенту необходимо внимание</p>
+          </div>
+          <div class="phone-block__description description__give-feedback">
+            <h4>Кнопка “Оставить отзыв”</h4>
+            <div class="arrow-left">
+              <svg width="573" height="144" viewBox="0 0 573 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle opacity="0.2" cx="35" cy="108.999" r="35" fill="#1074F3"/>
+              <circle opacity="0.3" cx="35" cy="108.999" r="25" fill="#1074F3"/>
+              <circle opacity="0.4" cx="35" cy="108.999" r="15" fill="#1074F3"/>
+              <circle cx="35" cy="108.999" r="5" fill="#1074F3"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M143.95 3.11512L37.1213 109.943L35 107.822L141.828 0.9938L143.95 3.11512Z" fill="#1074F3"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M573 4L142 4V1L573 1V4Z" fill="#1074F3"/>
+              </svg>
+            </div>
+            <p>Нажав на эту кнопку, клиент сможет оценить качество обслуживания</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="advantages animate__animated animate__fadeInRight wow" id="advantages">
+      <div class="header-block">
+        <div class="number_section">02</div>
+        <h2>Преимущества Использования</h2>
+      </div>
+      <div class="advantages__content">
+        <div class="advantages_block">
+          <div class="advantage__img">
+            <img src="{% static 'img/advantages/comfort.svg' %}" alt="Комфорт для посетителя">
+          </div>
+          <h4>Комфорт для посетителя</h4>
+          <div class="circle"></div>
+        </div>
+        <div class="advantages_block">
+          <div class="advantage__img">
+            <img src="{% static 'img/advantages/convenience.svg' %}" alt="Удобство для персонала">
+          </div>
+          <h4>Удобство для персонала</h4>
+          <div class="circle"></div>
+        </div>
+        <div class="advantages_block">
+          <div class="advantage__img">
+            <img src="{% static 'img/advantages/service.svg' %}" alt="Быстрое обслуживание">
+          </div>
+          <h4>Быстрое обслуживание</h4>
+          <div class="circle"></div>
+        </div>
+        <div class="advantages_block">
+          <div class="advantage__img">
+            <img src="{% static 'img/advantages/clients.svg' %}" alt="Довольные клиенты">
+          </div>
+          <h4>Довольные клиенты</h4>
+          <div class="circle"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="video animate__animated animate__fadeInUp wow" id="video">
+    <div class="header-block">
+      <div class="number_section">03</div>
+      <h2>Видео-инструкция</h2>
+    </div>
+    <div class="small-block__wrapper video__wrapper">
+      <div class="small-block__content video__content">
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9XaS93WMRQQ" title="YouTube video player"
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
+                picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section class="why-is-this" id="why-is-this" >
+    <div class="why-is-this__img-block">
+      <img src="{% static 'img/why-is-this_lines.png' %}" alt="Красивая картинка">
+      <div class="circle_blue"></div>
+      <div class="circle_orange"></div>
+    </div>
+    <div class="why-is-this__text-block">
+      <h2>Для чего это нужно?</h2>
+      <p class="why-is-this__description">
+        В нашем быстроразвивающемся мире очень важно идти в ногу с технологиями. Современные технологии в разы повышают
+        эффективность и производительность различных процессов! Отказ от внедрения инновационных решений убивает
+        Ваш бизнес, тогда как конкуренты во всю используют данные им возможности, завлекая ваших потенциальных
+        клиентов к себе. Let’s EAT! – такое решение!
+      </p>
+      <img src="{% static 'img/lines_in_circle.png' %}" alt="Красивая картинка">
+    </div>
+  </section>
+
+  <section class="pay animate__animated animate__fadeInUp wow" id="pay">
+    <div class="header-block">
+      <div class="number_section">05</div>
+      <h2>Стоимость</h2>
+    </div>
+    <div class="small-block__wrapper">
+      <div class="small-block__content pay__content">
+        <h3>Оплата один раз в месяц</h3>
+        <p class="pay__description">
+          Вы платите только один раз в месяц, одну фиксированную сумму, вне зависимости от количества столов,
+          количества работников или разновидностей кнопок.
+        </p>
+        <div class="pay__price-block">
+          <p class="pay__price">990 руб.</p>
+          <p class="pay__in-month">В месяц за всё!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-us animate__animated animate__fadeInUp wow" id="contact_form">
+    <div class="header-block">
+      <div class="number_section number_section_white">06</div>
+      <h2 class="title_white">Свяжитесь с нами</h2>
+    </div>
+    <div class="contact-us__description">
+      <p>Остались вопросы? Заполните форму и мы свяжемся с Вами.</p>
+    </div>
+    <form action="{% url 'home_page' %}" method="POST">
+      <input type="text" name='name' placeholder="Имя" required />
+      <input type="email" name="email" placeholder="Ваш Email" required />
+
+      <input type="email" name="tsafdsa" placeholder="Имя" required />
+      <input type="email" name="fdshghh" placeholder="Ваш Email" required />
+      <input type="number" name="phone" placeholder="Ваш телефон" required />
+      <textarea name="message" placeholder="Опишите ваш вопрос" required></textarea>
+      {% csrf_token %}
+      <button id="btn-mail">Отправить</button>
+      <span>Вам ответят в течении дня</span>
+    </form>
+  </section>
+
+  <section class="contacts" id="contacts">
+    <div class="header-block">
+      <div class="number_section">07</div>
+      <h2>Контакты</h2>
+    </div>
+    <div class="section contacts__content">
+      <div class="contacts__email">
+        <h3>Email</h3>
+        <a href="mailto:emailexample@gmail.com">emailexample@gmail.com</a>
+      </div>
+      <div class="contacts__phone">
+        <h3>Телефон</h3>
+        <a href="tel:+74957556983">+74957556983</a>
+      </div>
+      <div class="contacts__phone">
+        <h3>Телефон</h3>
+        <a href="tel:+74957556983">+74957556983</a>
+      </div>
+      <div class="contacts__social">
+        <h3>Социальные сети</h3>
+        <div class="contacts__social-items">
+          <div class="contacts_social-item"><a href="#"><img src="{% static 'img/social/blue/viber.png' %}" alt="Viber"></a></div>
+          <div class="contacts_social-item"><a href="#"><img src="{% static 'img/social/blue/fb.png' %}" alt="Facebook"></a></div>
+          <div class="contacts_social-item"><a href="#"><img src="{% static 'img/social/blue/instagram.png' %}" alt="Instagram"></a></div>
+          <div class="contacts_social-item"><a href="#"><img src="{% static 'img/social/blue/wh.png' %}" alt="Whatsapp"></a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="navigation">
+      <div class="navigation__nav">
+        <div class="navigation__logo">
+          <img src="{% static 'img/logo.png' %}" alt="Логотип" class="orig-logo">
+          <img src="{% static 'img/white_logo.png' %}" alt="Логотип" class="white-logo">
+        </div>
+        <div class="navigation__menu">
+          <nav>
+            <a href="{% url 'home_page' %}">Главная</a>
+            <a href="#how-its-work">Описание</a>
+            <a href="#video">Как начать</a>
+            <a href="#pay">Цены</a>
+            <a href="{% url 'terms_of_use' %}">Условия пользования</a>
+          </nav>
+        </div>
+      </div>
+      <a href="{% url 'terms_of_use' %}">Условия пользования</a>
+      <div class="navigation__sign-up">
+        <div class="sign-up__buttons sign-up__buttons_dark-blue">
+          <a href="{% url 'login' %}">Войти</a>
+          <span class="vertical-hr"></span>
+          <a href="{% url 'django_registration_register' %}">Регистрация</a>
+        </div>
+      </div>
+      <div class="to_top">
+          <img src="{% static 'img/arrow_up.png' %}" alt="Наверх" title="Наверх">
+        </div>
+    </div>
+  </footer>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal" id="send_message">
+    <div class="modal__content" id="send_message_content">
+      <p class="img-block">
+        <i class="icon-check"></i>
+      </p>
+      <p>Ваше сообщение отправлено! В скором времени мы с вами свяжемся.</p>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <script src="{% static 'js/landing.js' %}"></script>
+    <script src="{% static 'js/vendor/wow.min.js' %}"></script>
+    <script>
+    wow = new WOW({
+      boxClass:     'wow',      // default
+      animateClass: 'animated', // default
+      offset:       70,          // default
+      mobile:       false,       // default
+      live:         true        // default
+    })
+    wow.init();
+    </script>
+{% endblock %}

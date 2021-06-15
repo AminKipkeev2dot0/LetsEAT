@@ -1,0 +1,43 @@
+.top-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-block .to_home a {
+  font-family: 'Montserrat', sans-serif;
+  text-decoration: none;
+  color: #2F2F2F;
+  font-weight: 700;
+  font-size: 18px;
+  border-bottom: 2px solid transparent;
+}
+
+.top-block .to_home a:hover {
+  color: #1074f3;
+  border-bottom: 2px solid #1074f3;
+  transition: all 0.2s;
+}
+
+@media screen and (max-width: 800px) {
+  .wrapper-pc, .wrapper-lr   {
+    padding: 0 0 30px 0;
+  }
+  .top-block {
+    margin: 30px 40px 0 40px;
+  }
+}
+
+@media screen and (max-width: 500px){
+  .top-block {
+    margin: 0;
+    height: 70px;
+    align-items: center;
+    padding: 0 15px;
+  }
+  .logo img {
+    width: 72px;
+    height: 38px;
+  }
+}
+

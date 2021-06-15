@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Регистрация - Let`s EAT!
+{% endblock %}
+
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/top-nav.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components/modal_windows.css' %}">
+  <link rel="stylesheet" href="{% static 'css/log_reg.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer_with_main.css' %}">
+{% endblock %}
+
+
+{% block content %}
+  <div class="wrapper-lr">
+    <div class="top-block">
+      <div class="logo">
+        <img src="{% static 'img/logo.png' %}" alt="Логотип">
+      </div>
+      <div class="to_home">
+        <a href="{% url 'home_page' %}">Главная</a>
+      </div>
+    </div>
+    <div class="lr__content">
+      <div class="img-block">
+        <div class="welcome">Мы рады вас приветствовать!</div>
+        <div class="welcome-circle"></div>
+      </div>
+      <div class="login-reg-block">
+        <div class="choice-log-or-reg">
+          <a href="{% url 'django_registration_register' %}" class="button-reg lr__active-block">Регистрация</a>
+          <a href="{% url 'login' %}" class="button-login">Вход</a>
+        </div>
+        <div class="registration-block">
+          <div class="mobile-choice-log-of-reg">
+            <a href="{% url 'django_registration_register' %}" class="m-button-reg active">Регистрация</a>
+            <a href="{% url 'login' %}" class="m-button-log">Вход</a>
+          </div>
+          <h1>Регистрация</h1>
+          <form action="" method="post">
+              {{ form.as_p }}
+              {% csrf_token %}
+
+            <button>Зарегистрироваться</button>
+            <div class="terms_of_use block-with-checkbox">
+              <label>
+                  <input type="checkbox" name="terms_of_use" checked>
+                  <div class="checkbox"><span class="check"><i class="icon-check"></i></span></div>
+                  <span>Я согласен с <a href="{% url 'terms_of_use' %}" target="_blank" class="open-terms-of-use">пользовательским соглашением</a></span>
+                </label>
+            </div>
+          </form>
+          <div class="log-reg__social">
+            <p class="lr-or">или</p>
+            <p class="lr__create-with-help">Создайте аккаунт с помощью</p>
+            <div class="log-reg__social_icons">
+              <a href="#"><img src="{% static 'img/log_reg/google.png' %}" alt="Google"></a>
+              <a href="#"><img src="{% static 'img/log_reg/vk.png' %}" alt="VK"></a>
+              <a href="#"><img src="{% static 'img/log_reg/fb.png' %}" alt="Facebook"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include 'footer_with_main.html' %}
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/reg.js' %}"></script>
+{% endblock %}

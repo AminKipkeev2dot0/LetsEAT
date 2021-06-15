@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}{% endblock %}</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="apple-touch-icon" href="{% static 'img/favicon.png' %}">
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'css/settings.css' %}">
+
+    {% block css %}
+
+    {% endblock %}
+
+
+  <link rel="stylesheet" href="{% static 'css/fontello/fontello.css' %}">
+  <link rel="stylesheet" href="{% static 'css/fontello/fontello-codes.css' %}">
+  <link rel="stylesheet" href="{% static 'css/fontello/fontello-ie7.css' %}">
+  <link rel="stylesheet" href="{% static 'css/fontello/fontello-ie7-codes.css' %}">
+
+  <meta name="theme-color" content="#f38f10">
+</head>
+
+<body>
+
+    {% block content %}
+
+    {% endblock %}
+
+
+    {% block modal %}
+
+    {% endblock %}
+
+
+    {% block js %}
+
+    {% endblock %}
+
+</body>
+
+</html>

@@ -1,0 +1,779 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% load russian_pluralize %}
+
+{% block title %}
+Личный кабинет
+{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/personal_area.css' %}">
+  <link rel="stylesheet" href="{% static 'css/personal_area_response.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@2.4.21/dist/css/themes/splide-skyblue.min.css">
+{% endblock %}
+
+{% block content %}
+  <div class="wrapper_pa">
+    <div class="top-block">
+      <div class="left-block">
+        <div class="logo">
+        <img src="{% static 'img/logo.png' %}" alt="Логотип">
+      </div>
+        <div class="heading">
+      <h1>Личный кабинет</h1>
+      <p class="nav-bar">
+        <a href="{% url 'home_page' %}">Главная</a>
+        <i class="icon-right-open-mini"></i>
+        <a href="{% url 'personal_area' ua.last_establishment.id %}">Личный
+            кабинет</a></p>
+    </div>
+      </div>
+
+      <div class="right-block">
+        <div class="settings">
+        <div class="settings-top-buttons">
+            <div class="edit settings-item">
+              <span class="open-edit"><i class="icon-pencil-1"></i></span>
+              <span class="close-edit"><i class="icon-cancel"></i></span>
+            </div>
+            <div class="my-profile settings-item">
+          <span class="profile-icon"><i class="icon-user-o"></i></span>
+          <div class="more_profile_user">
+            <div class="logout" title="Выйти"><a href="{% url 'logout' %}"><i class="icon-logout"></i></a></div>
+            <div class="also-profile-icon"><i class="icon-cancel"></i></div>
+            <div class="more_profile_user__content">
+            <p class="user_name crop-text">{{ user.first_name }}</p>
+            <p class="user_email crop-text">{{ user.email }}</p>
+            <a href="{% url 'password_change' %}">Сменить пароль</a>
+          </div>
+          </div>
+
+        </div>
+        </div>
+
+        <div class="logo-of-user">
+            {% if establishment.picture %}
+                <img src="{{ establishment.picture.url }}" alt="Ваш логотип">
+            {% else %}
+                <span class="no_picture">Нет изображения</span>
+            {% endif %}
+        </div>
+        <div class="more_companies">
+          <div class="name-company crop-text">
+              <span>{{ establishment.name }}</span>
+          </div>
+          <div class="more"><i class="icon-down-open"></i></div>
+        </div>
+        <div class="other_companies">
+            <ul>
+                {% for establ in all_establishments %}
+                    <li class="crop-text">
+                        <a href="{{ establ.get_absolute_path }}">
+                            {{ establ.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="add_company">
+              <div class="plus_block">
+                <i class="icon-plus"></i>
+                <div class="input-block">
+                  <input type="text" placeholder="Название" maxlength="100"
+                  oninput="crop_text('.settings .other_companies .plus_block input', 100)">
+                  <i class="icon-right-open-mini"></i>
+                </div>
+              </div>
+
+            </div>
+    </div>
+        <div class="edit-block">
+          <div class="edit-block__new-logo">
+            <label>
+                <form action="">
+                    <input type="file" accept="image/*" name="new_logo">
+                    <input type="hidden" name="id_establishment" value="{{ establishment.pk }}">
+                </form>
+
+              <div class="button-upload-file crop-text">
+                Загрузить логотип <i class="icon-download-alt"></i>
+              </div>
+                <span class="button-upload-file-span">До 2 мб.</span>
+            </label>
+
+          </div>
+          <div class="edit-block__edit_name">
+            <input type="text" value="{{ establishment.name }}" maxlength="100" disabled
+            oninput="crop_text('.settings .edit-block__edit_name input', 100)">
+            <div class="edit"><i class="icon-pencil-1"></i><i class="icon-check"></i></div>
+          </div>
+        </div>
+      </div>
+        <div class="wrapper-m-settings">
+          <div class="m-settings">
+            <div class="basic-m-settings">
+              <div class="company-img">
+              {% if establishment.picture %}
+                <img src="{{ establishment.picture.url }}" alt="Ваш логотип">
+              {% endif %}
+            </div>
+              <div class="name-company"><div class="crop-text">{{ establishment.name }}</div><span><i class="icon-down-open"></i></span></div>
+              <div class="button-edit">
+                <span class="open-edit"><i class="icon-pencil-1"></i></span>
+                <span class="close-edit"><i class="icon-cancel"></i></span>
+              </div>
+            </div>
+            <div class="other_companies">
+              <ul>
+                {% for establ in all_establishments %}
+                    <li class="crop-text">
+                        <a href="{{ establ.get_absolute_path }}">
+                            {{ establ.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+              </ul>
+
+              <div class="add_company">
+                <div class="plus_block">
+                  <i class="icon-plus"></i>
+                  <div class="input-block">
+                    <input type="text" placeholder="Название" maxlength="100"
+                           oninput="crop_text('.m-settings .add_company .plus_block input', 100)"
+                    >
+                    <i class="icon-right-open-mini"></i>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="edit-block">
+          <div class="edit-block__new-logo">
+            <label>
+              <form action="">
+                <input type="file" accept="image/*" name="new_logo">
+                <input type="hidden" name="id_establishment" value="{{ establishment.pk }}">
+              </form>
+              <div class="button-upload-file">
+                Загрузить логотип <i class="icon-download-alt"></i>
+              </div>
+              <span class="button-upload-file-span">До 2 мб.</span>
+            </label>
+          </div>
+          <div class="edit-block__edit_name">
+            <input type="text" value="{{ establishment.name }}" maxlength="100" disabled
+            oninput="crop_text('.m-settings .edit-block__edit_name input', 100)">
+            <div class="edit"><i class="icon-pencil-1"></i><i class="icon-check"></i></div>
+          </div>
+        </div>
+          </div>
+        </div>
+
+        <div class="m-my-profile">
+          <span class="profile-icon"><i class="icon-user-o"></i></span>
+          <div class="more_profile_user">
+            <div class="logout" title="Выйти"><i class="icon-logout"></i></div>
+            <div class="also-profile-icon"><i class="icon-cancel"></i></div>
+            <div class="more_profile_user__content">
+              <p class="user_name crop-text">{{ user.first_name }}</p>
+              <p class="user_email crop-text">{{ user.email }}</p>
+              <a href="{% url 'password_change' %}">Сменить пароль</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="heading">
+      <h1>Личный кабинет</h1>
+      <p class="nav-bar">
+        <a href="{% url 'home_page' %}">Главная</a>
+        <i class="icon-right-open-mini"></i>
+        <a href="{% url 'personal_area' ua.last_establishment.id %}">Личный
+            кабинет</a></p>
+    </div>
+
+    <div class="statistics-user-info">
+      <div class="statistics pa-block">
+        <div class="pa-header">
+          <h2>Статистика нажатий</h2>
+        </div>
+        <div class="statistics__content pa-content">
+            <div class="full_chart">
+                <div class="full_chart_header">
+                    <span>Пользователей приложения</span>
+                    <span>Кол-во визитов: <span class="number_click_days">{{ count_visits_days }}</span><span class="number_click_months">{{ count_visits_months }}</span></span>
+                    <select>
+                      <option value="days">По дням</option>
+                      <option value="month">По месяцам</option>
+                    </select>
+                </div>
+                <canvas id="linearChartDays"></canvas>
+                <canvas id="linearChartMonths"></canvas>
+            </div>
+            <div class="pie_chart">
+                <div class="pie_chat_header">
+                    <select>
+                      <option value="days">За день</option>
+                      <option value="month">За месяц</option>
+                    </select>
+                </div>
+
+                <div class="pie_chart_content">
+                    <div class="chart">
+                        <canvas id="circleChartDay"></canvas>
+                        <canvas id="circleChartMonth"></canvas>
+                        <div class="no-data">Нет данных</div>
+                    </div>
+                    <div class="description_pie description_pie_day">
+                        <ul>
+                            <li>
+                                <span class="custom_lst_1 custom_lst"></span>
+                                <div class="text_li">
+                                    <span class="name_li">Вызвать официанта</span>
+                                    <span class="number_li">{{ pie_day.waiter }}</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="custom_lst_2 custom_lst"></span>
+                                <div class="text_li">
+                                    <span class="name_li">Открыть меню</span>
+                                    <span class="number_li">{{ pie_day.menu }}</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="custom_lst_3 custom_lst"></span>
+                                <div class="text_li">
+                                    <span class="name_li">Оставить отзыв</span>
+                                    <span class="number_li">{{ pie_day.feedback }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="description_pie description_pie_month">
+                        <ul>
+                            <li>
+                                <span class="custom_lst_1 custom_lst"></span>
+                                <div class="text_li">
+                                    <span class="name_li">Вызвать официанта</span>
+                                    <span class="number_li">{{ pie_month.waiter }}</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="custom_lst_2 custom_lst"></span>
+                                <div class="text_li">
+                                    <span class="name_li">Открыть меню</span>
+                                    <span class="number_li">{{ pie_month.menu }}</span>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="custom_lst_3 custom_lst"></span>
+                                <div class="text_li">
+                                    <span class="name_li">Оставить отзыв</span>
+                                    <span class="number_li">{{ pie_month.feedback }}</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+      </div>
+      <div class="user-info pa-block">
+        <h2>Личная информация</h2>
+        <div class="user-info__content">
+          <div class="name">
+            <h3>ФИО</h3>
+            <p>{{ user.first_name }}</p>
+          </div>
+          <div class="email">
+            <h3>Email</h3>
+            <p>{{ user.email }}</p>
+          </div>
+          <div class="restaurants">
+            <h3>Кол-во заведений</h3>
+            <p>{{ all_establishments.count|add:'1' }}</p>
+          </div>
+          <div class="tg_bot_link">
+            <h3>ID телеграм чата</h3>
+            <div class="tg_bot_div">
+
+                <input type="text" placeholder="Введите ID" value="{% if establishment.telegram_chat is not None %}{{ establishment.telegram_chat }}{% endif %}"
+                {% if establishment.telegram_chat %}disabled{% endif %}>
+                <span class="complete_add_tg {% if establishment.telegram_chat is not None %}none{% endif %}"><i class="icon-check"></i></span>
+                <span class="edit_tg {% if establishment.telegram_chat is None %}none{% endif %}"><i class="icon-pencil-1"></i></span>
+
+            </div>
+            <div class="error_tg">Неверный ID или он привязан к другому заведению.</div>
+            {% if establishment.telegram_chat is None %}<a href="https://t.me/lets_eatbot" target="_blank" class="open_bot">Открыть бота</a>{% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews pa-block">
+      <div class="pa-header">
+        <h2>Отзывы о вашем заведении</h2>
+      </div>
+      <div class="reviews__content pa-content">
+        <div class="reviews__statistic">
+          <div class="reviews__chart">
+            <div class="five-stars reviews__char-star">
+              <span class="count_reviews">{{ five_stars.count }}</span>
+              <span class="title_star">5<i class="icon-star-filled"></i></span>
+            </div>
+            <div class="four-stars reviews__char-star">
+              <span class="count_reviews">{{ four_stars.count }}</span>
+              <span class="title_star">4<i class="icon-star-filled"></i></span>
+            </div>
+            <div class="three-stars reviews__char-star">
+              <span class="count_reviews">{{ three_stars.count }}</span>
+              <span class="title_star">3<i class="icon-star-filled"></i></span>
+            </div>
+            <div class="two-stars reviews__char-star">
+              <span class="count_reviews">{{ two_stars.count }}</span>
+              <span class="title_star">2<i class="icon-star-filled"></i></span>
+            </div>
+            <div class="one-star reviews__char-star">
+              <span class="count_reviews">{{ one_star.count }}</span>
+              <span class="title_star">1<i class="icon-star-filled"></i></span>
+            </div>
+          </div>
+          <div class="reviews-average">
+            <div class="reviews-average__content">
+              <div class="average_main"><span class="average-number">0</span><i class="icon-star-filled"></i></div>
+              <p class="average__description">Средняя оценка заведения</p>
+            </div>
+          </div>
+        </div>
+        <div class="reviews__main">
+        {% if comments.count > 0 %}
+        <div class="splide">
+            <div class="splide__track">
+              <ul class="splide__list">
+                  {% for comment in comments %}
+                    <li class="splide__slide">
+                      <div class="review">
+                        <div class="review__header">
+                          <span class="review__date">{{ comment.date|date:'d.m.Y' }}</span>
+                          <span class="review__table">Столик: <span class="review__table-number">{{ comment.number_table }}</span></span>
+                        </div>
+                        <div class="review__stars">{{ comment.rate }}</div>
+                        <div class="review_text">
+                          {{ comment.text_comment }}
+                        </div>
+                      </div>
+                    </li>
+                  {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+
+        </div>
+      </div>
+    </div>
+
+    <div class="qr-codes pa-block">
+      <div class="pa-header">
+        <h2>QR Коды</h2>
+        {% if not ua.subscription and not ua.trial %}
+            <span class="pa-header_span_orange">Без подписки QR-коды недоступны</span>
+        {% else %}
+          {% if qr_codes.count > 0 %}
+            <a class="pa-header_button" href="#" download="proposed_file_name" onclick="download_qr_as_pdf()" id="download_qr_as_pdf">
+                <span>Скачать все в </span>PDF<i class="icon-download-alt"></i>
+            </a>
+            <a class="pa-header_button" href="#" download="proposed_file_name" onclick="download_qr_as_zip()" id="download_qr_as_zip">
+                <span>Скачать все в </span>ZIP<i class="icon-download-alt"></i>
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="qr-codes__content pa-content">
+        {% for qr in qr_codes %}
+            <div class="qr-codes__item" id="table-{{ qr.pk }}">
+              <div class="qr-item__header">
+                <p class="number-table">{{ qr.table }}</p>
+                <p class="p-table">Столик</p>
+              </div>
+              <div class="qr-item__menu">
+                <span onclick="open_qr({{ qr.pk }})"><i
+                        class="icon-qrcode"></i></span>
+                <span onclick="delete_table({{ qr.pk }})"><i
+                        class="icon-trash"></i></span>
+              </div>
+            </div>
+        {% endfor %}
+
+
+        <div class="qr-codes__plus" onclick="new_qr_table()">
+          <span><i class="icon-plus-1"></i></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-block pa-block">
+      <div class="pa-header">
+        <h2>Меню</h2>
+          {% if not ua.subscription and not ua.trial %}
+              <span class="pa-header_span_orange">Без подписки меню недоступно</span>
+          {% else %}
+              <span class="pa-header_button"><span class="button-text">Добавить категорию</span><i class="icon-plus-1"></i></span>
+          {% endif %}
+      </div>
+      <div class="menu-block__content pa-content">
+        <div class="menu-block__categories">
+            {% for category in categories %}
+                <div class="menu-block__category" id="category_{{ category.pk }}">
+                    <input type="text" class="title_category" size="7"
+                           value="{{ category.name }}" minlength="1"
+                           maxlength="30" onkeydown="size=value.length||15"
+                           onkeyup="onkeydown()" onkeypress="onkeydown()"
+                           onchange="onkeydown()" disabled
+                           oninput="crop_text('#category_{{ category.pk }} .title_category', 30)"
+                    />
+                    <span class="edit-category">
+                    <i class="icon-pencil-1 button-edit-category" onclick="edit_category({{ category.pk }})"></i>
+                    <i class="icon-check button-complete-edit-category" onclick="complete_edit_category({{ category.pk }})"></i>
+                    <i class="icon-trash button-delete-category" onclick="delete_category({{ category.pk }})"></i>
+                    </span>
+
+                    <div class="menu-block__dishes">
+                        {% for dish in category.category_dish.all %}
+                            <div class="menu-block__dish" id="dish_{{ dish.pk }}">
+                            <div class="dish__img">
+                                {% if dish.dish_picture %}
+                                    <img src="{% thumbnail dish.dish_picture 350x120 crop %}" alt="Изображение блюда" />
+                                {% else %}
+                                    <img src="{% static 'img/no-picture.jpg' %}" alt="Изображение блюда">
+                                {% endif %}
+                            </div>
+                            <div class="dish__content">
+                                <div class="dish__content_text">
+                                    <h4>{{ dish.name|truncatechars:40 }} <span class="price_dish">({{ dish.price }}₽)</span></h4>
+                                    <p class="dish__description">
+                                        {{ dish.description }}
+                                    </p>
+                                </div>
+                                <div class="dish__buttons">
+                                    <span onclick="edit_dish({{ dish.pk }})"><i class="icon-pencil-1"></i></span>
+                                    <span onclick="delete_dish({{ dish.pk }})"><i class="icon-trash"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        <div class="dish__plus">
+                            <span onclick="new_dish({{ category.pk }})"><i class="icon-plus-1"></i></span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+      </div>
+    </div>
+
+    <div class="buttons-block pa-block">
+      <div class="pa-header">
+        <h2>Настройка кнопок</h2>
+          {% if not ua.subscription and not ua.trial %}
+              <span class="pa-header_span_orange">Без подписки настройка кнопок недоступна</span>
+          {% endif %}
+        <div class="buttons__content pa-content">
+            {% for button in buttons %}
+              <div class="buttons__item" id="button-{{ button.pk }}">
+                <div class="button-main">
+                  <div class="button__name" onclick="activate_edit_button({{ button.pk }})">
+                    <input type="text" value="{{ button.name }}" title="Изменить название кнопки"
+                           maxlength="30" minlength="1" disabled
+                           oninput="crop_text('#button-{{ button.pk }} input', 30)">
+                    <textarea value="{{ button.text_button }}">{{ button.text_button }}</textarea>
+                  </div>
+                </div>
+                <div class="button-settings">
+                  <span title="Изменить сообщение" onclick="edit_message_button({{ button.pk }})"><i class="icon-comment"></i></span>
+                  <span title="Удалить кнопку" onclick="delete_button({{ button.pk }})"><i class="icon-trash"></i></span>
+                  <label>
+                    <input type="checkbox" onchange="check_button({{ button.pk }})"{% if button.enable %}checked{% endif %}>
+                    <div class="checkbox"><span><i class="icon-check"></i></span></div>
+                  </label>
+                </div>
+              </div>
+            {% endfor %}
+
+            {% if buttons.count < 3 %}
+                <div class="buttons__add">
+                  <div class="add" onclick="add_button()"><span title="Добавить кнопку"><i class="icon-plus-1"></i></span></div>
+                </div>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="subscription pa-block">
+      <div class="pa-header">
+        <h2>Подписка</h2>
+        {% if ua.trial %}
+            <span class="pa-header_span_blue">Первые 7 дней бесплатно</span>
+        {% endif %}
+      </div>
+      <div class="subscription__content pa-content">
+        <div class="rate">
+          <h3>Тариф</h3>
+          <p class="subscription__price">990руб./мес</p>
+        </div>
+        <div class="next-pay">
+          <h3>До следующего платежа:</h3>
+          <p class="subscription__date">
+              {% if ua.subscription or ua.trial %}
+                {{ next_pay }} {{ next_pay|r_pluralize:'день,дня,дней' }}
+              {% else %}
+                  Тариф истек
+              {% endif %}
+          </p>
+        </div>
+        <div class="subscription__pay">
+          <a href="" class="subscription__pay-button">Оплатить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="instructions pa-block">
+      <div class="pa-header">
+        <h2>Инструкции</h2>
+      </div>
+      <div class="instructions__content pa-content">
+        {% for video in videos %}
+        <div class="instruction">
+          <div class="instruction__video">
+            {{ video.html_code|safe }}
+          </div>
+          <div class="instruction__title">{{ video.title }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+  {% include 'footer.html' %}
+{% endblock %}
+
+{% block modal %}
+  <div class="modal modal_no_access">
+    <div class="modal__content modal_no_access__content">
+      <div class="close_modal" onclick="close_modal('modal_no_access')"><span><i class="icon-cancel"></i></span></div>
+      <p>Чтобы пользоваться этой функцией необходимо оплатить подписку</p>
+      <a href="">Оплатить</a>
+    </div>
+  </div>
+
+  <div class="modal modal_delete">
+    <div class="modal__content modal_delete__content">
+      <div class="close_modal" onclick="close_modal('modal_delete')"><span><i class="icon-cancel"></i></span></div>
+      <p>Вы уверены, что хотите удалить <span></span>?</p>
+      <p class="modal_delete__info"></p>
+      <div class="modal-delete__buttons">
+        <span class="modal_delete_button button-cancel-delete" onclick="close_modal('modal_delete')">Отмена</span>
+        <span class="modal_delete_button button-confirm-delete">Удалить</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal modal-dish">
+    <div class="modal__content modal-dish__content">
+      <span class="close_modal" onclick="close_modal('modal-dish')"><i class="icon-cancel"></i></span>
+      <form action="" enctype="multipart/form-data">
+        <div class="img-block">
+          <label>
+            <input type="file" name="new_dish_picture" required accept="image/*" />
+            <p class="dish-load-img crop-text">Добавить изображение <i class="icon-plus"></i></p>
+          </label>
+        </div>
+        <div class="text-block">
+          <input name='new_dish_name' type="text" minlength="1" maxlength="50"
+                 placeholder="Название*" required
+                 oninput="crop_text('.modal-dish input[name=\'new_dish_name\']', 50)">
+          <input name='new_dish_price' type="number" minlength="1" maxlength="8"
+                 placeholder="Цена*" min="0" max="99999999" required
+                 oninput="crop_text('.modal-dish input[name=\'new_dish_price\']', 8)">
+          <textarea name="new_dish_description" minlength="1" maxlength="300"
+                    placeholder="Описание*" required
+                    oninput="crop_text('.modal-dish textarea', 300)"
+          ></textarea>
+          <input type="hidden" value="" name="id_category">
+          <button><i class="icon-plus-1"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal modal-dish-edit">
+    <div class="modal__content modal-dish-edit__content">
+      <span class="close_modal" onclick="close_modal('modal-dish-edit')"><i class="icon-cancel"></i></span>
+      <form action="" enctype="multipart/form-data">
+        <div class="img-block">
+          <label>
+            <input type="file" required accept="image/*" name="edit_dish_picture"/>
+            <p class="dish-load-img crop-text">Изменить изображение <i class="icon-plus"></i></p>
+          </label>
+        </div>
+        <div class="text-block">
+          <input type="text" minlength="1" maxlength="50" name="edit_dish_name"
+                 placeholder="Название" required
+                 class="modal-dish-edit-title"
+                 oninput="crop_text('.modal-dish-edit input[name=\'edit_dish_name\']', 50)">
+          <input type="number" minlength="1" maxlength="8" name="edit_dish_price"
+                 placeholder="Цена" min="0" max="99999999"
+                 required class="modal-dish-edit-price"
+                 oninput="crop_text('.modal-dish-edit input[name=\'edit_dish_price\']', 8)">
+          <textarea minlength="1" maxlength="300" name="edit_dish-description"
+                    placeholder="Описание" required
+                    class="modal-dish-edit-description"
+                    oninput="crop_text('.modal-dish-edit textarea', 300)">
+          </textarea>
+          <input type="hidden" name='id_dish' value="">
+          <button>Сохранить</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal modal-button">
+    <div class="modal__content modal-button__content">
+      <div class="close_modal" onclick="close_modal('modal-button')"><span><i class="icon-cancel"></i></span></div>
+      <div class="modal-button__header">
+        <span class="button__title"></span> <span>&#183; Настройка</span>
+      </div>
+      <textarea placeholder="Сообщение" minlength="1" maxlength="400"></textarea>
+      <button disabled><span><i class="icon-check"></i></span></button>
+    </div>
+  </div>
+
+<div class="modal modal-pay">
+    <div class="modal__content modal-pay__content">
+      <div class="close_modal" onclick="close_modal('modal-pay')"><span><i class="icon-cancel"></i></span></div>
+        <h4>Выберите период подписки</h4>
+        <div class="payments-periods">
+            <div class="payments-periods__item">
+                <p class="payments-month">1 месяц</p>
+                <p class="payments-price">990 руб.</p>
+                <a href="{% url 'pay' 1 %}" target="_blank">Выбрать</a>
+            </div>
+            <div class="payments-periods__item">
+                <p class="payments-month">3 месяца</p>
+                <div class="payments-prices">
+                    <p class="payments-price">2570 руб.</p>
+                    <p>2970 руб.</p>
+                </div>
+                <a href="{% url 'pay' 3 %}" target="_blank">Выбрать</a>
+            </div>
+            <div class="payments-periods__item">
+                <p class="payments-month">6 месяцев</p>
+                <div class="payments-prices">
+                    <p class="payments-price">5140 руб.</p>
+                    <p>5940 руб.</p>
+                </div>
+                <a href="{% url 'pay' 6 %}" target="_blank">Выбрать</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+    {% if comments.count < 1 %}
+        <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+    {% endif %}
+    <script>
+        let linear_days = [];
+        let linear_data_days = [];
+        let obj_key;
+        let obj_value;
+
+        let date_reg_user = new Date('{{ request.user.date_joined|date:'d.m.Y' }}');
+
+        let start_date = '';
+        let last_30days = {};
+        // Create array with dates of last 30 days
+        for (let i = 0; i < 30; i++) {
+            let date = new Date();
+            date.setDate(date.getDate() - i);
+            // Если юзер зарегался раньше, чем 30 дней назад
+            if (date < date_reg_user) {
+                break;
+            }
+            let day = date.getDate();
+            let month = Number(date.getMonth()) + 1;
+            if (String(day).length == 1) {
+                day = '0' + String(day);
+            }
+            if (String(month).length == 1) {
+                month = '0' + String(month);
+            }
+            let str_date = `${day}.${month}`
+            last_30days[str_date] = 0;
+        }
+
+        let data_days = {}
+        {% for obj_key, obj_value in linear_by_days.items %}
+            obj_key = '{{ obj_key }}';
+            obj_value = '{{ obj_value }}';
+            data_days[obj_key] = Number(obj_value);
+
+        {% endfor %}
+        let marge_data_days = Object.assign(last_30days, data_days)
+
+        let labels_linear_days = [];
+        let data_linear_days = [];
+
+        let update_data_days = []
+        for (let day in marge_data_days) {
+            labels_linear_days.push(day);
+            data_linear_days.push(marge_data_days[day]);
+        }
+        labels_linear_days = labels_linear_days.reverse()
+        data_linear_days = data_linear_days.reverse()
+
+
+
+        let labels_linear_months = [];
+        let data_linear_months = [];
+
+        let temp_date;
+        let temp_value;
+        {% for month in linear_by_months %}
+            temp_date = '{{ month.date|date:"F" }}';
+            temp_value = '{{ month.count_users }}';
+
+            labels_linear_months.push(temp_date);
+            data_linear_months.push(temp_value);
+        {% endfor %}
+    </script>
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.0.0-rc.1/chartjs-plugin-datalabels.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+  <script src="{% static 'js/charts.js' %}"></script>
+  <script src="{% static 'js/personal_area.js' %}"></script>
+  {% if ua.subscription or ua.trial%}
+    <script src="{% static 'js/personal_area_functions.js' %}"></script>
+  {% else %}
+      <script src="{% static 'js/lock_pa.js' %}"></script>
+  {% endif %}
+{% endblock %}

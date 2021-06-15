@@ -1,0 +1,21 @@
+User-Agent: *
+Disallow: /client_page/
+Disallow: /personal_area/
+Disallow: /logout/
+Disallow: /establishment/
+Disallow: /qr/
+Disallow: /menu/
+Disallow: /button/
+Disallow: /pay/
+Disallow: /send_message/
+
+User-agent: Googlebot
+Disallow: /client_page/
+Disallow: /personal_area/
+Disallow: /logout/
+Disallow: /establishment/
+Disallow: /qr/
+Disallow: /menu/
+Disallow: /button/
+Disallow: /pay/
+Disallow: /send_message/

@@ -1,0 +1,60 @@
+.mobile-terms-of-use-middle {
+  display: none;
+}
+
+@media screen and (max-width: 800px) {
+  footer {
+    padding: 0 50px;
+    height: 100px;
+    /*flex-direction: column;*/
+    position: relative;
+  }
+
+  .mobile-terms-of-use {
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .mobile-terms-of-use-middle {
+    display: block;
+  }
+
+  footer .navigation__logo {
+    margin-right: 0 !important;
+  }
+
+  .mobile-terms-of-use-middle a {
+    color: white;
+    font-family: Montserrat, sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  footer {
+    padding: 0 15px !important;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  footer {
+    height: 180px !important;
+    min-height: 180px !important;
+  }
+  footer .navigation {
+    flex-direction: column !important;
+    height: 100% ;
+    justify-content: space-evenly;
+  }
+}
+
+@media screen and (max-width: 340px){
+  footer .navigation > div:not(.to_top) {
+    margin-bottom: 0;
+  }
+}
