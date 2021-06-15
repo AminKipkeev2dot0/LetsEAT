@@ -943,7 +943,8 @@ function delete_new_button() {
   setTimeout(() => {
     new_button.remove();
     let all_buttons = document.querySelectorAll('.buttons__item');
-    if (all_buttons.length < 3) {
+    let button = document.querySelector('.buttons-block .buttons__add');
+      if (all_buttons.length < 3 && button == null) {
         document.querySelector('.buttons__content').insertAdjacentHTML('beforeend', '<div class="buttons__add"><div class="add" onclick="add_button()"><span title="Добавить кнопку"><i class="icon-plus-1"></i></span></div></div>')
     }
   }, 400)
@@ -1049,7 +1050,8 @@ async function confirm_delete_button(id_button) {
     setTimeout(() => {
       button_block.remove();
       let all_buttons = document.querySelectorAll('.buttons__item');
-      if (all_buttons.length < 3) {
+      let button = document.querySelector('.buttons-block .buttons__add');
+      if (all_buttons.length < 3 && button == null) {
           document.querySelector('.buttons__content').insertAdjacentHTML('beforeend', '<div class="buttons__add"><div class="add" onclick="add_button()"><span title="Добавить кнопку"><i class="icon-plus-1"></i></span></div></div>')
       }
     }, 400);
