@@ -30,8 +30,15 @@ SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'letseat.su', 'www.letseat.su']
+STATICFILES_DIRS = [
+   BASE_DIR / "static",
+]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = '/static/'
+
+ALLOWED_HOSTS = ['127.0.0.1', 'letseat.su', 'www.letseat.su', '194.176.118.77']
 
 LOGGING = {
     "version": 1,
@@ -188,15 +195,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATICFILES_DIRS = [
-   BASE_DIR / "static",
-]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
