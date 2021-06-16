@@ -449,11 +449,11 @@ def pay(request, **kwargs):
     try:
         month = int(kwargs['month'])
         if month == 1:
-            price = 1
+            price = 990
         elif month == 3:
-            price = 2
+            price = 2570
         elif month == 6:
-            price = 3
+            price = 5140
         else:
             price = 99999
 
