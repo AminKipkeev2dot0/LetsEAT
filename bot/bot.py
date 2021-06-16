@@ -188,6 +188,7 @@ def call_waiter(chat_id: int, number_table: int):
 
         bot.pin_chat_message(chat_id, message_waiter.message_id)
         bot.delete_message(chat_id, (message_waiter.message_id + 1))
+        logging.info(f'Вызов официнта. (id чата: {chat_id})')
     except telebot.apihelper.ApiTelegramException as error:
         bot.send_message(chat_id, '<b>Добавьте бота в администраторы!</b>')
         logging.warning(
