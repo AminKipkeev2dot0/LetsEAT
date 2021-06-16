@@ -1,5 +1,6 @@
 import json
 import time
+import logging
 
 import requests.exceptions
 from environs import Env
@@ -7,6 +8,13 @@ from environs import Env
 import requests
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename="telegram_bot.log",
+    format="%(asctime)s - %(module)s - %(levelname)s - %(funcName)s: %(lineno)d - %(message)s",
+    datefmt='%H:%M:%S',
+)
 
 env = Env()
 env.read_env()
@@ -143,8 +151,14 @@ def send_welcome(message):
         time.sleep(6)
         bot.send_message(message.chat.id, '<i>Спасибо, что пользуетесь '
                                           'нашим сервисом, хорошей работы!</i>')
-    except:
+        logging.info(f'Отправка приветственного сообщению '
+                     f'пользователю{message.from_user.full_name}'
+                     f'(id: {message.from_user.id})')
+    except BaseException as error:
         bot.send_message(message.chat.id, 'Упс... Что-то пошло не так))')
+        logging.error(f'Ошибка при отправке приветственного сообщению '
+                     f'пользователю{message.from_user.full_name}'
+                     f'(id: {message.from_user.id}). Текст ошибки: {error}')
 
 
 @bot.message_handler(content_types=['new_chat_members'])
@@ -161,8 +175,9 @@ def add_bot_to_chat(message):
             bot.send_message(message.chat.id, f"<b>Кроме этого, добавьте бота"
                                               f" в администраторы, чтобы он мог "
                                               f"выполнять необходимые для него функции!</b>")
-    except:
+    except BaseException as error:
         bot.send_message(message.chat.id, "Упс... Что-то пошло не так))")
+        logging.error(f'Ошибка при отправке сообщения об добавлении в чат(id: {message.chat.id}). Текст ошибки: {error}')
 
 
 def call_waiter(chat_id: int, number_table: int):
@@ -173,8 +188,13 @@ def call_waiter(chat_id: int, number_table: int):
 
         bot.pin_chat_message(chat_id, message_waiter.message_id)
         bot.delete_message(chat_id, (message_waiter.message_id + 1))
-    except telebot.apihelper.ApiTelegramException:
+    except telebot.apihelper.ApiTelegramException as error:
         bot.send_message(chat_id, '<b>Добавьте бота в администраторы!</b>')
+        logging.warning(
+            f'Вызов официнта. Пользователь не добавил бота в админы(id чата: {chat_id}). Текст ошибки: {error}')
+    except BaseException as error:
+        logging.error(
+            f'Вызов официнта. Неведомая ошибка(id чата: {chat_id}). Текст ошибки: {error}')
 
 
 def custom_button(chat_id: int, number_table: int,
@@ -188,8 +208,13 @@ def custom_button(chat_id: int, number_table: int,
 
         bot.pin_chat_message(chat_id, message_button.message_id)
         bot.delete_message(chat_id, (message_button.message_id + 1))
-    except telebot.apihelper.ApiTelegramException:
-        bot.send_message(chat_id, '<b>Назначьте бота администратором!</b>')
+    except telebot.apihelper.ApiTelegramException as error:
+        bot.send_message(chat_id, '<b>Добавьте бота в администраторы!</b>')
+        logging.warning(
+            f'Нажатие на кнопку. Пользователь не добавил бота в админы(id чата: {chat_id}). Текст ошибки: {error}')
+    except BaseException as error:
+        logging.error(
+            f'Нажатие на кнопку. Неведомая ошибка(id чата: {chat_id}). Текст ошибки: {error}')
 
 
 def new_order(chat_id: int, number_table: int, dishes: list,
@@ -217,15 +242,26 @@ def new_order(chat_id: int, number_table: int, dishes: list,
         bot.pin_chat_message(chat_id, message_order.message_id)
         # Удаляю сообщение о закреплении предыдущего сообщения.
         bot.delete_message(chat_id, (message_order.message_id + 1))
-    except telebot.apihelper.ApiTelegramException:
-        bot.send_message(chat_id, '<b>Назначьте бота администратором!</b>')
+    except telebot.apihelper.ApiTelegramException as error:
+        bot.send_message(chat_id, '<b>Добавьте бота в администраторы!</b>')
+        logging.warning(
+            f'Новый заказ. Пользователь не добавил бота в админы(id чата: {chat_id}). Текст ошибки: {error}')
+    except BaseException as error:
+        logging.error(
+            f'Новый заказ. Неведомая ошибка(id чата: {chat_id}). Текст ошибки: {error}')
 
 
 def check_group(chat_id: int):
     try:
         bot.send_message(chat_id, 'Бот успешно подключён к чату!')
         return True
-    except telebot.apihelper.ApiTelegramException:
+    except telebot.apihelper.ApiTelegramException as error:
+        logging.warning(
+            f'Отправка сообщения с успешным подключением бота к чату. Пользователь ввёл неверный id чата(id чата: {chat_id}). Текст ошибки: {error}')
+        return False
+    except BaseException as error:
+        logging.error(
+            f'Отправка сообщения с успешным подключением бота к чату. Неведомая ошибка(id чата: {chat_id}). Текст ошибки: {error}')
         return False
 
 
@@ -241,13 +277,16 @@ def residue_control(message):
         list_categories = json.loads(r.text)['categories']
         bot.send_message(message.chat.id, 'Выберите категорию блюда:',
                          reply_markup=categories_kb(list_categories))
-    except telebot.apihelper.ApiTelegramException:
+    except telebot.apihelper.ApiTelegramException as error:
         bot.send_message(message.chat.id, '<b>Чтобы воспользоваться этой '
                                           'функцией назначьте бота '
                                           'администратором!</b>')
-    except requests.exceptions.ConnectionError as Error:
+        logging.warning(
+            f'Вызов меню контроля остатоков. Пользователь не добавил бота в админы(id чата: {message.chat.id}). Текст ошибки: {error}')
+    except requests.exceptions.ConnectionError as error:
         bot.send_message(message.chat.id, 'Сбой соединения:( Попробуйте ещё раз')
-        print(Error)
+        logging.error(
+            f'Вызов меню контроля остатоков. Что-то пошло не так(id чата: {message.chat.id}). Текст ошибки: {error}')
 
 
 @bot.message_handler(
