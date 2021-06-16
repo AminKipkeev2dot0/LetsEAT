@@ -136,7 +136,9 @@ class PersonalAreaStart(TemplateResponseMixin, View):
             form = CreateEstablishmentFormWithEmail(instance=request.user,
                                                     data=request.POST)
             if form.is_valid():
-                if request.POST['email_user']:
+                print(request.POST)
+                print(request.POST['email_user'])
+                if request.POST['email_user'] != '':
                     user: User = User.objects.get(id=request.user.id)
                     user.email = request.POST['email_user']
                     user.save()
