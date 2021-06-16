@@ -869,12 +869,13 @@ a.header__phone {
 
 .contacts__social-items {
   display: flex;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
 }
 
 .contacts__social-items img {
-  width: 40px;
-  height: 40px;
+  max-width: 40px;
+  max-height: 40px;
+  margin-right: 20px;
 }
 
 .contacts__email {

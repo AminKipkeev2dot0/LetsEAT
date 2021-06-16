@@ -47,12 +47,12 @@
               {{ form.as_p }}
               {% csrf_token %}
 
-            <button>Зарегистрироваться</button>
+            <button disabled>Зарегистрироваться</button>
             <div class="terms_of_use block-with-checkbox">
               <label>
-                  <input type="checkbox" name="terms_of_use" checked>
+                  <input type="checkbox" name="terms_of_use">
                   <div class="checkbox"><span class="check"><i class="icon-check"></i></span></div>
-                  <span>Я согласен с <a href="{% url 'terms_of_use' %}" target="_blank" class="open-terms-of-use">пользовательским соглашением</a></span>
+                  <span>Я согласен с <a href="{% url 'terms_of_use' %}" target="_blank" class="open-terms-of-use">условиями пользования</a></span>
                 </label>
             </div>
           </form>

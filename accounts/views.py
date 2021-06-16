@@ -16,7 +16,7 @@ class Login(TemplateResponseMixin, View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect('personal_area')
+            return redirect('empty_personal_area')
         ctx = {
             'login_form': LoginForm(),
             'reset_form': PasswordResetForm(),

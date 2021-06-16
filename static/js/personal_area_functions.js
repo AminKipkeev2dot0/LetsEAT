@@ -508,6 +508,17 @@ let edit_dish_button = document.querySelector('.modal-dish-edit button');
 edit_dish_button.addEventListener('click', async () => {
   this.event.preventDefault();
 
+  let button_edit = document.querySelector('.modal-dish-edit button');
+  button_edit.innerText = 'Сохранение';
+  button_edit.setAttribute('disabled', 'disabled');
+  let anim_save = setInterval(() => {
+    if (button_edit.innerText.length > 13) {
+      button_edit.innerText = 'Сохранение';
+    } else {
+      button_edit.innerText += '.';
+    }
+  }, 700);
+
   let modal_edit = document.querySelector('.modal-dish-edit');
   let modal_id_dish = modal_edit.querySelector('input[type="hidden"]');
   // let modal_edit_content = modal_edit.querySelector('.modal-dish-edit__content');
@@ -549,7 +560,11 @@ edit_dish_button.addEventListener('click', async () => {
 
     let result_json = await base_post(url, data)
     if (result_json['status'] === 'ok') {
-      dish_title_price.innerHTML = `${modal_edit_title} <span class="price_dish">(${modal_edit_price}₽)</span>`
+      clearInterval(anim_save);
+      button_edit.innerText = 'Сохранение';
+      button_edit.removeAttribute('disabled');
+
+      dish_title_price.innerHTML = `${modal_edit_title} <span class="price_dish">(${modal_edit_price}₽)</span>`;
       dish_description.innerText = modal_edit_description;
 
       close_modal('modal-dish-edit');
@@ -629,47 +644,63 @@ const ajaxSend = async (formData) => {
 // Кнопка создания нового блюда
 document.querySelector('.modal-dish button').addEventListener('click', async (e) => {
   e.preventDefault();
-  let form = document.querySelector('.modal-dish form');
-  const formData = new FormData(form);
 
-  let result_json = await ajaxSend(formData)
+  let name_input = document.querySelector('.modal-dish input[name="new_dish_name"]');
+  let price_input = document.querySelector('.modal-dish input[name="new_dish_price"]');
+  let description_textarea = document.querySelector('.modal-dish textarea');
 
-  if (result_json['status'] === 'ok') {
-    let name_dish = document.querySelector('.modal-dish input[name="new_dish_name"]').value
-    let price_dish = document.querySelector('.modal-dish input[name="new_dish_price"]').value
-    let description_dish = document.querySelector('.modal-dish textarea').value
-    let id_category = result_json['id_category']
-    let pk = result_json['pk']
-    let path_img = result_json['path_img']
+  if (name_input.value.length > 0 && price_input.value.length > 0 && description_textarea.value.length > 0) {
+    let i_plus = document.querySelector('.modal-dish button i');
+    let img_save = document.querySelector('.modal-dish button img');
+    i_plus.style.display = 'none';
+    img_save.style.display = 'inline';
+    document.querySelector('.modal-dish button').setAttribute('disabled', 'disabled');
 
-    let plus_block = document.querySelector(`#category_${id_category} .dish__plus`);
-    plus_block.insertAdjacentHTML('beforebegin', `
-      <div class="menu-block__dish" id="dish_${pk}">
-        <div class="dish__img">
-            <img src="${path_img}" alt="Блюдо">
-        </div>
-        
-        <div class="dish__content">
-          <div class="dish__content_text">
-              <h4>${name_dish} <span class="price_dish">(${price_dish}₽)</span></h4>
-              <p class="dish__description">
-                  ${description_dish}
-              </p>
+    let form = document.querySelector('.modal-dish form');
+    const formData = new FormData(form);
+
+    let result_json = await ajaxSend(formData)
+
+    if (result_json['status'] === 'ok') {
+      i_plus.style.display = 'inline';
+      img_save.style.display = 'none';
+      document.querySelector('.modal-dish button').removeAttribute('disabled')
+      let name_dish = document.querySelector('.modal-dish input[name="new_dish_name"]').value
+      let price_dish = document.querySelector('.modal-dish input[name="new_dish_price"]').value
+      let description_dish = document.querySelector('.modal-dish textarea').value
+      let id_category = result_json['id_category']
+      let pk = result_json['pk']
+      let path_img = result_json['path_img']
+
+      let plus_block = document.querySelector(`#category_${id_category} .dish__plus`);
+      plus_block.insertAdjacentHTML('beforebegin', `
+        <div class="menu-block__dish" id="dish_${pk}">
+          <div class="dish__img">
+              <img src="${path_img}" alt="Блюдо">
           </div>
-          <div class="dish__buttons">
-              <span onclick="edit_dish(${pk})"><i class="icon-pencil-1"></i></span>
-              <span onclick="delete_dish(${pk})"><i class="icon-trash"></i></span>
+          
+          <div class="dish__content">
+            <div class="dish__content_text">
+                <h4>${name_dish} <span class="price_dish">(${price_dish}₽)</span></h4>
+                <p class="dish__description">
+                    ${description_dish}
+                </p>
+            </div>
+            <div class="dish__buttons">
+                <span onclick="edit_dish(${pk})"><i class="icon-pencil-1"></i></span>
+                <span onclick="delete_dish(${pk})"><i class="icon-trash"></i></span>
+            </div>
           </div>
-        </div>
-       
-    </div>
-    `)
+         
+      </div>
+      `)
 
-    close_modal('modal-dish');
-    setTimeout(() => {
-      form.reset();
-      custom_label_dish.innerHTML = 'Добавить изображение <i class="icon-plus"></i>';
-    }, 400);
+      close_modal('modal-dish');
+      setTimeout(() => {
+        form.reset();
+        custom_label_dish.innerHTML = 'Добавить изображение <i class="icon-plus"></i>';
+      }, 400);
+    }
   }
 })
 

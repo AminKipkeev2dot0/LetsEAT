@@ -1940,6 +1940,17 @@ body {
   max-width: 90%
 }
 
+.modal-dish__content button img {
+  display: none;
+}
+
+.modal-dish__content button[disabled],
+.modal-dish-edit__content button[disabled]{
+  background: #1074f3 !important;
+  cursor: default !important;
+  color: white !important;
+}
+
 .modal-dish .close_modal,
 .modal-dish-edit .close_modal {
   position: absolute;

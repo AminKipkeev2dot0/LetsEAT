@@ -74,9 +74,9 @@ Let's EAT!
           <img src="{% static 'img/scroll.png' %}" alt="">
         </div>
         <div class="contact_with_us">
-          <a href="https://vk.com/letseatsu"><img src="{% static 'img/social/white/vk.png' %}" alt="vk"></a>
-          <a href="http://fb.me/letseatsu"><img src="{% static 'img/social/white/facebook.svg' %}" alt="facebook"></a>
-          <a href="https://instagram.com/letseat.su"><img src="{% static 'img/social/white/instagram.svg' %}" alt="instagram"></a>
+          <a href="https://vk.com/letseatsu" target="_blank"><img src="{% static 'img/social/white/vk.png' %}" alt="vk"></a>
+          <a href="http://fb.me/letseatsu" target="_blank"><img src="{% static 'img/social/white/facebook.svg' %}" alt="facebook"></a>
+          <a href="https://instagram.com/letseat.su" target="_blank"><img src="{% static 'img/social/white/instagram.svg' %}" alt="instagram"></a>
           <a href="tel:+74957556983" class="header__phone">+79289554624</a>
         </div>
       </div>
@@ -376,10 +376,9 @@ Let's EAT!
       <div class="contacts__social">
         <h3>Социальные сети</h3>
         <div class="contacts__social-items">
-          <div class="contacts_social-item"><a href="https://vk.com/letseatsu"><img src="{% static 'img/social/blue/vk.png' %}" alt="VK"></a></div>
-          <div class="contacts_social-item"><a href="http://fb.me/letseatsu"><img src="{% static 'img/social/blue/fb.png' %}" alt="Facebook"></a></div>
-          <div class="contacts_social-item"><a href="https://instagram.com/letseat.su"><img src="{% static 'img/social/blue/instagram.png' %}" alt="Instagram"></a></div>
-          <div class="contacts_social-item"><a href="#"><img src="{% static 'img/social/blue/wh.png' %}" alt="Whatsapp"></a></div>
+          <div class="contacts_social-item"><a href="https://vk.com/letseatsu" target="_blank"><img src="{% static 'img/social/blue/vk.png' %}" alt="VK"></a></div>
+          <div class="contacts_social-item"><a href="http://fb.me/letseatsu" target="_blank"><img src="{% static 'img/social/blue/fb.png' %}" alt="Facebook"></a></div>
+          <div class="contacts_social-item"><a href="https://instagram.com/letseat.su" target="_blank"><img src="{% static 'img/social/blue/instagram.png' %}" alt="Instagram"></a></div>
         </div>
       </div>
     </div>
@@ -405,9 +404,15 @@ Let's EAT!
       <a href="{% url 'terms_of_use' %}">Условия пользования</a>
       <div class="navigation__sign-up">
         <div class="sign-up__buttons sign-up__buttons_dark-blue">
-          <a href="{% url 'login' %}">Войти</a>
-          <span class="vertical-hr"></span>
-          <a href="{% url 'django_registration_register' %}">Регистрация</a>
+          {% if user.is_superuser %}
+              <a href="{% url 'admin:index' %}">Перейти в админку</a>
+          {% elif request.user.is_authenticated %}
+              <a href="{% url 'personal_area' ua.last_establishment.pk %}">Открыть мой кабинет</a>
+          {% else %}
+              <a href="{% url 'login' %}">Войти</a>
+              <span class="vertical-hr"></span>
+              <a href="{% url 'django_registration_register' %}">Регистрация</a>
+          {% endif %}
         </div>
       </div>
       <div class="to_top">
