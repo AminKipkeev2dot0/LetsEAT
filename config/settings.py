@@ -95,6 +95,7 @@ PATH_SHEDULED_LOG = str(BASE_DIR / 'scheduled_job.log')
 CRONJOBS = [
     ('20 0 * * *', 'base.cron.my_scheduled_job', f'>> {PATH_SHEDULED_LOG}'),
     ('0 1 */2 * *', 'base.cron.clear_old_statistic', f'>> {PATH_SHEDULED_LOG}'),
+    ('0 1 */2 * *', 'base.cron.clear_old_statistic_buttons', f'>> {PATH_SHEDULED_LOG}'),
     ('15 13 * * *', 'base.cron.send_notify_pay', f'>> {PATH_SHEDULED_LOG}'),
 ]
 
