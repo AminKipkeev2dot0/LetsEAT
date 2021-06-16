@@ -80,6 +80,7 @@
           <h2>Создание заведения</h2>
           <p class="description">Чтобы создать страницу заведения заполните необходимое поле и загрузите логотип</p>
             <form action="" method="post" enctype="multipart/form-data">
+                {{ form.email_user }}
                 {{ form.name }}
                 <label>
                     {{ form.picture }}
