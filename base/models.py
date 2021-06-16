@@ -31,6 +31,7 @@ class EstablishmentModel(models.Model):
     owner = models.ForeignKey(User, related_name='user_establishment',
                               on_delete=models.CASCADE)
     name = models.CharField(max_length=100, db_index=True)
+    email_user = models.EmailField(max_length=200, db_index=True, blank=True)  # Оно нужно.
     picture = ThumbnailerImageField(upload_to=user_directory_path,
                                     resize_source=dict(quality=90,
                                                        size=(1024, 1024),

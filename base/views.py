@@ -23,7 +23,7 @@ from .models import (EstablishmentModel, UserAdvanced, QRCode, ButtonModel,
                      CategoryDishesModel, DishModel, CommentModel,
                      StatisticModel, StatisticMonthModel, VideoModel,
                      StatisticButton)
-from .forms import CreateEstablishmentForm
+from .forms import CreateEstablishmentForm, CreateEstablishmentFormWithEmail
 
 from . import qr, download_pdf_zip
 from .qiwi import create_link_to_pay, check_pay, cancel_pay
@@ -109,27 +109,58 @@ class PersonalAreaStart(TemplateResponseMixin, View):
     template_name = 'personal_area_start.html'
 
     def post(self, request):
-        form = CreateEstablishmentForm(instance=request.user, data=request.POST)
-        if form.is_valid():
-            if 'picture' in request.FILES:
-                new_establishment = EstablishmentModel.objects.create(
-                    owner=request.user,
-                    name=request.POST['name'],
+        if request.user.email:
+            form = CreateEstablishmentForm(instance=request.user,
+                                           data=request.POST)
+            if form.is_valid():
+                if 'picture' in request.FILES:
+                    new_establishment = EstablishmentModel.objects.create(
+                        owner=request.user,
+                        name=request.POST['name'],
 
-                )
-                new_establishment.save()
-                new_establishment.picture = request.FILES['picture']
-                new_establishment.save()
+                    )
+                    new_establishment.save()
+                    new_establishment.picture = request.FILES['picture']
+                    new_establishment.save()
+                else:
+                    new_establishment = EstablishmentModel.objects.create(
+                        owner=request.user,
+                        name=request.POST['name']
+                    )
+                    new_establishment.save()
             else:
-                new_establishment = EstablishmentModel.objects.create(
-                    owner=request.user,
-                    name=request.POST['name']
-                )
-                new_establishment.save()
+                return self.render_to_response({
+                    'form': CreateEstablishmentForm(request.POST),
+                })
         else:
-            return self.render_to_response({
-                'form': CreateEstablishmentForm(request.POST),
-            })
+            form = CreateEstablishmentFormWithEmail()
+            if form.is_valid():
+                if 'email_user' in request.POST:
+                    user: User = User.objects.get(id=request.user.id)
+                    user.email = request.POST['email_user']
+                    user.save()
+                else:
+                    return redirect('empty_personal_area')
+
+                if 'picture' in request.FILES:
+                    new_establishment = EstablishmentModel.objects.create(
+                        owner=request.user,
+                        name=request.POST['name'],
+                    )
+                    new_establishment.save()
+                    new_establishment.picture = request.FILES['picture']
+                    new_establishment.save()
+                else:
+                    new_establishment = EstablishmentModel.objects.create(
+                        owner=request.user,
+                        name=request.POST['name']
+                    )
+                    new_establishment.save()
+            else:
+                return self.render_to_response({
+                    'form': CreateEstablishmentForm(request.POST),
+                })
+
 
         ua = UserAdvanced.objects.get(user=request.user)
         ua.last_establishment = new_establishment
@@ -156,8 +187,14 @@ class PersonalAreaStart(TemplateResponseMixin, View):
         if len(establishments) > 0:
             return redirect('personal_area',
                             id_establishment=ua.last_establishment.pk)
+
+        if request.user.email:
+            form = CreateEstablishmentForm()
+        else:
+            form = CreateEstablishmentFormWithEmail()
+
         ctx = {
-            'form': CreateEstablishmentForm(),
+            'form': form,
             'videos': videos,
         }
         return self.render_to_response(ctx)
