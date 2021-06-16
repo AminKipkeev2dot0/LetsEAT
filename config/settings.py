@@ -88,7 +88,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'django_crontab',
     'social_django',
-    'core',
+    # 'core',
 ]
 
 PATH_SHEDULED_LOG = str(BASE_DIR / 'scheduled_job.log')
