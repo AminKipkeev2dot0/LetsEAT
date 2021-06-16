@@ -192,10 +192,10 @@ def call_waiter(chat_id: int, number_table: int):
     except telebot.apihelper.ApiTelegramException as error:
         bot.send_message(chat_id, '<b>Добавьте бота в администраторы!</b>')
         logging.warning(
-            f'Вызов официнта. Пользователь не добавил бота в админы(id чата: {chat_id}). Текст ошибки: {error}')
+            f'Вызов официнта. Пользователь не добавил бота в админы(id чата: {chat_id}). Текст ошибки: {error}\n\n')
     except BaseException as error:
         logging.error(
-            f'Вызов официнта. Неведомая ошибка(id чата: {chat_id}). Текст ошибки: {error}')
+            f'Вызов официнта. Неведомая ошибка(id чата: {chat_id}). Текст ошибки: {error}\n\n')
 
 
 def custom_button(chat_id: int, number_table: int,
@@ -393,6 +393,7 @@ if __name__ == '__main__':
     # bot.polling()
     # Use none_stop flag let polling will not stop when get new message occur error.
     print('Бот запущен!')
+    logging.info('\n\nБОТ ЗАПУЩЕН!\n\n')
     bot.polling(none_stop=True)
 
     while True:  # Don't let the main Thread end.
