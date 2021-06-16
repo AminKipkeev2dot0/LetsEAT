@@ -36,7 +36,7 @@ Let's EAT!
           {% if user.is_superuser %}
               <a href="{% url 'admin:index' %}">Перейти в админку</a>
           {% elif request.user.is_authenticated %}
-              <a href="{% url 'personal_area' ua.last_establishment.pk %}">Открыть мой кабинет</a>
+              <a href="{% url 'empty_personal_area' %}">Открыть мой кабинет</a>
           {% else %}
               <a href="{% url 'login' %}">Войти</a>
                 <span class="vertical-hr"></span>
@@ -406,7 +406,7 @@ Let's EAT!
           {% if user.is_superuser %}
               <a href="{% url 'admin:index' %}">Перейти в админку</a>
           {% elif request.user.is_authenticated %}
-              <a href="{% url 'personal_area' ua.last_establishment.pk %}">Открыть мой кабинет</a>
+              <a href="{% url 'empty_personal_area' %}">Открыть мой кабинет</a>
           {% else %}
               <a href="{% url 'login' %}">Войти</a>
               <span class="vertical-hr"></span>
