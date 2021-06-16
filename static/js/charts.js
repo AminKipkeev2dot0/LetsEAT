@@ -42,7 +42,7 @@ for (let object of pie_month) {
   if (data !== 0) {
     labels_data_pie_month.push(label);
     data_pie_month.push(data);
-    bg_pie_month.push(all_bg_colors[counter_pie_day])
+    bg_pie_month.push(all_bg_colors[counter_pie_month])
   }
   counter_pie_month++;
 }
