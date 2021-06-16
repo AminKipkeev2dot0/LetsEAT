@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'django_registration',
     'easy_thumbnails',
     'django_crontab',
+    'social_django',
 ]
 
 PATH_SHEDULED_LOG = str(BASE_DIR / 'scheduled_job.log')
@@ -153,6 +154,22 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '428523113961-027tui9r8gqc0j26oj9c7ebmaqidp1ob.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'aDgEjbzEwKcNFBi6-qzk9Znh'
+
+LOGIN_URL = '/auth/login/google-oauth2/'
+
+LOGIN_REDIRECT_URL = '/personal_area'
+LOGOUT_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
 
 
 # Internationalization
