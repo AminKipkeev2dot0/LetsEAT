@@ -13,20 +13,20 @@ const colors = [chartColors.red, chartColors.orange, chartColors.yellow, chartCo
 const cache = new Map();
 let width, height, gradient;
 
+let all_bg_colors = ["#046240", "#ffa500", "#0175c3", "#cf0940", "#01c3bd", "#012bc3"]
 
 pie_day = document.querySelectorAll('.description_pie_day li');
 labels_data_pie_day = [];
 data_pie_day = [];
 let counter_pie_day = 0;
-let bg_pie_day = ["#046240", "#ffa500", "#0175c3", "#cf0940", "#01c3bd", "#012bc3"]
+let bg_pie_day = []
 for (let object of pie_day) {
   let label = object.querySelector('.name_li').innerText;
   let data = Number(object.querySelector('.number_li').innerText);
   if (data !== 0) {
     labels_data_pie_day.push(label);
     data_pie_day.push(data);
-  } else {
-    bg_pie_day.splice(counter_pie_day, 1);
+    bg_pie_day.push(all_bg_colors[counter_pie_day])
   }
   counter_pie_day++;
 }
@@ -35,15 +35,14 @@ pie_month = document.querySelectorAll('.description_pie_month li');
 labels_data_pie_month = [];
 data_pie_month = [];
 let counter_pie_month = 0;
-let bg_pie_month = ["#046240", "#ffa500", "#0175c3", "#cf0940", "#01c3bd", "#012bc3"]
+let bg_pie_month = []
 for (let object of pie_month) {
   let label = object.querySelector('.name_li').innerText;
   let data = Number(object.querySelector('.number_li').innerText);
   if (data !== 0) {
     labels_data_pie_month.push(label);
     data_pie_month.push(data);
-  } else {
-    bg_pie_month.splice(counter_pie_month, 1);
+    bg_pie_month.push(all_bg_colors[counter_pie_day])
   }
   counter_pie_month++;
 }
