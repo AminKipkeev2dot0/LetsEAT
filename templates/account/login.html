@@ -60,7 +60,7 @@
             <p class="lr__create-with-help">Войдите с помощью</p>
             <div class="log-reg__social_icons">
               <a href="{% url 'social:begin' 'google-oauth2' %}"><img src="{% static 'img/log_reg/google.png' %}" alt="Google"></a>
-              <a href="#"><img src="{% static 'img/log_reg/vk.png' %}" alt="VK"></a>
+              <a href="{% url 'social:begin' 'vk-oauth2' %}"><img src="{% static 'img/log_reg/vk.png' %}" alt="VK"></a>
               <a href="{% url 'social:begin' 'facebook' %}"><img src="{% static 'img/log_reg/fb.png' %}" alt="Facebook"></a>
             </div>
           </div>
