@@ -95,7 +95,7 @@ btn_mail.addEventListener('click', async (e) => {
       setTimeout(() => {
         modal_message.style.animation = 'opacity_disappear .5s forwards';
         modal_message.style.zIndex = '-1';
-      }, 4000)
+      }, 3000)
     }
   }
 })
