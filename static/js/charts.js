@@ -111,7 +111,7 @@ linear_months_obj.style.display = 'none';
 let data_day = [{
   labels: labels_data_pie_day,
   data: data_pie_day,
-  backgroundColor: ["#046240", "#ffa500", "#0175c3", "#cf0940", "#01c3bd", "#012bc3"],
+  backgroundColor: bg_pie_day,
   borderColor: "#fff",
   offset: 7,
   hoverOffset: 12,
@@ -153,7 +153,7 @@ let CircleChartDay = new Chart(day_circle_obj, {
 let data_month = [{
   labels: labels_data_pie_month,
   data: data_pie_month,
-  backgroundColor: ["#046240", "#ffa500", "#0175c3", "#cf0940", "#01c3bd", "#012bc3"],
+  backgroundColor: bg_pie_month,
   borderColor: "#fff",
   offset: 7,
   hoverOffset: 12,
