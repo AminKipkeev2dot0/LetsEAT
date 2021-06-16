@@ -52,12 +52,12 @@ def get_message_from_landing(request):
     # На фронте есть проверка, но всё же.
     message = request.POST.get('message')[:1501]
 
-    message = f'Новое сообщение с формы "свяжитесь с нами"!\n\n Имя ' \
-              f'пользователя: {name}\nEmail: {email}\nТелефон - {phone})' \
+    message = f'Новое сообщение с формы "Свяжитесь с нами"!\n\nИмя ' \
+              f'пользователя: {name}\nEmail: {email}\nТелефон: {phone}' \
               f'\n\nТекст сообщения:\n{message}'
 
     send_mail('Свяжитесь с нами', message,
-              settings.DEFAULT_FROM_EMAIL, ['zhurbiym@gmail.com'])  #, 'letseat.help@gmail.com'
+              settings.DEFAULT_FROM_EMAIL, ['letseat.help@gmail.com'])
     return JsonResponse({'status': 'ok'})
 
 
