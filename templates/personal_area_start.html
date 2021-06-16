@@ -40,7 +40,7 @@
                         <div class="logout" title="Выйти"><a href="{% url 'logout' %}"><i class="icon-logout"></i></a></div>
                         <div class="also-profile-icon"><i class="icon-cancel"></i></div>
                         <div class="more_profile_user__content">
-                            <p class="user_name crop-text">{{ user.first_name }}</p>
+                            <p class="user_name crop-text">{{ user.get_full_name }}</p>
                             <p class="user_email crop-text">{{ user.email }}</p>
                             <a href="{% url 'password_change' %}">Сменить пароль</a>
                         </div>
@@ -53,7 +53,7 @@
             <div class="logout" title="Выйти"><i class="icon-logout"></i></div>
             <div class="also-profile-icon"><i class="icon-cancel"></i></div>
             <div class="more_profile_user__content">
-              <p class="user_name crop-text">{{ user.first_name }}</p>
+              <p class="user_name crop-text">{{ user.get_full_name }}</p>
               <p class="user_email crop-text">{{ user.email }}</p>
               <a href="{% url 'password_change' %}">Сменить пароль</a>
             </div>
