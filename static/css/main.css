@@ -833,6 +833,16 @@ a.header__phone {
   color: white;
 }
 
+.contact-us button[disabled] {
+  background: #fff;
+  color: #1074f3;
+}
+
+.contact-us button[disabled]:hover {
+  background: #fff;
+  color: #1074f3;
+}
+
 .contact-us span {
   color: white;
   font-size: 18px;

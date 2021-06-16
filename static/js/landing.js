@@ -54,6 +54,17 @@ btn_mail.addEventListener('click', async (e) => {
   if ((fake_name.value.length === 0 && fake_email.value.length === 0) &&
       (name_i.value.length > 0) && (email_i.value.length > 0) &&
       (phone_i.value.length > 0) && (message.value.length > 0)) {
+
+    button_edit.innerText = 'Отправляем';
+    button_edit.setAttribute('disabled', 'disabled');
+    let anim_send = setInterval(() => {
+      if (button_edit.innerText.length > 13) {
+        button_edit.innerText = 'Отправляем';
+      } else {
+        button_edit.innerText += '.';
+      }
+    }, 700);
+
     let url = 'https://letseat.su/send_message';
     const fetchResp = await fetch(url, {
       method: 'POST',
@@ -68,6 +79,10 @@ btn_mail.addEventListener('click', async (e) => {
 
     let json = await fetchResp.json();
     if (json['status'] === 'ok') {
+      clearInterval(anim_send);
+      button_edit.innerText = 'Отправить';
+      button_edit.removeAttribute('disabled');
+
       form.reset();
       btn_mail.removeAttribute('disabled');
       let modal_message = document.querySelector('#send_message');

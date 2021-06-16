@@ -54,7 +54,7 @@ def get_message_from_landing(request):
               f'\n\nТекст сообщения:\n{message}'
 
     send_mail('Сообщение с сайта', message,
-              settings.DEFAULT_FROM_EMAIL, ['zhurbiym@gmail.com'])
+              settings.DEFAULT_FROM_EMAIL, ['zhurbiym@gmail.com'])  #, 'letseat.help@gmail.com'
     return JsonResponse({'status': 'ok'})
 
 
