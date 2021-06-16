@@ -119,6 +119,7 @@ class StatisticModel(models.Model):
     waiter = models.IntegerField(db_index=True, default=0)
     menu = models.IntegerField(db_index=True, default=0)
     feedback = models.IntegerField(db_index=True, default=0)
+    buttons = models.IntegerField(db_index=True, default=0)
     users_session_key = ArrayField(models.CharField(max_length=50), blank=True)
     count_users = models.IntegerField(db_index=True, default=0)
 

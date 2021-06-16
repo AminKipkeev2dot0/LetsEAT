@@ -32,7 +32,7 @@ def sort_pdf(a):
 
 
 def create_pdf(path_qr: str, path_save: str):
-    pdf = FPDF()
+    pdf = FPDF('P', 'mm', (100, 60))
     if Path.exists(Path(path_qr)):
         image_list = [f for f in os.listdir(path_qr)
                       if os.path.isfile(os.path.join(path_qr, f))]
@@ -42,6 +42,7 @@ def create_pdf(path_qr: str, path_save: str):
 
             pdf.add_page()
             pdf.image(image, x=36, y=40)
+            pdf.image()
         pdf.output(path_save, "F")
         return True
     else:
