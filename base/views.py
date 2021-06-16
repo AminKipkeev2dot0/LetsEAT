@@ -37,7 +37,14 @@ class HomePage(TemplateResponseMixin, View):
 
     def get(self, request):
         if request.user.is_authenticated:
-            ua = UserAdvanced.objects.filter(user=request.user).first()
+            ua: User = UserAdvanced.objects.filter(user=request.user).first()
+            if ua is None:
+                dt_today = datetime.date.today()
+                sub_date = dt_today + relativedelta(days=+7)
+
+                ua = UserAdvanced.objects.create(user=request.user, trial=True,
+                                                 subscription_date=sub_date)
+                ua.save()
             ctx = {'ua': ua}
         else:
             ctx = {}
@@ -77,7 +84,14 @@ class EmptyPersonalArea(TemplateResponseMixin, View):
         if not request.user.is_authenticated:
             return redirect('login')
 
-        ua: User = UserAdvanced.objects.get(user=request.user)
+        ua: User = UserAdvanced.objects.filter(user=request.user).first()
+        if ua is None and request.user.is_authenticated:
+            dt_today = datetime.date.today()
+            sub_date = dt_today + relativedelta(days=+7)
+
+            ua = UserAdvanced.objects.create(user=request.user, trial=True,
+                                             subscription_date=sub_date)
+            ua.save()
         establishments = EstablishmentModel.objects.filter(owner=request.user)
 
         if len(establishments) == 0:
@@ -128,7 +142,14 @@ class PersonalAreaStart(TemplateResponseMixin, View):
         if not request.user.is_authenticated:
             return redirect('login')
 
-        ua = UserAdvanced.objects.get(user=request.user)
+        ua: User = UserAdvanced.objects.filter(user=request.user).first()
+        if ua is None and request.user.is_authenticated:
+            dt_today = datetime.date.today()
+            sub_date = dt_today + relativedelta(days=+7)
+
+            ua = UserAdvanced.objects.create(user=request.user, trial=True,
+                                             subscription_date=sub_date)
+            ua.save()
         establishments = EstablishmentModel.objects.filter(owner=request.user)
         videos = VideoModel.objects.all()
 
@@ -150,7 +171,14 @@ class PersonalArea(TemplateResponseMixin, View):
             return redirect('home_page')
 
         establishments = EstablishmentModel.objects.filter(owner=request.user)
-        ua = get_object_or_404(UserAdvanced, user=request.user)
+        ua: User = UserAdvanced.objects.filter(user=request.user).first()
+        if ua is None and request.user.is_authenticated:
+            dt_today = datetime.date.today()
+            sub_date = dt_today + relativedelta(days=+7)
+
+            ua = UserAdvanced.objects.create(user=request.user, trial=True,
+                                             subscription_date=sub_date)
+            ua.save()
 
         if len(establishments) == 0:
             return redirect('personal_area_start')
