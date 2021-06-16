@@ -40,6 +40,7 @@ def create_pdf(path_qr: str, path_save: str):
                       if os.path.isfile(os.path.join(path_qr, f))]
         image_list.sort(key=sort_pdf)
         for imageFile in image_list:
+            imageFile = path_qr + '/' + imageFile
             cover = Image.open(imageFile)
             width, height = cover.size
 
