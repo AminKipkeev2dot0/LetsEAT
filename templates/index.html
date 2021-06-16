@@ -348,7 +348,7 @@ Let's EAT!
       <input type="email" name="tsafdsa" placeholder="Имя" required />
       <input type="email" name="fdshghh" placeholder="Ваш Email" required />
       <input type="number" name="phone" placeholder="Ваш телефон" required />
-      <textarea name="message" placeholder="Опишите ваш вопрос" required></textarea>
+      <textarea name="message" placeholder="Опишите ваш вопрос" maxlength="1500" required></textarea>
       {% csrf_token %}
       <button id="btn-mail">Отправить</button>
       <span>Вам ответят в течении дня</span>

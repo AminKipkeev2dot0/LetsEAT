@@ -48,7 +48,9 @@ def get_message_from_landing(request):
     name = request.POST.get('tsafdsa')
     email = request.POST.get('fdshghh')
     phone = request.POST.get('phone')
-    message = request.POST.get('message')
+    # 1501 обрезает длину сообщения, если оно больше этого числа.
+    # На фронте есть проверка, но всё же.
+    message = request.POST.get('message')[:1501]
 
     message = f'Сообщение от {name}(email - {email}, телефон - {phone})' \
               f'\n\nТекст сообщения:\n{message}'

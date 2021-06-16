@@ -55,13 +55,13 @@ btn_mail.addEventListener('click', async (e) => {
       (name_i.value.length > 0) && (email_i.value.length > 0) &&
       (phone_i.value.length > 0) && (message.value.length > 0)) {
 
-    button_edit.innerText = 'Отправляем';
-    button_edit.setAttribute('disabled', 'disabled');
+    btn_mail.innerText = 'Отправляем';
+    btn_mail.setAttribute('disabled', 'disabled');
     let anim_send = setInterval(() => {
-      if (button_edit.innerText.length > 13) {
-        button_edit.innerText = 'Отправляем';
+      if (btn_mail.innerText.length > 13) {
+        btn_mail.innerText = 'Отправляем';
       } else {
-        button_edit.innerText += '.';
+        btn_mail.innerText += '.';
       }
     }, 700);
 
@@ -80,8 +80,8 @@ btn_mail.addEventListener('click', async (e) => {
     let json = await fetchResp.json();
     if (json['status'] === 'ok') {
       clearInterval(anim_send);
-      button_edit.innerText = 'Отправить';
-      button_edit.removeAttribute('disabled');
+      btn_mail.innerText = 'Отправить';
+      btn_mail.removeAttribute('disabled');
 
       form.reset();
       btn_mail.removeAttribute('disabled');
