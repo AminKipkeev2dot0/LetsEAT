@@ -139,6 +139,20 @@ class StatisticMonthModel(models.Model):
                f'за месяц: {self.date}'
 
 
+class StatisticButton(models.Model):
+    establishment = models.ForeignKey(EstablishmentModel,
+                                      related_name='establishment_stat_btn_day',
+                                      on_delete=models.CASCADE)
+    button = models.ForeignKey(ButtonModel, related_name='button_stat_day',
+                               on_delete=models.CASCADE)
+    count_click = models.IntegerField(db_index=True, default=0)
+    date = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return f'Статистика заведения: {self.establishment.name} ' \
+               f'кнопки: {self.button.name} за: {self.date}'
+
+
 class UserAdvanced(models.Model):
     user = models.ForeignKey(User, related_name='user_advanced',
                              on_delete=models.CASCADE)

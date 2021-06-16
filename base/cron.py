@@ -5,7 +5,7 @@ from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-from base.models import StatisticModel, UserAdvanced
+from base.models import StatisticModel, UserAdvanced, StatisticButton
 
 
 def my_scheduled_job():
@@ -34,6 +34,19 @@ def clear_old_statistic():
         stat_obj.delete()
 
     print(f'{datetime.datetime.now()}: Clear old statistic!')
+
+
+def clear_old_statistic_buttons():
+    today = datetime.date.today()
+    sixteen_days_ago = today - datetime.timedelta(days=60)
+
+    statistic_objects = StatisticButton.objects.filter(
+        date__lte=sixteen_days_ago
+    )
+    for stat_obj in statistic_objects:
+        stat_obj.delete()
+
+    print(f'{datetime.datetime.now()}: Clear old statistic of buttons!')
 
 
 def send_notify_pay():

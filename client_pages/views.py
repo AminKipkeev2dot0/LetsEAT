@@ -15,7 +15,7 @@ from django.views.generic.base import TemplateResponseMixin, View
 
 from base.models import EstablishmentModel, ButtonModel, CommentModel, \
     CategoryDishesModel, DishModel, StatisticModel, StatisticMonthModel, \
-    UserAdvanced
+    UserAdvanced, StatisticButton
 from base.qiwi import check_pay
 from bot.bot import new_order, call_waiter, custom_button
 
@@ -329,26 +329,22 @@ def telegram_button(request):
     establishment = EstablishmentModel.objects.filter(
         pk=id_establishment).first()
     if establishment is not None:
-        stat = StatisticModel.objects.filter(establishment=establishment,
-                                             date=datetime.date.today()).first()
-        user_session_id = request.session.session_key
-        if stat is not None:
-            stat.buttons += 1
-            if user_session_id not in stat.users_session_key:
-                stat.users_session_key.append(user_session_id)
-                stat.count_users += 1
-            stat.save()
-        else:
-            new_stat = StatisticModel.objects.create(
-                establishment=establishment, date=datetime.date.today(),
-                buttons=1, users_session_key=[request.session.session_key],
-                count_users=1)
-            new_stat.save()
-
-
         id_chat = establishment.telegram_chat
         button = ButtonModel.objects.filter(pk=button_pk).first()
         if id_chat and button:
+            stat = StatisticButton.objects.filter(establishment=establishment,
+                                                  button=button,
+                                                  date=datetime.date.today()
+                                                  ).first()
+            if stat is not None:
+                stat.count_click += 1
+                stat.save()
+            else:
+                new_stat = StatisticButton.objects.create(
+                    establishment=establishment, date=datetime.date.today(),
+                    button=button, count_click=1)
+                new_stat.save()
+
             custom_button(
                 id_chat, number_table, button.name, button.text_button
             )

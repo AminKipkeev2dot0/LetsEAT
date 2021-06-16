@@ -2473,6 +2473,18 @@ body {
   background: #0175c3;
 }
 
+.custom_lst_4 {
+  background: #cf0940;
+}
+
+.custom_lst_5 {
+  background: #01c3bd;
+}
+
+.custom_lst_6 {
+  background: #012bc3;
+}
+
 .text_li {
   width: 100%;
   display: flex;

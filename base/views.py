@@ -21,7 +21,8 @@ from django.core.mail import send_mail
 from bot.bot import check_group
 from .models import (EstablishmentModel, UserAdvanced, QRCode, ButtonModel,
                      CategoryDishesModel, DishModel, CommentModel,
-                     StatisticModel, StatisticMonthModel, VideoModel)
+                     StatisticModel, StatisticMonthModel, VideoModel,
+                     StatisticButton)
 from .forms import CreateEstablishmentForm
 
 from . import qr, download_pdf_zip
@@ -240,6 +241,37 @@ class PersonalArea(TemplateResponseMixin, View):
         pie_day_stats = StatisticModel.objects.filter(
             establishment=current_establishment, date=datetime.date.today()
         ).first()
+
+
+        pie_btns = []
+        for button in buttons:
+            today = datetime.date.today()
+            thirty_days_ago = today - datetime.timedelta(days=60)
+            # Day
+            this_btn = {'name': button.name}
+            stat_btn_day = StatisticButton.objects.filter(
+                establishment=current_establishment,
+                button=button,
+                date=today
+            ).first()
+            if stat_btn_day:
+                this_btn['count_click_day'] = stat_btn_day.count_click
+            else:
+                this_btn['count_click_day'] = 0
+
+            # Month
+            stat_btn_month = StatisticButton.objects.filter(
+                establishment=current_establishment,
+                button=button,
+                date__gte=thirty_days_ago
+            )
+            total_count = 0
+            for btn_stat in stat_btn_month:
+                total_count += btn_stat.count_click
+            this_btn['count_click_month'] = total_count
+            pie_btns.append(this_btn)
+
+
         if pie_day_stats is not None:
             pie_day = {
                 'waiter': pie_day_stats.waiter,
@@ -312,6 +344,7 @@ class PersonalArea(TemplateResponseMixin, View):
 
             'pie_day': pie_day,
             'pie_month': pie_month,
+            'pie_btns': pie_btns,
 
             'linear_by_days': linear_by_days,
             'count_visits_days': count_visits_days,
@@ -835,6 +868,11 @@ def delete_button(request):
     button = ButtonModel.objects.get(establishment=establishment,
                                      pk=id_button)
     button.delete()
+
+    stat_button = StatisticButton.objects.filter(establishment=establishment,
+                                                 button=button)
+    for stat in stat_button:
+        stat.delete()
 
     data = {'status': 'ok'}
     return JsonResponse(data)

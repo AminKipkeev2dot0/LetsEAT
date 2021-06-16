@@ -2,8 +2,8 @@ from django.contrib import admin
 
 from .models import (UserAdvanced, EstablishmentModel, QRCode,
                      ButtonModel, CategoryDishesModel, DishModel,
-                     CommentModel, StatisticModel, StatisticMonthModel,
-                     VideoModel)
+                     CommentModel, StatisticModel, StatisticButton,
+                     StatisticMonthModel, VideoModel)
 
 
 @admin.register(UserAdvanced)
@@ -44,6 +44,11 @@ class CommentAdmin(admin.ModelAdmin):
 @admin.register(StatisticModel)
 class StatisticAdmin(admin.ModelAdmin):
     list_display = ('establishment', 'date')
+
+
+@admin.register(StatisticButton)
+class StatisticButtonAdmin(admin.ModelAdmin):
+    list_display = ('establishment', 'button', 'date')
 
 
 @admin.register(StatisticMonthModel)

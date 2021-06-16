@@ -14,16 +14,29 @@ const cache = new Map();
 let width, height, gradient;
 
 
-let data_circle_day = [
-    Number(document.querySelector('.description_pie_day li:nth-child(1) .number_li').innerText),
-    Number(document.querySelector('.description_pie_day li:nth-child(2) .number_li').innerText),
-    Number(document.querySelector('.description_pie_day li:nth-child(3) .number_li').innerText)
-];
-let data_circle_month = [
-    Number(document.querySelector('.description_pie_month li:nth-child(1) .number_li').innerText),
-    Number(document.querySelector('.description_pie_month li:nth-child(2) .number_li').innerText),
-    Number(document.querySelector('.description_pie_month li:nth-child(3) .number_li').innerText)
-];
+labels_pie_day = document.querySelectorAll('.description_pie_day li .name_li')
+labels_data_pie_day = []
+for (let label of labels_pie_day) {
+  labels_data_pie_day.push(label.innerText)
+}
+
+number_pie_day = document.querySelectorAll('.description_pie_day li .number_li')
+data_pie_day = []
+for (let number of number_pie_day) {
+  data_pie_day.push(Number(number.innerText))
+}
+
+labels_pie_month = document.querySelectorAll('.description_pie_month li .name_li')
+labels_data_pie_month = []
+for (let label of labels_pie_month) {
+  labels_data_pie_month.push(label.innerText)
+}
+
+number_pie_month = document.querySelectorAll('.description_pie_month li .number_li')
+data_pie_month = []
+for (let number of number_pie_month) {
+  data_pie_month.push(Number(number.innerText))
+}
 
 
 let config_linear_days = {
@@ -87,9 +100,9 @@ linear_months_obj.style.display = 'none';
 
 
 let data_day = [{
-  labels: ["Вызвать официанта", "Открыть меню", "Оставить отзыв"],
-  data: data_circle_day,
-  backgroundColor: ["#046240", "#ffa500", "#0175c3", ],
+  labels: labels_data_pie_day,
+  data: data_pie_day,
+  backgroundColor: ["#046240", "#ffa500", "#0175c3", "#cf0940", "#01c3bd", "#012bc3"],
   borderColor: "#fff",
   offset: 7,
   hoverOffset: 12,
@@ -129,9 +142,9 @@ let CircleChartDay = new Chart(day_circle_obj, {
 
 
 let data_month = [{
-  labels: ["Вызвать официанта", "Открыть меню", "Оставить отзыв"],
-  data: data_circle_month,
-  backgroundColor: ["#046240", "#ffa500", "#0175c3", ],
+  labels: labels_data_pie_month,
+  data: data_pie_month,
+  backgroundColor: ["#046240", "#ffa500", "#0175c3", "#cf0940", "#01c3bd", "#012bc3"],
   borderColor: "#fff",
   offset: 7,
   hoverOffset: 12,
@@ -172,7 +185,7 @@ let circle_obj_day_base = document.getElementById("circleChartDay");
 no_data_block.style.display = 'none';
 
 let all_zero_days = true
-for (let i of data_circle_day) {
+for (let i of data_pie_day) {
   if (i !== 0) {
     all_zero_days = false
   }
@@ -198,7 +211,7 @@ select_circle_chart.addEventListener('change', () => {
     no_data_block.style.display = 'none';
 
     let all_zero = true
-    for (let i of data_circle_month) {
+    for (let i of data_pie_month) {
       if (i !== 0) {
         all_zero = false
       }
@@ -216,7 +229,7 @@ select_circle_chart.addEventListener('change', () => {
     no_data_block.style.display = 'none';
 
     let all_zero = true
-    for (let i of data_circle_day) {
+    for (let i of data_pie_day) {
       if (i !== 0) {
         all_zero = false
       }

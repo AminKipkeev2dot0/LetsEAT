@@ -253,6 +253,15 @@
                                     <span class="number_li">{{ pie_day.feedback }}</span>
                                 </div>
                             </li>
+                            {% for button in pie_btns %}
+                                <li>
+                                    <span class="custom_lst_{{ forloop.counter|add:"3" }} custom_lst"></span>
+                                    <div class="text_li">
+                                        <span class="name_li">{{ button.name }}</span>
+                                        <span class="number_li">{{ button.count_click_day }}</span>
+                                    </div>
+                                </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="description_pie description_pie_month">
@@ -278,6 +287,15 @@
                                     <span class="number_li">{{ pie_month.feedback }}</span>
                                 </div>
                             </li>
+                            {% for button in pie_btns %}
+                                <li>
+                                    <span class="custom_lst_{{ forloop.counter|add:"3" }} custom_lst"></span>
+                                    <div class="text_li">
+                                        <span class="name_li">{{ button.name }}</span>
+                                        <span class="number_li">{{ button.count_click_month }}</span>
+                                    </div>
+                                </li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </div>
