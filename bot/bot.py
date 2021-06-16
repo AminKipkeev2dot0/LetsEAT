@@ -273,7 +273,7 @@ def residue_control(message):
     try:
         bot.delete_message(message.chat.id, message.message_id)
         r = requests.post(
-            'https://letseat.su/client_page/telegram/get_categories',
+            'http://letseat.su:80/client_page/telegram/get_categories',
             data={'id_chat': message.chat.id, 'secret_key': TG_SECRET_KEY})
         list_categories = json.loads(r.text)['categories']
         bot.send_message(message.chat.id, 'Выберите категорию блюда:',
@@ -320,7 +320,7 @@ def callback_query(call):
         bot.answer_callback_query(call.id)
         category_pk = call.data.split(':')[1]
         r = requests.post(
-            'https://letseat.su/client_page/telegram/get_dishes',
+            'http://letseat.su:80/client_page/telegram/get_dishes',
             data={'category_pk': category_pk, 'secret_key': TG_SECRET_KEY})
         list_dishes = json.loads(r.text)['dishes']
         bot.edit_message_text('Выберите блюдо:', call.message.chat.id,
@@ -337,7 +337,7 @@ def callback_query(call):
             category_pk = int(call.data.split(':')[2])
             next_page = number_page + 1
             r = requests.post(
-                'https://letseat.su/client_page/telegram/get_dishes',
+                'http://letseat.su:80/client_page/telegram/get_dishes',
                 data={'category_pk': category_pk, 'secret_key': TG_SECRET_KEY})
             list_dishes = json.loads(r.text)['dishes']
             bot.edit_message_reply_markup(call.message.chat.id,
@@ -355,7 +355,7 @@ def callback_query(call):
             category_pk = int(call.data.split(':')[2])
             next_page = number_page - 1
             r = requests.post(
-                'https://letseat.su/client_page/telegram/get_dishes',
+                'http://letseat.su:80/client_page/telegram/get_dishes',
                 data={'category_pk': category_pk, 'secret_key': TG_SECRET_KEY})
             list_dishes = json.loads(r.text)['dishes']
             bot.edit_message_reply_markup(call.message.chat.id,
@@ -373,7 +373,7 @@ def callback_query(call):
                 dish_pk = call.data.split(':')[2]
                 category_pk = int(call.data.split(':')[3])
                 r = requests.post(
-                    'https://letseat.su/client_page/telegram/edit_dish',
+                    'http://letseat.su:80/client_page/telegram/edit_dish',
                     data={'category_pk': category_pk, 'dish_pk': dish_pk,
                           'secret_key': TG_SECRET_KEY})
 
