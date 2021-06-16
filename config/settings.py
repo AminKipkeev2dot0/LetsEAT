@@ -165,6 +165,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.vk.VKOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
@@ -172,8 +173,8 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '428523113961-027tui9r8gqc0j26oj9c7ebmaqidp1ob.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'aDgEjbzEwKcNFBi6-qzk9Znh'
 
-SOCIAL_AUTH_FACEBOOK_KEY = '1094020171127470'        # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = '6b4b7b567252a6a0048af976652dd58a'  # App Secret
+SOCIAL_AUTH_FACEBOOK_KEY = '485465829203600'        # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '3889dbf4fa2c29fadd885c8347540393'  # App Secret
 
 LOGIN_URL = '/auth/login/google-oauth2/'
 
