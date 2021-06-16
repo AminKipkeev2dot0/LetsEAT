@@ -14,30 +14,29 @@ const cache = new Map();
 let width, height, gradient;
 
 
-labels_pie_day = document.querySelectorAll('.description_pie_day li .name_li')
-labels_data_pie_day = []
-for (let label of labels_pie_day) {
-  labels_data_pie_day.push(label.innerText)
+pie_day = document.querySelectorAll('.description_pie_day li');
+labels_data_pie_day = [];
+data_pie_day = [];
+for (let object of pie_day) {
+  let label = object.querySelector('.name_li').innerText;
+  let data = Number(object.querySelector('.number_li').innerText);
+  if (data !== 0) {
+    labels_data_pie_day.push(label);
+    data_pie_day.push(data);
+  }
 }
 
-number_pie_day = document.querySelectorAll('.description_pie_day li .number_li')
-data_pie_day = []
-for (let number of number_pie_day) {
-  data_pie_day.push(Number(number.innerText))
+pie_month = document.querySelectorAll('.description_pie_month li');
+labels_data_pie_month = [];
+data_pie_month = [];
+for (let object of pie_month) {
+  let label = object.querySelector('.name_li').innerText;
+  let data = Number(object.querySelector('.number_li').innerText);
+  if (data !== 0) {
+    labels_data_pie_month.push(label);
+    data_pie_month.push(data);
+  }
 }
-
-labels_pie_month = document.querySelectorAll('.description_pie_month li .name_li')
-labels_data_pie_month = []
-for (let label of labels_pie_month) {
-  labels_data_pie_month.push(label.innerText)
-}
-
-number_pie_month = document.querySelectorAll('.description_pie_month li .number_li')
-data_pie_month = []
-for (let number of number_pie_month) {
-  data_pie_month.push(Number(number.innerText))
-}
-
 
 let config_linear_days = {
   labels: labels_linear_days,
