@@ -365,15 +365,27 @@ def callback_query(call):
             bot.send_message(call.message.chat.id,
                              'Сбой соединения:( Попробуйте ещё раз')
     elif call.data[:4] == 'dish':
-        # try:
+
         bot.answer_callback_query(call.id)
         number_page = int(call.data.split(':')[1])
         dish_pk = call.data.split(':')[2]
         category_pk = int(call.data.split(':')[3])
-        r = requests.post(
-            'https://www.letseat.su/client_page/telegram/edit_dish',
-            data={'category_pk': category_pk, 'dish_pk': dish_pk,
-                  'secret_key': TG_SECRET_KEY})
+        try:
+            r = requests.post(
+                'https://www.letseat.su/client_page/telegram/edit_dish',
+                data={'category_pk': category_pk, 'dish_pk': dish_pk,
+                      'secret_key': TG_SECRET_KEY})
+        except requests.exceptions.ConnectionError:
+            try:
+                time.sleep(1)
+                r = requests.post(
+                    'https://www.letseat.su/client_page/telegram/edit_dish',
+                    data={'category_pk': category_pk, 'dish_pk': dish_pk,
+                          'secret_key': TG_SECRET_KEY})
+            except:
+                bot.send_message(call.message.chat.id, 'Сбой соединения:( Попробуйте ещё раз')
+                return
+
 
         list_dishes = json.loads(r.text)['dishes']
 
@@ -383,8 +395,7 @@ def callback_query(call):
                                           list_dishes, number_page,
                                           category_pk
                                       ))
-        # except requests.exceptions.ConnectionError:
-        #         bot.send_message(call.message.chat.id, 'Сбой соединения:( Попробуйте ещё раз')
+
 
 
 if __name__ == '__main__':
