@@ -1,8 +1,11 @@
 from glQiwiApi import QiwiWrapper
+from environs import Env
 
+env = Env()
+env.read_env()
 
-SECRET_KEY = 'eyJ2ZXJzaW9uIjoiUDJQIiwiZGF0YSI6eyJwYXlpbl9tZXJjaGFudF9zaXRlX3VpZCI6ImRzaXB0OC0wMCIsInVzZXJfaWQiOiI3OTE4NzE4ODAwOCIsInNlY3JldCI6IjAzZWJhNzE2YjI3ZTAyNTgzYjMyNDQzMGE1Mzk0Mjg5Zjc4MDBkMmU1MzVkYjBiNTM5NzJmNDcyOTc1M2JmYWQifX0='
-PUBLIC_KEY = '48e7qUxn9T7RyYE1MVZswX1FRSbE6iyCj2gCRwwF3Dnh5XrasNTx3BGPiMsyXQFNKQhvukniQG8RTVhYm3iPqray6nGhuYHn44BxyaFSeEM1HGhX33VR2TVEX5PdK68xZRBkvzTYrMJXrMG9vAqh677vT46dHMnJTo3P7JQBN1eejV8fEyqc9da1hBH9R'
+SECRET_KEY = env.str("QIWI_SECRET_KEY")
+PUBLIC_KEY = env.str("QIWI_PUBLIC_KEY")
 
 
 async def create_link_to_pay(price: int):
