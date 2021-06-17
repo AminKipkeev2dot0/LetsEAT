@@ -365,26 +365,26 @@ def callback_query(call):
             bot.send_message(call.message.chat.id,
                              'Сбой соединения:( Попробуйте ещё раз')
     elif call.data[:4] == 'dish':
-            try:
-                bot.answer_callback_query(call.id)
-                number_page = int(call.data.split(':')[1])
-                dish_pk = call.data.split(':')[2]
-                category_pk = int(call.data.split(':')[3])
-                r = requests.post(
-                    'https://www.letseat.su/client_page/telegram/edit_dish',
-                    data={'category_pk': category_pk, 'dish_pk': dish_pk,
-                          'secret_key': TG_SECRET_KEY})
+        # try:
+        bot.answer_callback_query(call.id)
+        number_page = int(call.data.split(':')[1])
+        dish_pk = call.data.split(':')[2]
+        category_pk = int(call.data.split(':')[3])
+        r = requests.post(
+            'https://www.letseat.su/client_page/telegram/edit_dish',
+            data={'category_pk': category_pk, 'dish_pk': dish_pk,
+                  'secret_key': TG_SECRET_KEY})
 
-                list_dishes = json.loads(r.text)['dishes']
+        list_dishes = json.loads(r.text)['dishes']
 
-                bot.edit_message_reply_markup(call.message.chat.id,
-                                              call.message.message_id,
-                                              reply_markup=dish_kb(
-                                                  list_dishes, number_page,
-                                                  category_pk
-                                              ))
-            except requests.exceptions.ConnectionError:
-                bot.send_message(call.message.chat.id, 'Сбой соединения:( Попробуйте ещё раз')
+        bot.edit_message_reply_markup(call.message.chat.id,
+                                      call.message.message_id,
+                                      reply_markup=dish_kb(
+                                          list_dishes, number_page,
+                                          category_pk
+                                      ))
+        # except requests.exceptions.ConnectionError:
+        #         bot.send_message(call.message.chat.id, 'Сбой соединения:( Попробуйте ещё раз')
 
 
 if __name__ == '__main__':
