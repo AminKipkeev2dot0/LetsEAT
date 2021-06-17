@@ -285,10 +285,7 @@ def residue_control(message):
                                           'администратором!</b>')
         logging.warning(
             f'Вызов меню контроля остатоков. Пользователь не добавил бота в админы(id чата: {message.chat.id}). Текст ошибки: {error}')
-    except requests.exceptions.ConnectionError as error:
-        bot.send_message(message.chat.id, 'Сбой соединения:( Попробуйте ещё раз')
-        logging.error(
-            f'Вызов меню контроля остатоков. Что-то пошло не так(id чата: {message.chat.id}). Текст ошибки: {error}')
+
 
 
 @bot.message_handler(
