@@ -274,10 +274,14 @@ def send_request(url: str, data: dict, message):
         r = requests.post(url, data=data)
         return r
     except requests.exceptions.ConnectionError:
-
-        time.sleep(1)
-        r = requests.post(url, data=data)
-        return r
+        try:
+            time.sleep(1)
+            r = requests.post(url, data=data)
+            return r
+        except:
+            bot.send_message(message.chat.id,
+                             'Сбой соединения:( Попробуйте ещё раз')
+            return False
 
 
 
