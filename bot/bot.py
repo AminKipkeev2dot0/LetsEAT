@@ -266,16 +266,38 @@ def check_group(chat_id: int):
         return False
 
 
+
+
+
+def send_request(url: str, data: dict, message):
+    try:
+        r = requests.post(url, data=data)
+        return r
+    except requests.exceptions.ConnectionError:
+        try:
+            time.sleep(1)
+            r = requests.post(url, data=data)
+            return r
+        except:
+            bot.send_message(message.chat.id,
+                             'Сбой соединения:( Попробуйте ещё раз')
+            return False
+
+
+
+
 @bot.message_handler(
     func=lambda message: message.chat.type in ['group', 'supergroup'],
     commands=['residue_control'])
 def residue_control(message):
     try:
         bot.delete_message(message.chat.id, message.message_id)
-        r = requests.post(
-            'https://www.letseat.su/client_page/telegram/get_categories',
-            data={'id_chat': message.chat.id, 'secret_key': TG_SECRET_KEY},
-        )
+
+        url_send = 'https://www.letseat.su/client_page/telegram/get_categories'
+        data_send = {'id_chat': message.chat.id, 'secret_key': TG_SECRET_KEY}
+        r = send_request(url_send, data_send, message)
+        if not r:
+            return
         list_categories = json.loads(r.text)['categories']
         bot.send_message(message.chat.id, 'Выберите категорию блюда:',
                          reply_markup=categories_kb(list_categories))
@@ -314,29 +336,36 @@ def callback_query(call):
         bot.delete_message(call.message.chat.id,
                            call.message.message_id)
     elif call.data[:8] == 'category':
-        # try:
+
         bot.answer_callback_query(call.id)
         category_pk = call.data.split(':')[1]
-        r = requests.post(
-            'https://www.letseat.su/client_page/telegram/get_dishes',
-            data={'category_pk': category_pk, 'secret_key': TG_SECRET_KEY})
+
+        url_send = 'https://www.letseat.su/client_page/telegram/get_dishes'
+        data_send = {'category_pk': category_pk, 'secret_key': TG_SECRET_KEY}
+        r = send_request(url_send, data_send, call.message)
+        if not r:
+            return
+
         list_dishes = json.loads(r.text)['dishes']
         bot.edit_message_text('Выберите блюдо:', call.message.chat.id,
                               call.message.message_id,
                               reply_markup=dish_kb(list_dishes, 0,
                                                    int(category_pk)))
-        # except requests.exceptions.ConnectionError:
-        #     bot.send_message(call.message.chat.id,
-        #                      'Сбой соединения:( Попробуйте ещё раз')
+
     elif call.data[:11] == 'next_dishes':
         try:
             bot.answer_callback_query(call.id)
             number_page = int(call.data.split(':')[1])
             category_pk = int(call.data.split(':')[2])
             next_page = number_page + 1
-            r = requests.post(
-                'https://www.letseat.su/client_page/telegram/get_dishes',
-                data={'category_pk': category_pk, 'secret_key': TG_SECRET_KEY})
+
+            url_send = 'https://www.letseat.su/client_page/telegram/get_dishes'
+            data_send = {'category_pk': category_pk,
+                         'secret_key': TG_SECRET_KEY}
+            r = send_request(url_send, data_send, call.message)
+            if not r:
+                return
+
             list_dishes = json.loads(r.text)['dishes']
             bot.edit_message_reply_markup(call.message.chat.id,
                                           call.message.message_id,
@@ -352,9 +381,14 @@ def callback_query(call):
             number_page = int(call.data.split(':')[1])
             category_pk = int(call.data.split(':')[2])
             next_page = number_page - 1
-            r = requests.post(
-                'https://www.letseat.su/client_page/telegram/get_dishes',
-                data={'category_pk': category_pk, 'secret_key': TG_SECRET_KEY})
+
+            url_send = 'https://www.letseat.su/client_page/telegram/get_dishes'
+            data_send = {'category_pk': category_pk,
+                         'secret_key': TG_SECRET_KEY}
+            r = send_request(url_send, data_send, call.message)
+            if not r:
+                return
+
             list_dishes = json.loads(r.text)['dishes']
             bot.edit_message_reply_markup(call.message.chat.id,
                                           call.message.message_id,
@@ -370,21 +404,13 @@ def callback_query(call):
         number_page = int(call.data.split(':')[1])
         dish_pk = call.data.split(':')[2]
         category_pk = int(call.data.split(':')[3])
-        try:
-            r = requests.post(
-                'https://www.letseat.su/client_page/telegram/edit_dish',
-                data={'category_pk': category_pk, 'dish_pk': dish_pk,
-                      'secret_key': TG_SECRET_KEY})
-        except requests.exceptions.ConnectionError:
-            try:
-                time.sleep(1)
-                r = requests.post(
-                    'https://www.letseat.su/client_page/telegram/edit_dish',
-                    data={'category_pk': category_pk, 'dish_pk': dish_pk,
-                          'secret_key': TG_SECRET_KEY})
-            except:
-                bot.send_message(call.message.chat.id, 'Сбой соединения:( Попробуйте ещё раз')
-                return
+
+        url_send = 'https://www.letseat.su/client_page/telegram/edit_dish'
+        data_send = {'category_pk': category_pk, 'dish_pk': dish_pk,
+                     'secret_key': TG_SECRET_KEY}
+        r = send_request(url_send, data_send, call.message)
+        if not r:
+            return
 
 
         list_dishes = json.loads(r.text)['dishes']
@@ -395,7 +421,6 @@ def callback_query(call):
                                           list_dishes, number_page,
                                           category_pk
                                       ))
-
 
 
 if __name__ == '__main__':
