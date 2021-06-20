@@ -370,7 +370,7 @@ def callback_query(call):
             bot.edit_message_reply_markup(call.message.chat.id,
                                           call.message.message_id,
                                           reply_markup=dish_kb(
-                                              list_dishes, next_page
+                                              list_dishes, next_page, category_pk
                                           ))
         except requests.exceptions.ConnectionError:
             bot.send_message(call.message.chat.id,
@@ -393,7 +393,7 @@ def callback_query(call):
             bot.edit_message_reply_markup(call.message.chat.id,
                                           call.message.message_id,
                                           reply_markup=dish_kb(
-                                              list_dishes, next_page
+                                              list_dishes, next_page, category_pk
                                           ))
         except requests.exceptions.ConnectionError:
             bot.send_message(call.message.chat.id,
