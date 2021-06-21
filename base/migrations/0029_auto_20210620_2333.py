@@ -3,7 +3,7 @@
 import django.contrib.postgres.fields
 from django.db import migrations, models
 
-
+#g
 class Migration(migrations.Migration):
 
     dependencies = [
