@@ -561,7 +561,7 @@ edit_dish_button.addEventListener('click', async () => {
     let result_json = await base_post(url, data)
     if (result_json['status'] === 'ok') {
       clearInterval(anim_save);
-      button_edit.innerText = 'Сохранение';
+      button_edit.innerText = 'Сохранить';
       button_edit.removeAttribute('disabled');
 
       dish_title_price.innerHTML = `${modal_edit_title} <span class="price_dish">(${modal_edit_price}₽)</span>`;
@@ -590,7 +590,7 @@ edit_dish_button.addEventListener('click', async () => {
 
     if (result_json['status'] === 'ok') {
       clearInterval(anim_save);
-      button_edit.innerText = 'Сохранение';
+      button_edit.innerText = 'Сохранить';
       button_edit.removeAttribute('disabled');
 
       dish_title_price.innerHTML = `${modal_edit_title} <span class="price_dish">(${modal_edit_price}₽)</span>`
