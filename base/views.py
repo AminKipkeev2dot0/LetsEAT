@@ -120,6 +120,7 @@ class PersonalAreaStart(TemplateResponseMixin, View):
                         name=request.POST['name'],
 
                     )
+                    new_establishment.subscription = True
                     new_establishment.save()
                     new_establishment.picture = request.FILES['picture']
                     new_establishment.save()
