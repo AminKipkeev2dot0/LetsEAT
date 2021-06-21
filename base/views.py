@@ -222,12 +222,11 @@ class PersonalArea(TemplateResponseMixin, View):
         asyncio.set_event_loop(loop)
         try:
             if month == 1:
-
-                price = 1 * len(check_establishments)
+                price = 990 * len(check_establishments)
             elif month == 3:
-                price = 2 * len(check_establishments)
+                price = 2570 * len(check_establishments)
             elif month == 6:
-                price = 3 * len(check_establishments)
+                price = 5140 * len(check_establishments)
             else:
                 return redirect('empty_personal_area')
 
