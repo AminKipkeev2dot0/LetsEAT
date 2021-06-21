@@ -129,6 +129,7 @@ class PersonalAreaStart(TemplateResponseMixin, View):
                         owner=request.user,
                         name=request.POST['name']
                     )
+                    new_establishment.subscription = True
                     new_establishment.save()
             else:
                 return self.render_to_response({
