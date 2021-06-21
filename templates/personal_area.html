@@ -406,7 +406,7 @@
     <div class="qr-codes pa-block">
       <div class="pa-header">
         <h2>QR Коды</h2>
-        {% if not ua.subscription and not ua.trial %}
+        {% if not establishment.subscription and not ua.trial %}
             <span class="pa-header_span_orange">Без подписки QR-коды недоступны</span>
         {% else %}
           {% if qr_codes.count > 0 %}
@@ -445,7 +445,7 @@
     <div class="menu-block pa-block">
       <div class="pa-header">
         <h2>Меню</h2>
-          {% if not ua.subscription and not ua.trial %}
+          {% if not establishment.subscription and not ua.trial %}
               <span class="pa-header_span_orange">Без подписки меню недоступно</span>
           {% else %}
               <span class="pa-header_button"><span class="button-text">Добавить категорию</span><i class="icon-plus-1"></i></span>
@@ -507,7 +507,7 @@
     <div class="buttons-block pa-block">
       <div class="pa-header">
         <h2>Настройка кнопок</h2>
-          {% if not ua.subscription and not ua.trial %}
+          {% if not establishment.subscription and not ua.trial %}
               <span class="pa-header_span_orange">Без подписки настройка кнопок недоступна</span>
           {% endif %}
         <div class="buttons__content pa-content">
@@ -553,10 +553,11 @@
           <h3>Тариф</h3>
           <p class="subscription__price">990руб./мес</p>
         </div>
+
         <div class="next-pay">
           <h3>До следующего платежа:</h3>
           <p class="subscription__date">
-              {% if ua.subscription or ua.trial %}
+              {% if establishment.subscription or ua.trial %}
                 {{ next_pay }} {{ next_pay|r_pluralize:'день,дня,дней' }}
               {% else %}
                   Тариф истек
@@ -688,11 +689,15 @@
     <div class="modal__content modal-pay__content">
       <div class="close_modal" onclick="close_modal('modal-pay')"><span><i class="icon-cancel"></i></span></div>
         <h4>Выберите период подписки</h4>
-        <div class="payments-periods">
+        <form action="" method="post">
+            <div class="payments-periods">
             <div class="payments-periods__item">
                 <p class="payments-month">1 месяц</p>
                 <p class="payments-price">990 руб.</p>
-                <a href="{% url 'pay' 1 %}" target="_blank">Выбрать</a>
+                <label>
+                    <input type="radio" name="time_pay" value="1" onchange="cost_calculation()">
+                    <span>Выбрать</span>
+                </label>
             </div>
             <div class="payments-periods__item">
                 <p class="payments-month">3 месяца</p>
@@ -700,7 +705,10 @@
                     <p class="payments-price">2570 руб.</p>
                     <p>2970 руб.</p>
                 </div>
-                <a href="{% url 'pay' 3 %}" target="_blank">Выбрать</a>
+                <label>
+                    <input type="radio" name="time_pay" value="3" onchange="cost_calculation()">
+                    <span>Выбрать</span>
+                </label>
             </div>
             <div class="payments-periods__item">
                 <p class="payments-month">6 месяцев</p>
@@ -708,9 +716,37 @@
                     <p class="payments-price">5140 руб.</p>
                     <p>5940 руб.</p>
                 </div>
-                <a href="{% url 'pay' 6 %}" target="_blank">Выбрать</a>
+                <label>
+                    <input type="radio" name="time_pay" value="6" onchange="cost_calculation()">
+                    <span>Выбрать</span>
+                </label>
             </div>
         </div>
+            <div class="payments-establishment">
+                <h5>Выберите заведения для которых хотите активировать подписку:</h5>
+
+                <label>
+                    <input type="checkbox" name="check_establishment" value="{{ establishment.pk }}" checked
+                    onchange="cost_calculation()">
+                    <span class="custom-checkbox"><i class="icon-check"></i></span>
+                    <span>{{ establishment.name }}</span>
+                </label>
+
+                {% for establ in all_establishments %}
+                    <label>
+                        <input type="checkbox" name="check_establishment" value="{{ establ.pk }}" checked
+                        onchange="cost_calculation()">
+                        <span class="custom-checkbox"><i class="icon-check"></i></span>
+                        <span>{{ establ.name }}</span>
+                    </label>
+                {% endfor %}
+                <p>Окончательная сумма: <span class="total_count">0</span></p>
+                {% csrf_token %}
+                <button>Оплатить</button>
+
+            </div>
+        </form>
+
     </div>
 </div>
 
@@ -792,7 +828,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
   <script src="{% static 'js/charts.js' %}"></script>
   <script src="{% static 'js/personal_area.js' %}"></script>
-  {% if ua.subscription or ua.trial%}
+  {% if establishment.subscription or ua.trial%}
     <script src="{% static 'js/personal_area_functions.js' %}"></script>
   {% else %}
       <script src="{% static 'js/lock_pa.js' %}"></script>

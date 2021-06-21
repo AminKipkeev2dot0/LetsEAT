@@ -2570,6 +2570,7 @@ body {
   border-radius: 15px;
   margin-right: 15px;
   background: #fff;
+  border: 3px solid transparent;
 }
 
 .payments-periods p {
@@ -2600,7 +2601,16 @@ body {
   text-decoration: line-through;
 }
 
-.payments-periods__item a {
+.payments-periods__item input[type="radio"] {
+  display: none;
+}
+
+.payments-periods label {
+  width: 100%;
+}
+
+.modal.modal-pay .payments-periods label span {
+  cursor: pointer;
   color: white;
   text-transform: uppercase;
   font-size: 18px;
@@ -2616,9 +2626,97 @@ body {
   font-family: 'Gilroy-Bold', sans-serif;
 }
 
-.payments-periods__item a:hover {
+.modal.modal-pay .payments-periods span:hover {
   transform: scale(.95);
   transition: all .2s;
+}
+
+.payments-establishment {
+  margin-top: 25px;
+  display: none;
+}
+
+.payments-establishment label,
+.payments-establishment p,
+.payments-establishment h5 {
+  max-width: 430px;
+  margin: 0 auto;
+  display: block;
+  width: 100%;
+}
+
+.payments-establishment h5 {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.payments-establishment label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 10px auto;
+}
+
+.payments-establishment input[type='checkbox'] {
+  display: none;
+}
+
+.payments-establishment .custom-checkbox {
+  height: 30px;
+  width: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #0f6ce3;
+  font-size: 22px;
+  margin-right: 15px;
+  background: #fff;
+}
+
+.payments-establishment .custom-checkbox i {
+  display: none;
+}
+
+.payments-establishment input[type='checkbox']:checked ~ .custom-checkbox i {
+  display: inline;
+}
+
+.payments-establishment p {
+  font-weight: bold;
+  margin-top: 15px;
+  font-size: 18px;
+}
+
+.payments-establishment p .total_count {
+  color: #f3a510;
+}
+
+.payments-establishment button {
+  padding: 12px 0;
+  cursor: pointer;
+  color: white;
+  text-transform: uppercase;
+  font-size: 22px;
+  letter-spacing: 1px;
+  display: flex;
+  width: 100%;
+  background: linear-gradient(127.16deg, #f3c110 .9%, #f37e10 100%);
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  font-family: 'Gilroy-Bold', sans-serif;
+  border: none;
+  margin-top: 15px;
+}
+
+.payments-establishment button:disabled {
+  background: linear-gradient(180deg, rgba(233, 233, 233, 0) 0%, #C4C4C4 100%);
+  color: silver;
+  cursor: auto;
 }
 
 .no-data {

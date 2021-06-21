@@ -578,13 +578,12 @@ html {
 }
 
 .choice_category ul li {
-  display: inline;
+  display: inline-block;
   font-family: 'Gilroy-Regular', sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 19px;
-  /* text-transform: uppercase; */
-  margin-right: 15px;
+  margin: 3px 15px 3px 0;
   cursor: pointer;
   color: #4e4e4e;
   border-bottom: 1px solid #2f2f2f

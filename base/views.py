@@ -6,6 +6,7 @@ import os
 import random
 import logging
 from pathlib import Path
+import urllib3
 
 from dateutil.relativedelta import *
 
@@ -206,6 +207,101 @@ class PersonalAreaStart(TemplateResponseMixin, View):
 class PersonalArea(TemplateResponseMixin, View):
     template_name = 'personal_area.html'
 
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        month = int(request.POST['time_pay'][0])
+        check_establishments = request.POST.getlist('check_establishment')
+
+        try:
+            loop = asyncio.get_event_loop()
+        # Если лупа нет - создаю его
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            if month == 1:
+
+                price = 1 * len(check_establishments)
+            elif month == 3:
+                price = 2 * len(check_establishments)
+            elif month == 6:
+                price = 3 * len(check_establishments)
+            else:
+                return redirect('empty_personal_area')
+
+            ua = UserAdvanced.objects.get(user=request.user)
+            if ua.bill_id:
+                check_pay_bill = loop.run_until_complete(check_pay(ua.bill_id))
+                if check_pay_bill:
+                    dt_today = datetime.date.today()
+                    ua.bill_id = ''
+                    ua.subscription = True
+                    ua.trial = False
+
+                    establishments = []
+                    for establishment_pk in check_establishments:
+                        establishment = EstablishmentModel.objects.get(pk=establishment_pk)
+                        establishments.append(establishment)
+
+                    for establishment in establishments:
+                        establishment.subscription = True
+                        if establishment.date_subscribe:
+                            if establishment.date_subscribe.astimezone() < datetime.datetime.now().astimezone():
+                                establishment.date_subscribe = dt_today + relativedelta(
+                                    months=+ua.bill_months)
+                            else:
+                                establishment.date_subscribe = establishment.date_subscribe + \
+                                                       relativedelta(
+                                                           months=+ua.bill_months
+                                                       )
+                        else:
+                            establishment.date_subscribe = dt_today + \
+                                                   relativedelta(
+                                                       months=+ua.bill_months
+                                                   )
+                        establishment.save()
+                    ua.bill_months = 0
+                    ua.pay_establishments = []
+                    ua.save()
+                    return redirect('personal_area',
+                                    id_establishment=ua.last_establishment.pk)
+
+                else:
+                    loop.run_until_complete(cancel_pay(ua.bill_id))
+                    bill = loop.run_until_complete(create_link_to_pay(price))
+                    bill_link = bill['pay_url']
+                    bill_id = bill['bill'].bill_id
+
+                    ua.bill_id = bill_id
+                    ua.bill_months = month
+                    ua.pay_establishments = []
+                    ua.save()
+                    for check_establishment in check_establishments:
+                        ua.pay_establishments.append(check_establishment)
+                    ua.save()
+                    return redirect(bill_link)
+
+            else:
+                bill = loop.run_until_complete(create_link_to_pay(price))
+                bill_link = bill['pay_url']
+                bill_id = bill['bill'].bill_id
+
+                ua.bill_id = bill_id
+                ua.bill_months = month
+                ua.pay_establishments = []
+                ua.save()
+                for check_establishment in check_establishments:
+                    ua.pay_establishments.append(check_establishment)
+                ua.save()
+                return redirect(bill_link)
+
+        except RuntimeError as Error:
+            logger.error(
+                f'RuntimeError при открытии оплаты за {month} месяц\а\ев. Пользователь: {request.user}({request.user.pk}). Полное сообщение ошибки: {Error}')
+            return JsonResponse({'status': 'error'})
+
+        return redirect('empty_personal_area')
+
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('home_page')
@@ -236,30 +332,35 @@ class PersonalArea(TemplateResponseMixin, View):
                 # Если оплачено
                 check_pay_bill = loop.run_until_complete(check_pay(ua.bill_id))
                 if check_pay_bill:
-                    # Если дата текущей подписки меньше сегодняшнего дня, то
-                    # начинаем отсчёт с сегодняшнего дня, если больше, то
-                    # добавляем к текущей дате подписки ещё время на которое
-                    # подписался юзер
-                    if ua.subscription_date:
-                        if ua.subscription_date.astimezone() < datetime.datetime.now().astimezone():
-                            ua.subscription_date = dt_today + relativedelta(
-                                months=+ua.bill_months)
-                        else:
-                            ua.subscription_date = ua.subscription_date + \
-                                                   relativedelta(
-                                                       months=+ua.bill_months
-                                                   )
-                    else:
-                        ua.subscription_date = dt_today + \
-                                               relativedelta(
-                                                   months=+ua.bill_months
-                                               )
-
+                    dt_today = datetime.date.today()
+                    ua.bill_id = ''
                     ua.subscription = True
                     ua.trial = False
-                    ua.bill_id = ''
-                    ua.bill_months = 0
 
+                    establishments = []
+                    for establishment_pk in ua.pay_establishments:
+                        establishment = EstablishmentModel.objects.get(pk=establishment_pk)
+                        establishments.append(establishment)
+
+                    for establishment in establishments:
+                        establishment.subscription = True
+                        if establishment.date_subscribe:
+                            if establishment.date_subscribe.astimezone() < datetime.datetime.now().astimezone():
+                                establishment.date_subscribe = dt_today + relativedelta(
+                                    months=+ua.bill_months)
+                            else:
+                                establishment.date_subscribe = establishment.date_subscribe + \
+                                                               relativedelta(
+                                                                   months=+ua.bill_months
+                                                               )
+                        else:
+                            establishment.date_subscribe = dt_today + \
+                                                           relativedelta(
+                                                               months=+ua.bill_months
+                                                           )
+                        establishment.save()
+                    ua.bill_months = 0
+                    ua.pay_establishments = []
                     ua.save()
                     return redirect('personal_area',
                                     id_establishment=ua.last_establishment.pk)
@@ -268,29 +369,35 @@ class PersonalArea(TemplateResponseMixin, View):
                     f'RuntimeError проверке оплаты в личном кабинете. Пользователь: {request.user}({request.user.pk}). Полное сообщение ошибки: {Error}')
                 return JsonResponse({'status': 'error'})
 
-        if ua.subscription or ua.trial:
-            print('trial, work!!')
-            next_pay = ua.subscription_date.astimezone() - datetime.datetime.now().astimezone()
-            next_pay = next_pay.days + 1
-        else:
-            print('trial, not work((')
-            next_pay = None
-
-        if ua.subscription_date.astimezone() < datetime.datetime.now().astimezone():
-            ua.subscription = False
-            ua.trial = False
-            ua.save()
-
         current_establishment = EstablishmentModel.objects.filter(
             pk=kwargs['id_establishment'], owner=request.user).first()
         if current_establishment is None:
             return redirect('home_page')
+
+        if current_establishment.date_subscribe:
+            next_pay = current_establishment.date_subscribe.astimezone() - datetime.datetime.now().astimezone()
+            next_pay = next_pay.days + 1
+        elif ua.trial:
+            current_establishment.date_subscribe = ua.subscription_date
+            current_establishment.save()
+            next_pay = ua.subscription_date.astimezone() - datetime.datetime.now().astimezone()
+            next_pay = next_pay.days + 1
+        else:
+            next_pay = None
+
+        if current_establishment.date_subscribe.astimezone() < datetime.datetime.now().astimezone():
+            current_establishment.subscription = False
+            current_establishment.save()
+            ua.trial = False
+            ua.save()
+
+
         qr_codes = QRCode.objects.filter(establishment=current_establishment)
         buttons = ButtonModel.objects.filter(
             establishment=current_establishment)
         categories = CategoryDishesModel.objects.filter(
             establishment=current_establishment
-        )
+        ).order_by('pk')
         comments = CommentModel.objects.filter(
             establishment=current_establishment
         ).order_by('-date')
@@ -514,6 +621,7 @@ def pay(request, **kwargs):
 @require_POST
 def establishment_add(request):
     name_establishment = json.loads(request.body)['name']
+    ua = UserAdvanced.objects.get(user=request.user)
 
     establishment = EstablishmentModel.objects.create(owner=request.user,
                                                       name=name_establishment)
@@ -524,6 +632,8 @@ def establishment_add(request):
     tg_code = random.randint(10000, 99999)
     establishment.link_tg = tg_link
     establishment.tg_code = tg_code
+    establishment.date_subscribe = ua.subscription_date
+    establishment.subscription = True
 
     establishment.save()
 

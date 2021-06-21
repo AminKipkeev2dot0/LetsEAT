@@ -168,10 +168,6 @@ m_button_load_logo.addEventListener('change', async (e) => {
 
     clearInterval(m_load_img_to_server);
   }
-
-
-
-
   } else {
     button_load_logo_span.innerText = 'Файл слишком большой. Выберите другой';
   }
@@ -411,7 +407,8 @@ add_company_complete.addEventListener('click', async (e) => {
   e.stopPropagation();
   let name_establishment = document.querySelector('.other_companies .plus_block .input-block input');
   if (name_establishment.value.length > 0) {
-    let url = 'https://letseat.su/establishment/add';
+    // let url = 'https://letseat.su/establishment/add';
+    let url = 'http://127.0.0.1:8000/establishment/add';
     let data = {
       'name': name_establishment.value
     }
@@ -688,3 +685,49 @@ new Splide('.splide', {
 document.querySelector('.to_top').addEventListener('click', () => {
   document.querySelector('html').scrollIntoView({block: "start", behavior: "smooth"});
 })
+
+
+
+
+
+function cost_calculation() {
+  let all_radio = document.querySelectorAll('.payments-periods__item input[type="radio"]');
+
+  let cost = 0;
+
+  for (let radio of all_radio) {
+    if (radio.checked) {
+      let payment_item = radio.parentElement.parentElement
+      payment_item.style.border = '3px solid #f3c110';
+      cost = Number(payment_item.querySelector('.payments-price').innerText.split(' ')[0]);
+    } else {
+      radio.parentElement.parentElement.style.border = '3px solid transparent';
+    }
+  }
+
+  let payments_estbl_block = document.querySelector('.payments-establishment');
+  payments_estbl_block.style.display = 'block';
+
+  let payments_all_estbl = payments_estbl_block.querySelectorAll('label input[type="checkbox"]');
+
+  let cout_checked_esbl = 0;
+  for (let payments_estbl of payments_all_estbl) {
+    if (payments_estbl.checked) {
+      cout_checked_esbl++;
+    }
+  }
+
+  let total_count = payments_estbl_block.querySelector('.total_count');
+  let total = cost * cout_checked_esbl;
+  total_count.innerText = String(total) + ' руб.';
+
+  let button_pay = payments_estbl_block.querySelector('button');
+  if (total === 0) {
+    button_pay.setAttribute('disabled', 'disabled');
+  } else {
+    button_pay.removeAttribute('disabled');
+  }
+}
+
+
+

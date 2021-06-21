@@ -589,6 +589,10 @@ edit_dish_button.addEventListener('click', async () => {
     let result_json = await fetchResp.json();
 
     if (result_json['status'] === 'ok') {
+      clearInterval(anim_save);
+      button_edit.innerText = 'Сохранение';
+      button_edit.removeAttribute('disabled');
+
       dish_title_price.innerHTML = `${modal_edit_title} <span class="price_dish">(${modal_edit_price}₽)</span>`
       dish_description.innerText = modal_edit_description;
       dish_img.innerHTML = `<img src="${result_json['path_img']}" alt="Изображение блюда">`

@@ -68,35 +68,38 @@ class ClientPageMain(TemplateResponseMixin, View):
                     loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
                 try:
-                    dt_today = datetime.date.today()
-                    check_pay_bill = loop.run_until_complete(
-                        check_pay(ua.bill_id))
                     # Если оплачено
+                    check_pay_bill = loop.run_until_complete(check_pay(ua.bill_id))
                     if check_pay_bill:
-                        # Если дата текущей подписки меньше сегодняшнего дня, то
-                        # начинаем отсчёт с сегодняшнего дня, если больше, то
-                        # добавляем к текущей дате подписки ещё время на которое
-                        # подписался юзер
-                        if ua.subscription_date:
-                            if ua.subscription_date.astimezone() < datetime.datetime.now().astimezone():
-                                ua.subscription_date = dt_today + relativedelta(
-                                    months=+ua.bill_months)
-                            else:
-                                ua.subscription_date = ua.subscription_date + \
-                                                       relativedelta(
-                                                           months=+ua.bill_months
-                                                       )
-                        else:
-                            ua.subscription_date = dt_today + \
-                                                   relativedelta(
-                                                       months=+ua.bill_months
-                                                   )
-
+                        dt_today = datetime.date.today()
+                        ua.bill_id = ''
                         ua.subscription = True
                         ua.trial = False
-                        ua.bill_id = ''
-                        ua.bill_months = 0
 
+                        establishments = []
+                        for establishment_pk in ua.pay_establishments:
+                            establishment = EstablishmentModel.objects.get(pk=establishment_pk)
+                            establishments.append(establishment)
+
+                        for establishment in establishments:
+                            establishment.subscription = True
+                            if establishment.date_subscribe:
+                                if establishment.date_subscribe.astimezone() < datetime.datetime.now().astimezone():
+                                    establishment.date_subscribe = dt_today + relativedelta(
+                                        months=+ua.bill_months)
+                                else:
+                                    establishment.date_subscribe = establishment.date_subscribe + \
+                                                                   relativedelta(
+                                                                       months=+ua.bill_months
+                                                                   )
+                            else:
+                                establishment.date_subscribe = dt_today + \
+                                                               relativedelta(
+                                                                   months=+ua.bill_months
+                                                               )
+                            establishment.save()
+                        ua.bill_months = 0
+                        ua.pay_establishments = []
                         ua.save()
                         return redirect('personal_area',
                                         id_establishment=ua.last_establishment.pk)
@@ -105,12 +108,13 @@ class ClientPageMain(TemplateResponseMixin, View):
                         f'RuntimeError проверке оплаты в личном кабинете. Пользователь: {request.user}({request.user.pk}). Полное сообщение ошибки: {Error}')
                     return JsonResponse({'status': 'error'})
 
-            if ua.subscription_date.astimezone() < datetime.datetime.now().astimezone():
-                ua.subscription = False
+            if establishment.date_subscribe.astimezone() < datetime.datetime.now().astimezone():
+                establishment.subscription = False
+                establishment.save()
                 ua.trial = False
                 ua.save()
 
-            if ua.subscription or ua.trial:
+            if establishment.subscription or ua.trial:
                 self.template_name = 'client_pages/main.html'
                 dt_today = datetime.date.today()
                 stat = StatisticModel.objects.filter(

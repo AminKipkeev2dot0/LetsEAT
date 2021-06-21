@@ -39,6 +39,8 @@ class EstablishmentModel(models.Model):
                                     blank=True, null=True)
     telegram_chat = models.CharField(max_length=20, db_index=True,
                                      blank=True, null=True, unique=True)
+    date_subscribe = models.DateTimeField(blank=True, null=True)
+    subscription = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -97,6 +99,9 @@ class DishModel(models.Model):
 
     def __str__(self):
         return f'Блюдо: {self.name}'
+
+    class Meta:
+        ordering = ['pk']
 
 
 class CommentModel(models.Model):
@@ -165,6 +170,7 @@ class UserAdvanced(models.Model):
     subscription_date = models.DateTimeField(blank=True, null=True)
     bill_id = models.CharField(max_length=150, blank=True)
     bill_months = models.IntegerField(blank=True, null=True)
+    pay_establishments = ArrayField(models.IntegerField(blank=True), blank=True, null=True)
     trial = models.BooleanField(default=True)
 
     def __str__(self):
