@@ -407,8 +407,8 @@ add_company_complete.addEventListener('click', async (e) => {
   e.stopPropagation();
   let name_establishment = document.querySelector('.other_companies .plus_block .input-block input');
   if (name_establishment.value.length > 0) {
-    // let url = 'https://letseat.su/establishment/add';
-    let url = 'http://127.0.0.1:8000/establishment/add';
+    let url = 'https://letseat.su/establishment/add';
+    // let url = 'http://127.0.0.1:8000/establishment/add';
     let data = {
       'name': name_establishment.value
     }
