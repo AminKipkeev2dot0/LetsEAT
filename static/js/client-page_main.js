@@ -33,7 +33,8 @@ let button_menu = document.querySelector('#menu');
 let button_feedback = document.querySelector('#feedback');
 let feedback__content = document.querySelector('#feedback .menu-item__content')
 
-button_waiter.addEventListener('click', async () => {
+try {
+  button_waiter.addEventListener('click', async () => {
   let seconds = document.querySelector('.number-seconds');
 
   if (click_close === false) {
@@ -82,11 +83,13 @@ button_waiter.addEventListener('click', async () => {
   }
   }
 });
-
-button_close_waiter_block.addEventListener('click', () => {
+  button_close_waiter_block.addEventListener('click', () => {
   click_close = true;
   waiter_content.style.display = 'none';
 });
+} catch (e) {
+
+}
 
 document.querySelector('body').style.maxWidth = 'initial';
 
@@ -118,8 +121,15 @@ button_menu.addEventListener('click', async () => {
 
   if (document.querySelector('.menu_mb') === null) {
     let url = 'https://letseat.su/client_page/get_menu'
-    let data = {
-      'id_establishment': (window.location.pathname).split('/')[2]
+    let data;
+    if ((window.location.pathname).split('/').length === 2) {
+      data = {
+        'custom_link': (window.location.pathname).split('/')[1]
+      }
+    } else {
+      data = {
+        'id_establishment': (window.location.pathname).split('/')[2]
+      }
     }
     let json = await base_post(url, data);
 
@@ -311,7 +321,7 @@ for (let star_div of stars) {
 let modal_feedback = document.querySelector('#send_feedback');
 let modal_feedback_content = document.querySelector('#send_feedback_content');
 
-$('form').submit(async function (e) {
+$('.home-block form').submit(async function (e) {
     e.preventDefault();
     let form = this;
     let url = 'https://letseat.su/client_page/feedback'
@@ -373,25 +383,34 @@ async function custom_button(id_button) {
 
   let description_button = document.querySelector(`#custom-${id_button} .description_button`).innerText;
 
-  let url = 'https://letseat.su/client_page/telegram/button';
-  let data = {
-    'id_establishment': (window.location.pathname).split('/')[2],
-    'number_table': (window.location.pathname).split('/')[3],
-    'button_pk': id_button,
-  }
+  if ((window.location.pathname).split('/').length === 2) {
+      modal_description.innerText = description_button;
 
-  let json = await base_post(url, data);
+      modal_custom_b.style.zIndex = '10';
+      modal_custom_b.style.opacity = '1';
+      modal_custom_b.style.animation = 'opacity_dark 0.3s';
+      modal_custom_b_content.style.animation = 'from_center 0.4s';
+    } else {
+      let url = 'https://letseat.su/client_page/telegram/button';
+      let data = {
+        'id_establishment': (window.location.pathname).split('/')[2],
+        'number_table': (window.location.pathname).split('/')[3],
+        'button_pk': id_button,
+      }
 
-  if (json['status'] === 'ok') {
-    modal_description.innerText = description_button;
+      let json = await base_post(url, data);
 
-    modal_custom_b.style.zIndex = '10';
-    modal_custom_b.style.opacity = '1';
-    modal_custom_b.style.animation = 'opacity_dark 0.3s';
-    modal_custom_b_content.style.animation = 'from_center 0.4s';
-  } else {
-    show_error()
-  }
+      if (json['status'] === 'ok') {
+        modal_description.innerText = description_button;
+
+        modal_custom_b.style.zIndex = '10';
+        modal_custom_b.style.opacity = '1';
+        modal_custom_b.style.animation = 'opacity_dark 0.3s';
+        modal_custom_b_content.style.animation = 'from_center 0.4s';
+      } else {
+        show_error()
+      }
+    }
 }
 
 function show_error() {

@@ -252,6 +252,45 @@ def new_order(chat_id: int, number_table: int, dishes: list,
             f'Новый заказ. Неведомая ошибка(id чата: {chat_id}). Текст ошибки: {error}')
 
 
+def new_online_order(chat_id: int, client_data: dict, dishes: list, price: int):
+    try:
+        print(chat_id)
+        # Формирую сообщение
+        message_header = f'<u>Новый онлайн заказ</u>\n\n\n'
+
+        message_client_data = f'<b>Имя клиента:</b> {client_data["name"]}\n' \
+                              f'<b>Телефон:</b> {client_data["phone"]}\n' \
+                              f'<b>Адрес:</b> {client_data["address"]}\n' \
+                              f'<b>Сообщение:</b> {client_data["message"]}\n' \
+                              f'\n<i>Заказ:</i>\n'
+
+        message_dishes = ''
+        for dish in dishes:
+            message_dishes += f"<b>{dish['name']}</b>: {dish['number_dish']}\n"
+
+        message_price = f"\n<b>Стоимость заказа:</b> {price} руб.\n"
+
+        # Собираю его в кучу
+        full_message = message_header + message_client_data + \
+                       message_dishes + message_price
+
+        message_order = bot.send_message(chat_id, full_message,
+                                         reply_markup=confirm_call())
+        bot.pin_chat_message(chat_id, message_order.message_id)
+        # Удаляю сообщение о закреплении предыдущего сообщения.
+        bot.delete_message(chat_id, (message_order.message_id + 1))
+    except telebot.apihelper.ApiTelegramException as error:
+        bot.send_message(chat_id, '<b>Добавьте бота в администраторы!</b>')
+        logging.warning(
+            f'Новый заказ. Пользователь не добавил бота в админы(id чата:'
+            f' {chat_id}). Текст ошибки: {error}')
+    except BaseException as error:
+        logging.error(
+            f'Новый заказ. Неведомая ошибка(id чата: {chat_id}). '
+            f'Текст ошибки: {error}')
+
+
+
 def check_group(chat_id: int):
     try:
         bot.send_message(chat_id, 'Бот успешно подключён к чату!')

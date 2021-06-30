@@ -14,8 +14,6 @@
   <meta property="og:url" content="">
   <meta property="og:image" content="">
 
-<!--  <link rel="manifest" href="site.webmanifest">-->
-{#  <link rel="apple-touch-icon" href="{% static 'img/favicon.png' %}">#}
   <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
 
   <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
@@ -33,8 +31,8 @@
 <body>
 
     <div class="home-block">
-        <div class="header">
-    <div class="header__bg"></div>
+        <div class="header {% if not number_table %}delivery_header{% endif %}">
+    <div class="header__bg {% if not number_table %}delivery_header_bg{% endif %}"></div>
     <div class="logo-lets-eat">
       <img src="{% static 'img/big-white-log.png' %}" alt="Логотип Let's EAT">
     </div>
@@ -45,10 +43,18 @@
           </div>
         </div>
     {% endif %}
-    <div class="name_company">{{ establishment.name }}</div>
+    {% if not number_table %}
+        <div class="name_company delivery_name_company">
+            <p class="delivery_title">Доставка</p>
+            <p>{{ establishment.name }}</p>
+        </div>
+    {% else %}
+        <div class="name_company">{{ establishment.name }}</div>
+    {% endif %}
   </div>
 
-  <div class="menu">
+        <div class="menu">
+  {% if number_table %}
     <div class="menu-item" id="waiter">
       <div class="menu-item__header">
         <div class="menu__img"><img src="{% static 'img/client_page/waiter.png' %}" alt="Иконка официанта"></div>
@@ -65,6 +71,7 @@
 
       </div>
     </div>
+  {% endif %}
     <div class="menu-item" id="menu">
         <div class="menu-item__header">
           <div class="menu__img"><img src="{% static 'img/client_page/menu.png' %}" alt="Иконка меню"></div>
@@ -102,7 +109,8 @@
 
           </div>
           <input type="hidden" name="id_establishment" value="{{ establishment.pk }}">
-          <input type="hidden" name="number_table" value="{{ number_table }}">
+          <input type="hidden" name="number_table"
+                 value="{% if number_table %}{{ number_table }}{% else %}online{% endif %}">
             {% csrf_token %}
           <button disabled>Отправить</button>
         </form>
@@ -141,8 +149,35 @@
 
   </div>
 
+<div class="form-block">
+    <div class="header_menu_block">
+        <div class="to_back">
+            <img src="{% static 'img/arrow_up.png' %}" alt="Вернуться" title="Вернуться">
+        </div>
+        <h1>Доставка</h1>
+          {% if establishment.picture %}
+              <div class="logo-company-block_mb">
+              <div class="img-company_mb">
+                <img src="{{ establishment.picture.url }}" alt="">
+              </div>
+        </div>
+          {% endif %}
+      </div>
+    <form action="" method="post">
+        <div class="form__content">
+            <input type="text" placeholder="Адрес*" required name="address" oninput="check_not_empty()">
+            <input type="text" placeholder="Имя*" required name="name" oninput="check_not_empty()">
+            <input type="number" placeholder="Телефон*" required name="phone" oninput="check_not_empty()">
+            <textarea name="message" placeholder="Коментарий к заказу"></textarea>
+        </div>
+        <div class="form__submit">
+            <button onclick="complete_delivery_order()" disabled>Заказать</button>
+        </div>
+    </form>
+</div>
+
   <div class="buy" style="width: 100%">
-    <p class="buy__button disabled_buy">Заказать<span></span></p>
+    <p class="buy__button disabled_buy" onclick="{% if number_table %}buy_dishes_offline(){% else %}buy_dishes_online(){% endif %}">Заказать<span></span></p>
   </div>
 
 
@@ -154,6 +189,16 @@
       <p>Большое спасибо за ваш отзыв</p>
     </div>
   </div>
+
+  <div class="modal" id="complete_delivery_order">
+    <div class="modal__content" id="complete_delivery_order__content">
+      <p class="img-block">
+        <i class="icon-check"></i>
+      </p>
+      <p>Спасибо, ваш заказ доставят в ближайшее время! Наш курьер скоро с вами свяжется</p>
+    </div>
+  </div>
+
   <div class="modal" id="custom_button">
     <div class="modal__content" id="custom_button__content">
       <span class="close-modal" onclick="close_modal_button()">&times;</span>

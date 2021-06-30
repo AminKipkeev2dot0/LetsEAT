@@ -17,7 +17,7 @@ from base.models import EstablishmentModel, ButtonModel, CommentModel, \
     CategoryDishesModel, DishModel, StatisticModel, StatisticMonthModel, \
     UserAdvanced, StatisticButton
 from base.qiwi import check_pay
-from bot.bot import new_order, call_waiter, custom_button
+from bot.bot import new_order, call_waiter, custom_button, new_online_order
 
 logger = logging.getLogger(__name__)
 env = Env()
@@ -49,14 +49,48 @@ class ClientPageMain(TemplateResponseMixin, View):
     template_name = ''
 
     def get(self, request, *args, **kwargs):
-        number_table = kwargs['number_table']
-        establishment = EstablishmentModel.objects.filter(
-            pk=kwargs['id_establishment']
-        ).first()
+        if 'custom_link' in kwargs:
+            number_table = None
+            custom_link = 'letseat.su/' + kwargs['custom_link']
+            establishment = EstablishmentModel.objects.filter(custom_link=custom_link).first()
+            if not establishment:
+                return redirect('home_page')
+
+            if not establishment.work_online:
+                self.template_name = 'client_pages/custom_lock.html'
+                message = 'Сейчас мы не работаем на доставку, но мы ждем ' \
+                          'вас у себя!'
+                if not establishment.work_offline:
+                    message = 'Мы пока не работаем.'
+                ctx = {
+                    'message': message,
+                    'establishment': establishment,
+                    'number_table': number_table
+                }
+                return self.render_to_response(ctx)
+        else:
+            number_table = kwargs['number_table']
+            establishment = EstablishmentModel.objects.filter(
+                pk=kwargs['id_establishment']
+            ).first()
         buttons = ButtonModel.objects.filter(establishment=establishment,
                                              enable=True)
 
         if establishment is not None:
+            if not establishment.work_offline:
+                message = f'Мы пока не работаем в зале. Перейдите '\
+                          f'<a href="https://{establishment.custom_link}">'\
+                          f'сюда<a> чтобы сделать заказ онлайн.'
+                if not establishment.work_online:
+                    message = 'Мы пока не работаем.'
+                self.template_name = 'client_pages/custom_lock.html'
+                ctx = {
+                    'message': message,
+                    'establishment': establishment,
+                    'number_table': number_table
+                }
+                return self.render_to_response(ctx)
+
             ua = UserAdvanced.objects.get(user=establishment.owner)
 
             # Pay
@@ -154,7 +188,7 @@ def feedback(request):
     text_feedback = request.POST['feedback']
     rate_feedback = int(request.POST['rate'])
     id_establishment = request.POST['id_establishment']
-    number_table = int(request.POST['number_table'])
+    number_table = request.POST['number_table']
 
     establishment = EstablishmentModel.objects.filter(pk=id_establishment).first()
     if establishment is not None:
@@ -174,12 +208,20 @@ def feedback(request):
                 count_users=1)
             new_stat.save()
 
-        new_comment = CommentModel.objects.create(
-            establishment=establishment,
-            number_table=number_table,
-            text_comment=text_feedback,
-            rate=rate_feedback,
-        )
+        if number_table == 'online':
+            new_comment = CommentModel.objects.create(
+                establishment=establishment,
+                online=True,
+                text_comment=text_feedback,
+                rate=rate_feedback,
+            )
+        else:
+            new_comment = CommentModel.objects.create(
+                establishment=establishment,
+                number_table=int(number_table),
+                text_comment=text_feedback,
+                rate=rate_feedback,
+            )
         new_comment.save()
 
         data = {
@@ -194,10 +236,17 @@ def feedback(request):
 
 @require_POST
 def get_menu(request):
-    id_establishment = json.loads(request.body)['id_establishment']
-    establishment = EstablishmentModel.objects.filter(
-        pk=id_establishment
-    ).first()
+    data = json.loads(request.body)
+    if 'custom_link' in data:
+        custom_link = f'letseat.su/{data["custom_link"]}'
+        establishment = EstablishmentModel.objects.filter(custom_link=custom_link).first()
+        if not establishment:
+            return JsonResponse({'status': 'error'})
+    else:
+        id_establishment = data['id_establishment']
+        establishment = EstablishmentModel.objects.filter(
+            pk=id_establishment
+        ).first()
 
     if establishment is not None:
         stat = StatisticModel.objects.filter(establishment=establishment,
@@ -286,6 +335,38 @@ def order(request):
 
     data = {'status': 'ok'}
     return JsonResponse(data)
+
+
+@require_POST
+def online_order(request):
+    data = json.loads(request.body)
+    custom_link = f'letseat.su/{data["establishment_link"]}'
+    dishes = data['order']['dishes']
+    establishment = EstablishmentModel.objects.filter(custom_link=custom_link)\
+        .first()
+    if establishment is not None:
+        id_chat = establishment.telegram_chat
+        if id_chat:
+            list_dishes = []
+            full_price = 0
+            for key, value in dishes.items():
+                dish = DishModel.objects.filter(pk=key).first()
+                name_dish = dish.name
+                price_dish = dish.price
+                number_dish = value['count']
+                list_dishes.append(
+                    {'name': name_dish,
+                     'number_dish': number_dish}
+                )
+                full_price += int(price_dish) * int(value['count'])
+
+            print(id_chat)
+            new_online_order(id_chat, data['user'], list_dishes, full_price)
+            return JsonResponse({'status': 'ok'})
+        else:
+            return JsonResponse({'status': 'error'})
+    else:
+        return JsonResponse({'status': 'error'})
 
 
 @require_POST

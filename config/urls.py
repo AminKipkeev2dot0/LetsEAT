@@ -17,10 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from client_pages.views import ClientPageMain
+
 urlpatterns = [
     path('secret_admin/', admin.site.urls),
     path('', include('base.urls')),
     path('account/', include('accounts.urls')),
     path('client_page/', include('client_pages.urls')),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    path('<str:custom_link>', ClientPageMain.as_view(),
+         name='client_page_main'),
 ]

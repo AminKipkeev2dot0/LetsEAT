@@ -275,6 +275,8 @@ button_edit.addEventListener('click', () => {
   other_companies_block.style.display = 'none';
   open_other_companies.style.animation = 'rotate_0 .1s forwards';
   open_other_companies_flag = false;
+  let delivery_block = document.querySelector('.delivery_settings');
+  delivery_block.style.display = 'none';
 
 
   more_companies.style.display = 'none';
@@ -313,6 +315,8 @@ close_edit.addEventListener('click', () => {
   }, 200)
   more_companies.style.display = 'flex';
   more_companies.style.animation = 'open_from_bottom .2s'
+  let delivery_block = document.querySelector('.delivery_settings');
+  delivery_block.style.display = 'block';
 
   icon_open_edit.style.display = 'inline';
   close_edit.style.display = 'none';
@@ -408,7 +412,7 @@ add_company_complete.addEventListener('click', async (e) => {
   let name_establishment = document.querySelector('.other_companies .plus_block .input-block input');
   if (name_establishment.value.length > 0) {
     let url = 'https://letseat.su/establishment/add';
-    // let url = 'http://127.0.0.1:8000/establishment/add';
+    // let url = 'https://letseat.su/establishment/add';
     let data = {
       'name': name_establishment.value
     }
@@ -480,6 +484,8 @@ open_other_companies.addEventListener('click', () => {
 
     // other_companies_block.style.animation = 'open_with_height .5s forwards';
     other_companies_block.style.display = 'block';
+    let delivery_block = document.querySelector('.delivery_settings');
+    delivery_block.style.display = 'none';
 
     open_other_companies.style.animation = 'rotate_180 .3s forwards';
   } else {
@@ -487,6 +493,8 @@ open_other_companies.addEventListener('click', () => {
 
     open_other_companies.style.animation = 'rotate_0 .3s forwards';
     other_companies_block.style.display = 'none';
+    let delivery_block = document.querySelector('.delivery_settings');
+    delivery_block.style.display = 'block';
     // other_companies_block.style.animation = 'close_with_height .5s forwards';
   }
 });
@@ -729,5 +737,150 @@ function cost_calculation() {
   }
 }
 
+let work_online_bool = false;
+let work_offline_bool = false;
+let m_delivery_checkbox = document.querySelector('.m-delivery-settings .input-online');
+let delivery_checkbox = document.querySelector('.input-online');
+work_online_bool = delivery_checkbox.checked;
+
+let m_hall_checkbox = document.querySelector('.m-delivery-settings .input-hall');
+let hall_checkbox = document.querySelector('.input-hall');
+work_offline_bool = hall_checkbox.checked;
+
+async function edit_checkbox(name_checkbox) {
+  if (name_checkbox === 'delivery') {
+    delivery_checkbox.checked = work_online_bool;
+    m_delivery_checkbox.checked = work_online_bool;
+
+    let url = 'https://letseat.su/establishment/work_online';
+    let data = {
+      id_establishment: (window.location.pathname).split('/')[2],
+      work_online: !work_online_bool
+    }
+    let json = await base_post(url, data);
+
+    if (json['status'] === 'ok') {
+      delivery_checkbox.checked = !work_online_bool;
+      m_delivery_checkbox.checked = !work_online_bool;
+      work_online_bool = !work_online_bool;
+
+      let block_link = document.querySelector('.link-input');
+      let m_block_link = document.querySelector('.m-delivery-settings .link-input');
+      if (!work_online_bool) {
+        block_link.style.display = 'none';
+        m_block_link.style.display = 'none';
+      } else {
+        block_link.style.display = 'flex';
+        m_block_link.style.display = 'flex';
+      }
+    }
+  } else if (name_checkbox === 'hall') {
+    hall_checkbox.checked = work_offline_bool;
+    m_hall_checkbox.checked = work_offline_bool;
+
+    let url = 'https://letseat.su/establishment/work_hall';
+    let data = {
+      id_establishment: (window.location.pathname).split('/')[2],
+      work_hall : !work_offline_bool
+    }
+    let json = await base_post(url, data);
+
+    if (json['status'] === 'ok') {
+      hall_checkbox.checked = !work_offline_bool;
+      m_hall_checkbox.checked = !work_offline_bool;
+      work_offline_bool = !work_offline_bool;
+    }
+  }
+}
+
+let input_link = document.querySelector('.link-input input');
+let start_link = input_link.value;
+
+let button_copy_link = document.querySelector('.link-input .copy_input_link');
+let button_complete_edit_link = document.querySelector('.link-input .complete_edit_input_link');
+
+let error_span = document.querySelector('.delivery_settings .error_tg');
 
 
+let m_input_link = document.querySelector('.m-delivery-settings .link-input input');
+let m_start_link = m_input_link.value;
+
+let m_button_copy_link = document.querySelector('.m-delivery-settings .link-input .copy_input_link');
+let m_button_complete_edit_link = document.querySelector('.m-delivery-settings .link-input .complete_edit_input_link');
+
+let m_error_span = document.querySelector('.m-delivery-settings .error_tg');
+
+function change_input_link() {
+  if (input_link.value.length < 11 || m_input_link.value.length < 11) {
+    input_link.value = 'letseat.su/';
+    m_input_link.value = 'letseat.su/';
+  }
+  if (input_link.value !== start_link && input_link.value.length > 11 ||
+      m_input_link.value !== m_start_link && m_input_link.value.length > 11) {
+    button_copy_link.style.display = 'none';
+    button_complete_edit_link.style.display = 'flex';
+
+    m_button_copy_link.style.display = 'none';
+    m_button_complete_edit_link.style.display = 'flex';
+  } else {
+    button_copy_link.style.display = 'flex';
+    button_complete_edit_link.style.display = 'none';
+
+    m_button_copy_link.style.display = 'flex';
+    m_button_complete_edit_link.style.display = 'none';
+  }
+}
+
+async function complete_edit_link() {
+  let url = 'https://letseat.su/establishment/custom_link';
+
+  let data = {
+    id_establishment: (window.location.pathname).split('/')[2],
+    new_link: input_link.value !== start_link ? input_link.value : m_input_link.value
+  };
+
+  let json = await base_post(url, data);
+  console.log(json)
+  if (json['status'] === 'ok') {
+    start_link = input_link.value;
+    m_start_link = m_input_link.value;
+
+    button_copy_link.style.display = 'flex';
+    button_complete_edit_link.style.display = 'none';
+    error_span.style.display = 'none';
+
+    m_button_copy_link.style.display = 'flex';
+    m_button_complete_edit_link.style.display = 'none';
+    m_error_span.style.display = 'none';
+  } else {
+    error_span.style.display = 'flex';
+    error_span.innerText = json['message'];
+
+    m_error_span.style.display = 'flex';
+    m_error_span.innerText = json['message'];
+  }
+}
+
+function copy_link() {
+  /* Select the text field */
+  input_link.select();
+  input_link.setSelectionRange(0, 99999); /* For mobile devices */
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+  /* Alert the copied text */
+  alert("Ссылка скопирована: " + input_link.value);
+}
+
+function m_copy_link() {
+  /* Select the text field */
+  m_input_link.select();
+  m_input_link.setSelectionRange(0, 99999); /* For mobile devices */
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+  /* Alert the copied text */
+  alert("Ссылка скопирована: " + input_link.value);
+}

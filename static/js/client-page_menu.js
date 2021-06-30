@@ -6,6 +6,13 @@ let modal_serve_dishes_content = document.querySelector('#serve_dishes__content'
 let modal_make_an_order = document.querySelector('#make_an_order')
 let modal_make_an_order_content = document.querySelector('#make_an_order_content')
 
+let form_block = document.querySelector('.form-block');
+let form_block_button = form_block.querySelector('form button');
+let input_address = document.querySelector('.form-block form input[name="address"]');
+let input_phone = document.querySelector('.form-block form input[name="phone"]');
+let input_name = document.querySelector('.form-block form input[name="name"]');
+let textarea_message = document.querySelector('.form-block form textarea');
+
 let menu_of_client = {dishes: {}};
 let empty_menu_of_client = {dishes: {}};
 
@@ -72,17 +79,82 @@ function minus_dish(id) {
   }
 }
 
-button_buy.addEventListener('click', () => {
+function check_not_empty() {
+  if (input_name.value.length > 0 &&
+  input_address.value.length > 0 &&
+  input_phone.value.length > 0) {
+    form_block_button.removeAttribute('disabled');
+  } else {
+    form_block_button.setAttribute('disabled', 'disabled');
+  }
+}
+
+function buy_dishes_offline() {
   if (JSON.stringify(menu_of_client) !== JSON.stringify(empty_menu_of_client) ) {
     modal_serve_dishes.style.display = 'flex';
     modal_serve_dishes.style.zIndex = '10';
     modal_serve_dishes.style.opacity = '1';
     modal_serve_dishes.style.animation = 'opacity_dark 0.3s';
     modal_serve_dishes_content.style.animation = 'from_center 0.4s';
-  } else {
+  }
+}
+
+// Открытие формы оформления заказа
+function buy_dishes_online() {
+  if (JSON.stringify(menu_of_client) !== JSON.stringify(empty_menu_of_client) ) {
+    button_buy.style.display = 'none';
+    form_block.style.display = 'block';
+    form_block.style.animation = 'open_from_right .5s forwards';
+  }
+}
+
+// Закрытие формы
+let form_button_back = document.querySelector('.form-block .to_back');
+form_button_back.addEventListener('click', () => {
+  let form_block = document.querySelector('.form-block');
+  button_buy.style.display = 'flex';
+  form_block.style.animation = 'close_to_right100 .4s forwards';
+  setTimeout(() => {
+    form_block.style.display = 'none';
+  }, 400)
+})
+
+// Кнопка отправки заказа
+async function complete_delivery_order() {
+  this.event.preventDefault();
+  form_block_button.setAttribute('disabled', 'disabled');
+  let modal_complete = document.querySelector('#complete_delivery_order');
+  let modal_complete_content = document.querySelector('#complete_delivery_order__content');
+
+  let url = 'https://letseat.su/client_page/online_order';
+  let data = {
+    establishment_link: (window.location.pathname).split('/')[1],
+    user: {
+      name: input_name.value,
+      address: input_address.value,
+      phone: input_phone.value,
+      message: textarea_message.value
+    },
+    order: menu_of_client
   }
 
-})
+  let json = await base_post(url, data)
+
+  if (json['status'] === 'ok') {
+    modal_complete.style.zIndex = '10';
+    modal_complete.style.opacity = '1';
+    modal_complete.style.animation = 'opacity_dark 0.3s';
+    modal_complete_content.style.animation = 'from_center 0.4s';
+    setTimeout(() => {
+      window.location.reload();
+    }, 2500)
+  } else {
+    show_error()
+    form_block_button.removeAttribute('disabled');
+  }
+}
+
+
 
 button_complete_buy.addEventListener('click', async () => {
   if (JSON.stringify(menu_of_client) !== JSON.stringify(empty_menu_of_client)) {
@@ -170,8 +242,6 @@ button_complete_buy.addEventListener('click', async () => {
         show_error()
       }, 300)
     }
-
-
   }
 })
 

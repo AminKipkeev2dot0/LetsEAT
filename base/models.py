@@ -41,6 +41,10 @@ class EstablishmentModel(models.Model):
                                      blank=True, null=True, unique=True)
     date_subscribe = models.DateTimeField(blank=True, null=True)
     subscription = models.BooleanField(default=False)
+    work_online = models.BooleanField(default=False)
+    work_offline = models.BooleanField(default=True)
+    custom_link = models.CharField(max_length=30, unique=True,
+                                   db_index=True, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -108,7 +112,8 @@ class CommentModel(models.Model):
     establishment = models.ForeignKey(EstablishmentModel,
                                       related_name='establishment_comment',
                                       on_delete=models.CASCADE)
-    number_table = models.IntegerField(db_index=True, null=True)
+    number_table = models.IntegerField(db_index=True, blank=True, null=True)
+    online = models.BooleanField(default=False)
     text_comment = models.TextField(max_length=200, db_index=True)
     rate = models.IntegerField(db_index=True)
     date = models.DateField(auto_now_add=True)

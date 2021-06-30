@@ -3,6 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from . import views
+from client_pages.views import ClientPageMain
 
 urlpatterns = [
     path('', views.HomePage.as_view(), name='home_page'),
@@ -27,6 +28,13 @@ urlpatterns = [
          name='establishment_add_tg'),
     path('establishment/edit_tg', views.establishment_edit_tg,
          name='establishment_edit_tg'),
+    path('establishment/work_online', views.establishment_work_online,
+         name='establishment_work_online'),
+    path('establishment/work_hall', views.establishment_work_hall,
+         name='establishment_work_hall'),
+    path('establishment/custom_link', views.establishment_custom_link,
+         name='establishment_custom_link'),
+
 
     path('qr/new', views.new_qr, name='new_qr'),
     path('qr/delete', views.delete_qr, name='delete_qr'),

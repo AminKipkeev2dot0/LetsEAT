@@ -39,6 +39,10 @@ svg {
   display: none;
 }
 
+a {
+  color: white;
+}
+
 @media screen and (min-width: 800px) {
   .svg_270 {
     display: none;

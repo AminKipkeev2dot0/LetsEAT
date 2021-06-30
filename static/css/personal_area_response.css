@@ -95,6 +95,10 @@
     max-height: 160px;
     max-width: 160px;
   }
+
+  .heading {
+    margin-top: 150px;
+  }
 }
 
 @media screen and (max-width: 1300px) {
@@ -327,6 +331,9 @@
 }
 
 @media screen and (max-width: 800px) {
+  .m-delivery-settings {
+    display: block;
+  }
   .create_establishment__content h2 {
     font-size: 34px;
     margin-bottom: 5px;

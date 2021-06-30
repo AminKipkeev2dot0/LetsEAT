@@ -8,6 +8,7 @@ urlpatterns = [
          views.ClientPageMain.as_view(),
          name='client_page_main'),
     path('order', views.order, name='client_order'),
+    path('online_order', views.online_order, name='client_online_order'),
     path('get_menu', views.get_menu, name='get_menu'),
     path('telegram/waiter', views.telegram_waiter, name='telegram_waiter'),
     path('telegram/button', views.telegram_button, name='tg_button'),

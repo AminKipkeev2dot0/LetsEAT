@@ -5,7 +5,10 @@ import json
 import os
 import random
 import logging
+import re
 from pathlib import Path
+
+import django.db.utils
 import urllib3
 
 from dateutil.relativedelta import *
@@ -102,7 +105,6 @@ class EmptyPersonalArea(TemplateResponseMixin, View):
             return redirect('personal_area',
                             id_establishment=last_estbl.pk)
 
-
         return self.render_to_response({})
 
 
@@ -123,6 +125,8 @@ class PersonalAreaStart(TemplateResponseMixin, View):
                     new_establishment.subscription = True
                     new_establishment.save()
                     new_establishment.picture = request.FILES['picture']
+                    new_establishment.custom_link = f'letseat.su/' \
+                                                    f'{new_establishment.pk}'
                     new_establishment.save()
                 else:
                     new_establishment = EstablishmentModel.objects.create(
@@ -130,6 +134,9 @@ class PersonalAreaStart(TemplateResponseMixin, View):
                         name=request.POST['name']
                     )
                     new_establishment.subscription = True
+                    new_establishment.save()
+                    new_establishment.custom_link = f'letseat.su/' \
+                                                    f'{new_establishment.pk}'
                     new_establishment.save()
             else:
                 return self.render_to_response({
@@ -166,7 +173,6 @@ class PersonalAreaStart(TemplateResponseMixin, View):
                 return self.render_to_response({
                     'form': CreateEstablishmentForm(request.POST),
                 })
-
 
         ua = UserAdvanced.objects.get(user=request.user)
         ua.last_establishment = new_establishment
@@ -252,14 +258,14 @@ class PersonalArea(TemplateResponseMixin, View):
                                     months=+ua.bill_months)
                             else:
                                 establishment.date_subscribe = establishment.date_subscribe + \
-                                                       relativedelta(
-                                                           months=+ua.bill_months
-                                                       )
+                                                               relativedelta(
+                                                                   months=+ua.bill_months
+                                                               )
                         else:
                             establishment.date_subscribe = dt_today + \
-                                                   relativedelta(
-                                                       months=+ua.bill_months
-                                                   )
+                                                           relativedelta(
+                                                               months=+ua.bill_months
+                                                           )
                         establishment.save()
                     ua.bill_months = 0
                     ua.pay_establishments = []
@@ -392,7 +398,6 @@ class PersonalArea(TemplateResponseMixin, View):
             ua.trial = False
             ua.save()
 
-
         qr_codes = QRCode.objects.filter(establishment=current_establishment)
         buttons = ButtonModel.objects.filter(
             establishment=current_establishment)
@@ -417,7 +422,6 @@ class PersonalArea(TemplateResponseMixin, View):
         pie_day_stats = StatisticModel.objects.filter(
             establishment=current_establishment, date=datetime.date.today()
         ).first()
-
 
         pie_btns = []
         for button in buttons:
@@ -446,7 +450,6 @@ class PersonalArea(TemplateResponseMixin, View):
                 total_count += btn_stat.count_click
             this_btn['count_click_month'] = total_count
             pie_btns.append(this_btn)
-
 
         if pie_day_stats is not None:
             pie_day = {
@@ -544,6 +547,7 @@ def check_subscription(func):
                 json = func(*args, **kwargs)
                 return json
         return JsonResponse({'status': 'error'})
+
     return wrapper
 
 
@@ -627,6 +631,8 @@ def establishment_add(request):
     establishment = EstablishmentModel.objects.create(owner=request.user,
                                                       name=name_establishment)
     establishment.save()
+    establishment.custom_link = f'letseat.su/{establishment.pk}'
+    establishment.save()
 
     tg_start_code = base64.b64encode(str.encode(f'estbl_{establishment.pk}')).decode('utf-8')
     tg_link = f'https://t.me/lets_eatbot?start={tg_start_code}'
@@ -665,7 +671,7 @@ def establishment_edit_logo(request):
     logo = request.FILES['new_logo']
 
     establishment = EstablishmentModel.objects.filter(owner=request.user,
-                                                   pk=id_establishment).first()
+                                                      pk=id_establishment).first()
     if establishment is not None:
         establishment.picture = logo
         establishment.save()
@@ -723,6 +729,69 @@ def establishment_edit_tg(request):
         data = {'status': 'ok'}
     else:
         data = {'status': 'error'}
+
+    return JsonResponse(data)
+
+
+@require_POST
+def establishment_work_online(request):
+    id_establishment = json.loads(request.body)['id_establishment']
+    work_online = json.loads(request.body)['work_online']
+    establishment = EstablishmentModel.objects.filter(owner=request.user, pk=id_establishment).first()
+    if establishment is not None:
+        establishment.work_online = work_online
+        establishment.save()
+        data = {'status': 'ok'}
+    else:
+        data = {'status': 'error'}
+
+    return JsonResponse(data)
+
+
+@require_POST
+def establishment_work_hall(request):
+    id_establishment = json.loads(request.body)['id_establishment']
+    work_offline = json.loads(request.body)['work_hall']
+    establishment = EstablishmentModel.objects.filter(owner=request.user, pk=id_establishment).first()
+    if establishment is not None:
+        establishment.work_offline = work_offline
+        establishment.save()
+        data = {'status': 'ok'}
+    else:
+        data = {'status': 'error'}
+
+    return JsonResponse(data)
+
+
+@require_POST
+def establishment_custom_link(request):
+    id_establishment = json.loads(request.body)['id_establishment']
+    new_link = json.loads(request.body)['new_link']
+    establishment = EstablishmentModel.objects.filter(owner=request.user, pk=id_establishment).first()
+    if establishment is not None:
+        user_link = '/'.join(new_link.split('/')[1:])
+        if user_link.isdigit():
+            data = {'status': 'error', 'message': 'Ссылка не может состоять только из цифр.'}
+            return JsonResponse(data)
+        elif '/' in user_link:
+            data = {'status': 'error', 'message': 'Уберите ваш "/"'}
+            return JsonResponse(data)
+        print(user_link)
+
+        test_link = re.search('''^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?''', new_link)
+
+        if test_link:
+            establishment.custom_link = new_link
+            try:
+                establishment.save()
+            except django.db.utils.IntegrityError:
+                data = {'status': 'error', 'message': 'Ссылка уже занята.'}
+                return JsonResponse(data)
+            data = {'status': 'ok'}
+        else:
+            data = {'status': 'error', 'message': 'Неверный формат ссылки'}
+    else:
+        data = {'status': 'error', 'message': ''}
 
     return JsonResponse(data)
 
