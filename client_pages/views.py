@@ -176,9 +176,8 @@ class ClientPageMain(TemplateResponseMixin, View):
             ctx = {
                 'establishment': establishment,
                 'number_table': number_table,
-                'buttons': buttons
+                'buttons': buttons if 'custom_link' not in kwargs else None
             }
-
             return self.render_to_response(ctx)
         else:
             return redirect('home_page')
