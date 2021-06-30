@@ -77,19 +77,20 @@ class ClientPageMain(TemplateResponseMixin, View):
                                              enable=True)
 
         if establishment is not None:
-            if not establishment.work_offline:
-                message = f'Мы пока не работаем в зале. Перейдите '\
-                          f'<a href="https://{establishment.custom_link}">'\
-                          f'сюда<a> чтобы сделать заказ онлайн.'
-                if not establishment.work_online:
-                    message = 'Мы пока не работаем.'
-                self.template_name = 'client_pages/custom_lock.html'
-                ctx = {
-                    'message': message,
-                    'establishment': establishment,
-                    'number_table': number_table
-                }
-                return self.render_to_response(ctx)
+            if 'custom_link' not in kwargs:
+                if not establishment.work_offline:
+                    message = f'Мы пока не работаем в зале. Перейдите '\
+                              f'<a href="https://{establishment.custom_link}">'\
+                              f'сюда<a> чтобы сделать заказ онлайн.'
+                    if not establishment.work_online:
+                        message = 'Мы пока не работаем.'
+                    self.template_name = 'client_pages/custom_lock.html'
+                    ctx = {
+                        'message': message,
+                        'establishment': establishment,
+                        'number_table': number_table
+                    }
+                    return self.render_to_response(ctx)
 
             ua = UserAdvanced.objects.get(user=establishment.owner)
 
