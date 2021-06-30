@@ -776,11 +776,16 @@ def establishment_custom_link(request):
         elif '/' in user_link:
             data = {'status': 'error', 'message': 'Уберите ваш "/"'}
             return JsonResponse(data)
-        print(user_link)
 
-        test_link = re.search('''^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?''', new_link)
+        status = False
+        for symbol in user_link:
+            if re.match('\w', symbol) is not None or symbol == '-':
+                status = True
+            else:
+                status = False
+                break
 
-        if test_link:
+        if status:
             establishment.custom_link = new_link
             try:
                 establishment.save()
@@ -789,7 +794,7 @@ def establishment_custom_link(request):
                 return JsonResponse(data)
             data = {'status': 'ok'}
         else:
-            data = {'status': 'error', 'message': 'Неверный формат ссылки'}
+            data = {'status': 'error', 'message': 'Ccылка может заключать только буквы и символы: -, _'}
     else:
         data = {'status': 'error', 'message': ''}
 
