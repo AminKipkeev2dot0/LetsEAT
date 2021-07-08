@@ -5,7 +5,8 @@ from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-from base.models import StatisticModel, UserAdvanced, StatisticButton
+from base.models import StatisticModel, UserAdvanced, StatisticButton, \
+    EstablishmentModel
 
 
 def my_scheduled_job():
@@ -53,25 +54,26 @@ def send_notify_pay():
     today = datetime.date.today()
     pay_date = today + datetime.timedelta(days=3)
     end_pay_date = today + datetime.timedelta(days=4)
-    # Выбираю юзеров, у которых подписка заканчивается через 2-3 дня
-    ua_users = UserAdvanced.objects.filter(
-        subscription_date__gte=pay_date,
-        subscription_date__lte=end_pay_date,
+
+    establishments = EstablishmentModel.objects.filter(
+        date_subscribe__gte=pay_date,
+        date_subscribe__lte=end_pay_date,
     )
-    print(ua_users)
-    for ua in ua_users:
-        print(ua)
+
+    for establishment in establishments:
+        owner_establishment = establishment.owner
+        ua = UserAdvanced.objects.filter(user=owner_establishment)
+
         email_user = ua.user.email
-        name_user = ua.user.first_name.split(' ')[0]
-        ua_sub_date = ua.subscription_date
-        format_date_sub = f'{ua_sub_date:%d.%m.%Y}'
-        last_establishment = ua.last_establishment.pk
+        name_user = owner_establishment.first_name.split(' ')[0]
+        sub_date = establishment.date_subscribe
+        format_date_sub = f'{sub_date:%d.%m.%Y}'
 
         html_message = render_to_string('emails/notify_pay.html',
                                         {'name_user': name_user,
-                                         'site': '127.0.0.1:8000',
+                                         'site': 'letseat.su',
                                          'date_sub': format_date_sub,
-                                         'establishment_pk': last_establishment,
+                                         'establishment': establishment,
                                          })
         plain_message = strip_tags(html_message)
         mail.send_mail('Напоминание об оплате', plain_message,

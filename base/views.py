@@ -9,12 +9,11 @@ import re
 from pathlib import Path
 
 import django.db.utils
-import urllib3
 
 from dateutil.relativedelta import *
 
 from django.http import JsonResponse
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.views.generic.base import TemplateResponseMixin, View
 from django.contrib.auth.models import User
@@ -541,11 +540,16 @@ class PersonalArea(TemplateResponseMixin, View):
 def check_subscription(func):
     def wrapper(*args, **kwargs):
         request = args[0]
+        id_establishment = json.loads(request.body)['id_establishment']
+
         ua = UserAdvanced.objects.filter(user=request.user).first()
-        if ua is not None:
-            if ua.subscription or ua.trial:
-                json = func(*args, **kwargs)
-                return json
+        establishment = EstablishmentModel.objects.filter(pk=id_establishment)\
+            .first()
+
+        if ua and establishment:
+            if establishment.subscription or ua.trial:
+                r_json = func(*args, **kwargs)
+                return r_json
         return JsonResponse({'status': 'error'})
 
     return wrapper

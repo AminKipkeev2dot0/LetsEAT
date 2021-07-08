@@ -1,5 +1,8 @@
 // QR codes
 
+// let domain = 'http://127.0.0.1:8000';
+let domain = 'https://letseat.su';
+
 function delete_table(id_table) {
   let table = document.querySelector(`#table-${id_table}`);
   let number_table = Number(table.querySelector(`.number-table`).innerText);
@@ -19,7 +22,7 @@ function delete_table(id_table) {
 }
 
 async function confirm_delete_table(id_table) {
-  const url = 'https://letseat.su/qr/delete';
+  const url = domain + '/qr/delete';
   const data = {
     'id_table': id_table,
     'id_establishment': (window.location.pathname).split('/')[2],
@@ -63,7 +66,7 @@ async function confirm_delete_table(id_table) {
 }
 
 async function open_qr(id_table) {
-  const url = 'https://letseat.su/qr/open_qr';
+  const url = domain + '/qr/open_qr';
   const data = {
     'id_table': id_table,
     'id_establishment': (window.location.pathname).split('/')[2],
@@ -121,7 +124,7 @@ function close_modal_qr(id_table) {
 let all_tables = document.querySelector('.qr-codes__content');
 
 async function new_qr_table() {
-  const url = 'https://letseat.su/qr/new';
+  const url = domain + '/qr/new';
   const data = {
     'id_establishment': (window.location.pathname).split('/')[2],
   };
@@ -170,7 +173,7 @@ async function new_qr_table() {
 async function download_qr_as_pdf() {
   this.event.preventDefault();
 
-  const url = 'https://letseat.su/qr/download_qrs_pdf';
+  const url = domain + '/qr/download_qrs_pdf';
   const data = {
     'id_establishment': (window.location.pathname).split('/')[2],
   };
@@ -198,7 +201,7 @@ async function download_qr_as_pdf() {
 async function download_qr_as_zip(a) {
   this.event.preventDefault();
 
-  const url = 'https://letseat.su/qr/download_qrs_zip';
+  const url = domain + '/qr/download_qrs_zip';
   const data = {
     'id_establishment': (window.location.pathname).split('/')[2],
   }
@@ -277,7 +280,7 @@ async function complete_create_category() {
 
 
   if (new_category_title.value.length > 0) {
-    let url = 'https://letseat.su/menu/add_category';
+    let url = domain + '/menu/add_category';
     let data = {
       'name_category': new_category_title.value,
       'id_establishment': (window.location.pathname).split('/')[2]
@@ -336,7 +339,7 @@ async function complete_edit_category(id_category) {
   let category_input = category.querySelector('.title_category');
 
   if (category_input.value.length > 0) {
-    let url = 'https://letseat.su/menu/rename_category';
+    let url = domain + '/menu/rename_category';
     let data = {
       'id_establishment': (window.location.pathname).split('/')[2],
       'id_category': id_category,
@@ -378,7 +381,7 @@ function delete_category(id_table) {
 }
 
 async function confirm_delete_category(id_category) {
-  let url = 'https://letseat.su/menu/delete_category';
+  let url = domain + '/menu/delete_category';
   let data = {
     'id_establishment': (window.location.pathname).split('/')[2],
     'id_category': id_category,
@@ -425,7 +428,7 @@ function delete_dish(id_dish) {
 }
 
 async function confirm_delete_dish(id_dish) {
-  let url = 'https://letseat.su/menu/delete_dish';
+  let url = domain + '/menu/delete_dish';
   let data = {
     'id_dish': id_dish,
   }
@@ -550,7 +553,7 @@ edit_dish_button.addEventListener('click', async () => {
   let dish_img = dish.querySelector('.dish__img');
 
   if (!edit_dish_picture) {
-    let url = 'https://letseat.su/menu/edit_dish'
+    let url = domain + '/menu/edit_dish'
     let data = {
       'name_dish': post_edit_dish_name,
       'price': post_edit_dish_price,
@@ -574,7 +577,7 @@ edit_dish_button.addEventListener('click', async () => {
     let form = document.querySelector('.modal-dish-edit form');
     const formData = new FormData(form);
 
-    let url = 'https://letseat.su/menu/edit_dish_picture';
+    let url = domain + '/menu/edit_dish_picture';
     const fetchResp = await fetch(url, {
       method: 'POST',
       body: formData,
@@ -631,7 +634,7 @@ modal_dish_img.addEventListener('change', async (e) => {
 
 // Функция отправки пост запроса с формой создания нового блюда
 const ajaxSend = async (formData) => {
-    const fetchResp = await fetch('https://letseat.su/menu/new_dish', {
+    const fetchResp = await fetch(domain + '/menu/new_dish', {
       method: 'POST',
       body: formData,
       headers: {
@@ -741,7 +744,7 @@ function activate_edit_button(id_button) {
 }
 
 async function complete_rename_button_post(id_button, new_name) {
-  const url = 'https://letseat.su/button/rename';
+  const url = domain + '/button/rename';
   const data = {
     'id_button': id_button,
     'new_name': new_name,
@@ -884,7 +887,7 @@ async function new_button() {
 }
 
 async function new_button_post(name_button, text_button) {
-  const url = 'https://letseat.su/button/add';
+  const url = domain + '/button/add';
   const data = {
     'name': name_button,
     'text': text_button,
@@ -944,7 +947,7 @@ async function button_save_message(id_button) {
     button_textarea = document.querySelector(`#button-${id_button} .button-main textarea`);
     button_textarea.value = modal_textarea.value;
 
-    let url = 'https://letseat.su/button/edit_text';
+    let url = domain + '/button/edit_text';
     let data = {
       'id_button': id_button,
       'text_button': button_textarea.value,
@@ -1036,7 +1039,7 @@ function delete_button(id_button) {
 }
 
 async function confirm_delete_button(id_button) {
-  const url = 'https://letseat.su/button/delete';
+  const url = domain + '/button/delete';
   const data = {
     'id_button': id_button,
     'id_establishment': (window.location.pathname).split('/')[2],
@@ -1129,7 +1132,7 @@ async function check_button(id_button) {
   let button_span = document.querySelector(`#button-${id_button} .checkbox span`);
   if (!button_span.hasAttribute('onclick')) {
     button.checked = !button.checked;
-    let url = 'https://letseat.su/button/on_off'
+    let url = domain + '/button/on_off'
     let data = {
       'id_button': id_button,
       'id_establishment': (window.location.pathname).split('/')[2],

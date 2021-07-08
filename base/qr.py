@@ -151,7 +151,7 @@ def clear_files(path_qr, path_bg, clear_bg=False):
         os.remove(path_bg)
 
     # Удаление папки
-    shutil.rmtree('/'.join(path_qr.split('/')[:-1]))
+    shutil.rmtree('/'.join(path_qr.split(os.path.sep)[:-1]))
 
 
 def build_qr(url: str, path_save: str, number_table: str,
