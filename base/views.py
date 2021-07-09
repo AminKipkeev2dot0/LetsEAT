@@ -540,7 +540,7 @@ class PersonalArea(TemplateResponseMixin, View):
 def check_subscription(func):
     def wrapper(*args, **kwargs):
         request = args[0]
-        id_establishment = json.loads(request.body)['id_establishment']
+        id_establishment = request.META['HTTP_REFERER'].split('/')[-2]
 
         ua = UserAdvanced.objects.filter(user=request.user).first()
         establishment = EstablishmentModel.objects.filter(pk=id_establishment)\
