@@ -556,6 +556,10 @@ body {
   margin-top: 10px
 }
 
+.m-settings .name-company {
+  margin-bottom: 0;
+}
+
 .m-settings .name-company > div {
   display: inline;
 }

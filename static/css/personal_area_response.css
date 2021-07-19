@@ -561,6 +561,9 @@
   .modal-pay__content {
     padding-top: 40px;
   }
+  .modal-pay__content form {
+    width: 100%;
+  }
   .payments-periods {
     flex-direction: column;
   }
